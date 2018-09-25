@@ -1,0 +1,7 @@
+[package]
+name = "polylog"
+version = "0.1.0"
+authors = ["Alexander Voigt <Alexander.Voigt@physik.rwth-aachen.de>"]
+
+[dependencies]
+num = "0.1"
