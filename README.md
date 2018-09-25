@@ -1,7 +1,7 @@
 Polylog
 =======
 
-The Polylog package provides Rust implementation of real and complex
+The Polylog package provides Rust implementations of real and complex
 polylogarithms.
 
 The Polylog package depends on the `num` crate.
