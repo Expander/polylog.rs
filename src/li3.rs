@@ -15,7 +15,7 @@ pub trait Li3<T> {
 /// extern crate num;
 /// extern crate polylog;
 /// use num::complex::Complex;
-/// use polylog::li3::Li3;
+/// use polylog::Li3;
 ///
 /// fn main() {
 ///     let z = Complex::new(1.0, 1.0);

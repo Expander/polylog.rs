@@ -9,8 +9,8 @@
 //! extern crate num;
 //! extern crate polylog;
 //! use num::complex::Complex;
-//! use polylog::li2::Li2;
-//! use polylog::li3::Li3;
+//! use polylog::Li2;
+//! use polylog::Li3;
 //!
 //! fn main() {
 //!     let x = 1.0;
@@ -24,5 +24,8 @@
 
 extern crate num;
 
-pub mod li2;
-pub mod li3;
+mod li2;
+mod li3;
+
+pub use self::li2::Li2;
+pub use self::li3::Li3;

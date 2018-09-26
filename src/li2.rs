@@ -14,7 +14,7 @@ pub trait Li2<T> {
 ///
 /// # Example:
 /// ```
-/// use polylog::li2::Li2;
+/// use polylog::Li2;
 ///
 /// let z = 1.0;
 /// println!("Li2({}) = {}", z, z.li2());
@@ -85,7 +85,7 @@ impl Li2<f64> for f64 {
 /// extern crate num;
 /// extern crate polylog;
 /// use num::complex::Complex;
-/// use polylog::li2::Li2;
+/// use polylog::Li2;
 ///
 /// fn main() {
 ///     let z = Complex::new(1.0, 1.0);

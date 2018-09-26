@@ -2,7 +2,7 @@ extern crate polylog;
 extern crate num;
 use num::complex::Complex;
 use num::Float;
-use polylog::li3::Li3;
+use polylog::Li3;
 
 macro_rules! assert_eq_float {
     ($a:expr, $b:expr, $eps:expr) => {
