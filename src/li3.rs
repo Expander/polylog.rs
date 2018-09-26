@@ -137,9 +137,9 @@ trait CLn<T> {
 
 impl CLn<Complex<f64>> for Complex<f64> {
     fn cln(&self) -> Complex<f64> {
-        let mut zf = *self;
-        if zf.re == 0. { zf.re = 0. }
-        if zf.im == 0. { zf.im = 0. }
-        zf.ln()
+        Complex::new(
+            if self.re == 0. { 0. } else { self.re },
+            if self.im == 0. { 0. } else { self.im },
+        ).ln()
     }
 }
