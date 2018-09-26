@@ -1,8 +1,7 @@
 use std;
 use num::complex::Complex;
 
-/// Trait which provides the dilogarithm function `li2()` of a number
-/// of type `T`.
+/// Provides the dilogarithm function `li2()` of a number of type `T`.
 pub trait Li2<T> {
     fn li2(&self) -> T;
 }

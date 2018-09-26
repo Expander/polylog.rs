@@ -9,8 +9,7 @@
 //! extern crate num;
 //! extern crate polylog;
 //! use num::complex::Complex;
-//! use polylog::Li2;
-//! use polylog::Li3;
+//! use polylog::{Li2, Li3};
 //!
 //! fn main() {
 //!     let x = 1.0;

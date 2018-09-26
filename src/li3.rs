@@ -2,8 +2,8 @@ use std;
 use num::complex::Complex;
 use num::Float;
 
-/// Trait which provides the trilogarithm function `li3()` of a number
-/// of type `T`.
+/// Provides the trilogarithm function `li3()` of a number of type
+/// `T`.
 pub trait Li3<T> {
     fn li3(&self) -> T;
 }
