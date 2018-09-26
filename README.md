@@ -7,6 +7,25 @@ polylogarithms.
 The Polylog package depends on the `num` crate.
 
 
+Example
+-------
+
+```rust
+extern crate num;
+extern crate polylog;
+use num::complex::Complex;
+use polylog::{Li2, Li3};
+
+fn main() {
+    let x = 1.0;
+    let z = Complex::new(1.0, 1.0);
+    println!("Li2({}) = {}", x, x.li2());
+    println!("Li2({}) = {}", z, z.li2());
+    println!("Li3({}) = {}", z, z.li3());
+}
+```
+
+
 Notes
 -----
 
