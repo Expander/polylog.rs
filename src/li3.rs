@@ -85,7 +85,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
         let (u, mut sum) = if self.norm() <= 1. {
             (-(1. - self).cln(), Complex::new(0.,0.))
         } else { // az > 1.
-            (-(1. - 1./self).cln(), -((-self).cln()).powf(3.)/6. - pi2/6.*(-self).cln())
+            (-(1. - 1./self).cln(), -pow3((-self).cln())/6. - pi2/6.*(-self).cln())
         };
 
         let mut p = Complex::new(1.,0.);
