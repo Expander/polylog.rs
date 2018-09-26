@@ -33,22 +33,21 @@ fn id1(z: Complex<f64>) -> Complex<f64> {
 }
 
 fn id2(z: Complex<f64>) -> Complex<f64> {
-    let pi = std::f64::consts::PI;
-
     if z.norm() < std::f64::EPSILON || (z.re > 0. && z.re < 1.) {
         Complex::new(0.,0.)
     } else {
+        let pi = std::f64::consts::PI;
         z.li3() - (1./z).li3() + (-z).cln().powf(3.)/6. + pi*pi/6.*(-z).cln()
     }
 }
 
 fn id3(z: Complex<f64>) -> Complex<f64> {
-    let pi = std::f64::consts::PI;
-    let z3 = 1.202056903159594;
-
-    if (1.0 - z).re.abs() < 1e-10 || (z.re <= 0. && z.im == 0.) {
+    if (1.0 - z).re.abs() < std::f64::EPSILON || (z.re <= 0. && z.im == 0.) {
         Complex::new(0.,0.)
     } else {
+        let pi = std::f64::consts::PI;
+        let z3 = 1.202056903159594;
+
         z.li3() + (1.-z).li3() + (1.-1./z).li3()
             - (z3 + z.cln().powf(3.)/6. + pi*pi/6.*z.cln() - 0.5*z.cln().powf(2.)*(1.-z).cln())
     }
@@ -59,7 +58,7 @@ fn special_values() {
     use num::Zero;
     let pi  = std::f64::consts::PI;
     let pi2 = pi*pi;
-    let eps = 1e-15;
+    let eps = std::f64::EPSILON;
     let ln2 = 2.0.ln();
     let z3  = 1.2020569031595942853997381615114;
     let phi = 0.5*((5.0).sqrt() + 1.0); // golden ratio

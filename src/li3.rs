@@ -1,3 +1,4 @@
+use std;
 use num::complex::Complex;
 use num::Float;
 
@@ -25,7 +26,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
     fn li3(&self) -> Complex<f64> {
         let pi  = 3.1415926535897932384626433832795;
         let pi2 = pi*pi;
-        let eps = 1e-15;
+        let eps = std::f64::EPSILON;
         let z3  = 1.2020569031595942853997381615114;
         let bf  = vec![
             1., -3./8., 17./216., -5./576.,
