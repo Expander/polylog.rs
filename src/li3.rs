@@ -28,7 +28,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
         let pi2 = pi*pi;
         let eps = std::f64::EPSILON;
         let z3  = 1.2020569031595942853997381615114;
-        let bf  = vec![
+        let bf  = [
             1., -3./8., 17./216., -5./576.,
              0.00012962962962962962962962962962963,  0.000081018518518518518518518518518519,
             -3.4193571608537594932152755282007e-06, -1.3286564625850340136054421768707e-06 ,
@@ -90,7 +90,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
 
         let mut p = Complex::new(1.,0.);
 
-        for b in bf {
+        for b in bf.iter() {
             p *= u;
             sum += b*p;
         }

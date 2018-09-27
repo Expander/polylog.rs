@@ -138,7 +138,7 @@ fn identities() {
     let eps = 1e-14;
     let zero = Complex::zero();
     let omega = Complex::new(0.5, (3.).sqrt()/2.);
-    let values = vec![
+    let values = [
         Complex::new(0.,0.),
         Complex::new(0.5,0.),
         Complex::new(1.,0.),
