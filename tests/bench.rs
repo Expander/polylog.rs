@@ -26,7 +26,7 @@ fn bench_li3() {
 
     let time : f64 = numbers.iter().map(|z| { time(|| { z.li3(); }) }).sum();
 
-    println!("Evaluation of Li2 {} times took: {}ms", n, time);
+    println!("Evaluation of Li3 {} times took: {}ms", n, time);
 }
 
 
