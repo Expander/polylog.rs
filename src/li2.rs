@@ -130,7 +130,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
                 return Complex::new(rz.li2(), 0.0)
             }
             if rz > 1. {
-                return rz.li2() - pi*rz.ln()*Complex::i()
+                return Complex::new(rz.li2(), -pi*rz.ln())
             }
         } else if az < std::f64::EPSILON {
             return *self;
@@ -138,16 +138,16 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         let (cy, cz, jsgn, ipi12) = if rz <= 0.5 {
             if az > 1. {
-                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1, -2)
-            } else { // (az <= 1.)
-                (Complex::new(0.,0.), -(1. - self).ln(), 1, 0)
+                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
+            } else { // az <= 1.
+                (Complex::new(0.,0.), -(1. - self).ln(), 1., 0.)
             }
         } else { // rz > 0.5
             if az <= (2.0*rz).sqrt() {
                 let l = -(self).ln();
-                (l * (1. - self).ln(), l, -1, 2)
-            } else { // (az > sqrt(2*rz))
-                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1, -2)
+                (l * (1. - self).ln(), l, -1., 2.)
+            } else { // az > sqrt(2*rz)
+                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
             }
         };
 
@@ -155,14 +155,14 @@ impl Li2<Complex<f64>> for Complex<f64> {
         let cz2 = sqr(cz);
         let mut sum = Complex::new(0.,0.);
 
-        for b in bf[2..bf.len()].iter().rev() {
+        for b in bf[2..].iter().rev() {
             sum = cz2 * (sum + b);
         }
 
         // lowest order terms w/ different powers
         sum = cz + cz2 * (bf[0] + cz * (bf[1] + sum));
 
-        (jsgn as f64) * sum + cy + (ipi12 as f64) * pi * pi / 12.
+        jsgn * sum + cy + ipi12 * pi * pi / 12.
     }
 }
 
