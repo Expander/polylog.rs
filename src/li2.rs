@@ -128,8 +128,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
         if iz == 0. {
             if rz <= 1. {
                 return Complex::new(rz.li2(), 0.0)
-            }
-            if rz > 1. {
+            } else { // rz > 1.
                 return Complex::new(rz.li2(), -pi*rz.ln())
             }
         } else if az < std::f64::EPSILON {
