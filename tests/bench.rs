@@ -13,7 +13,7 @@ fn bench_li2() {
     let n = 1000000;
     let numbers = gen_numbers(-10.0, 10.0, n);
 
-    let time : f64 = numbers.iter().map(|z| { time(|| { z.li2(); }) }).sum();
+    let time: f64 = numbers.iter().map(|z| time(|| { z.li2(); })).sum();
 
     println!("Evaluation of Li2 {} times took: {}ms", n, time);
 }
@@ -24,7 +24,7 @@ fn bench_li3() {
     let n = 1000000;
     let numbers = gen_numbers(-10.0, 10.0, n);
 
-    let time : f64 = numbers.iter().map(|z| { time(|| { z.li3(); }) }).sum();
+    let time: f64 = numbers.iter().map(|z| time(|| { z.li3(); })).sum();
 
     println!("Evaluation of Li3 {} times took: {}ms", n, time);
 }
