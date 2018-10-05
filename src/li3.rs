@@ -1,6 +1,5 @@
 use std;
 use num::complex::Complex;
-use num::Float;
 
 /// Provides the trilogarithm function `li3()` of a number of type
 /// `T`.
@@ -62,40 +61,47 @@ impl Li3<Complex<f64>> for Complex<f64> {
             let zm1  = *self - 1.;
             let lzm1 = zm1.cln();
             let ceil = if zm1.arg() > 0. { 1. } else { 0. };
+            let cs: [Complex<f64>; 8] = [
+                Complex::new(pi2/6., 0.),
+                (ceil*ipi - lzm1/2. - 1./12.*pow2(3.*i + pi)),
+                (lzm1/2. + 1./36.*(-21. - 18.*(-1. + 2.*ceil)*ipi + 2.*pi2)),
+                (-11./24.*lzm1 + 1./288.*(131. + 132.*(-1. + 2.*ceil)*ipi - 12.*pi2)),
+                (5./12.*lzm1 + 1./720.*(-265. - 300.*(-1. + 2.*ceil)*ipi + 24.*pi2)),
+                (-137./360.*lzm1 + 1./7200.*(2213. + 2740.*(-1. + 2.*ceil)*ipi - 200.*pi2)),
+                (-947./3600. - 7./20.*(-1. + 2.*ceil)*ipi + 7./20.*lzm1 + pi2/42.),
+                (647707./2822400. + 363.*(-1. + 2.*ceil)*ipi/1120. - 363./1120.*lzm1 - pi2/48.),
+            ];
 
-            return z3
-                + pi2*zm1/6.
-                + (ceil*ipi - lzm1/2. - 1./12.*pow2(3.*i + pi))*pow2(zm1)
-                + (lzm1/2. + 1./36.*(-21. - 18.*(-1. + 2.*ceil)*ipi + 2.*pi2))*pow3(zm1)
-                + (-11./24.*lzm1 + 1./288.*(131. + 132.*(-1. + 2.*ceil)*ipi - 12.*pi2))*pow4(zm1)
-                + (5./12.*lzm1 + 1./720.*(-265. - 300.*(-1. + 2.*ceil)*ipi + 24.*pi2))*pow5(zm1)
-                + (-137./360.*lzm1 + 1./7200.*(2213. + 2740.*(-1. + 2.*ceil)*ipi - 200.*pi2))*pow6(zm1)
-                + (-947./3600. - 7./20.*(-1. + 2.*ceil)*ipi + 7./20.*lzm1 + pi2/42.)*pow7(zm1)
-                + (647707./2822400. + 363.*(-1. + 2.*ceil)*ipi/1120. - 363./1120.*lzm1 - pi2/48.)*pow8(zm1);
+            let mut sum = Complex::new(0.,0.);
+
+            for c in cs.iter().rev() {
+                sum = zm1 * (sum + c);
+            }
+
+            return z3 + sum;
         }
         if is_close(self, -1., eps) {
             return Complex::new(-0.75*z3, 0.);
         }
         if is_close(self, 0.5, eps) {
-            let ln2  = (2.).ln();
-            let ln23 = ln2.powi(3);
+            let ln2  = 0.6931471805599453; // ln(2)
+            let ln23 = 0.3330246519889295; // ln(2)^3
             return Complex::new((-2.*pi2*ln2 + 4.*ln23 + 21.*z3)/24., 0.);
         }
 
-        let (u, mut sum) = if self.norm() <= 1. {
+        let (u, rest) = if self.norm() <= 1. {
             (-(1. - self).cln(), Complex::new(0.,0.))
         } else { // az > 1.
             (-(1. - 1./self).cln(), -pow3((-self).cln())/6. - pi2/6.*(-self).cln())
         };
 
-        let mut p = Complex::new(1.,0.);
+        let mut sum = Complex::new(0.,0.);
 
-        for b in bf.iter() {
-            p *= u;
-            sum += b*p;
+        for b in bf.iter().rev() {
+            sum = u * (sum + b);
         }
 
-        sum
+        sum + rest
     }
 }
 
@@ -109,26 +115,6 @@ fn pow2(z : Complex<f64>) -> Complex<f64> {
 
 fn pow3(z : Complex<f64>) -> Complex<f64> {
     z * z * z
-}
-
-fn pow4(z : Complex<f64>) -> Complex<f64> {
-    z * z * z * z
-}
-
-fn pow5(z : Complex<f64>) -> Complex<f64> {
-    z * z * z * z * z
-}
-
-fn pow6(z : Complex<f64>) -> Complex<f64> {
-    z * z * z * z * z * z
-}
-
-fn pow7(z : Complex<f64>) -> Complex<f64> {
-    z * z * z * z * z * z * z
-}
-
-fn pow8(z : Complex<f64>) -> Complex<f64> {
-    z * z * z * z * z * z * z * z
 }
 
 trait CLn<T> {
