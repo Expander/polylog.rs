@@ -152,14 +152,28 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         // the dilogarithm
         let cz2 = sqr(cz);
-        let mut sum = Complex::new(0.,0.);
-
-        for b in bf[2..].iter().rev() {
-            sum = cz2 * (sum + b);
-        }
-
-        // lowest order terms w/ different powers
-        sum = cz + cz2 * (bf[0] + cz * (bf[1] + sum));
+        let sum =
+            cz +
+            cz2 * (bf[0] +
+            cz  * (bf[1] +
+            cz2 * (bf[2] +
+            cz2 * (bf[3] +
+            cz2 * (bf[4] +
+            cz2 * (bf[5] +
+            cz2 * (bf[6] +
+            cz2 * (bf[7] +
+            cz2 * (bf[8] +
+            cz2 * (bf[9] +
+            cz2 * (bf[10] +
+            cz2 * (bf[11] +
+            cz2 * (bf[12] +
+            cz2 * (bf[13] +
+            cz2 * (bf[14] +
+            cz2 * (bf[15] +
+            cz2 * (bf[16] +
+            cz2 * (bf[17] +
+            cz2 * (bf[18] +
+            cz2 * (bf[19]))))))))))))))))))));
 
         jsgn * sum + cy + ipi12 * pi * pi / 12.
     }

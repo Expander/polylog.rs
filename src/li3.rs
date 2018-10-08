@@ -95,13 +95,47 @@ impl Li3<Complex<f64>> for Complex<f64> {
             (-(1. - 1./self).cln(), -pow3((-self).cln())/6. - pi2/6.*(-self).cln())
         };
 
-        let mut sum = Complex::new(0.,0.);
-
-        for b in bf.iter().rev() {
-            sum = u * (sum + b);
-        }
-
-        sum + rest
+        rest +
+        u * (bf[0] +
+        u * (bf[1] +
+        u * (bf[2] +
+        u * (bf[3] +
+        u * (bf[4] +
+        u * (bf[5] +
+        u * (bf[6] +
+        u * (bf[7] +
+        u * (bf[8] +
+        u * (bf[9] +
+        u * (bf[10] +
+        u * (bf[11] +
+        u * (bf[12] +
+        u * (bf[13] +
+        u * (bf[14] +
+        u * (bf[15] +
+        u * (bf[16] +
+        u * (bf[17] +
+        u * (bf[18] +
+        u * (bf[19] +
+        u * (bf[20] +
+        u * (bf[21] +
+        u * (bf[22] +
+        u * (bf[23] +
+        u * (bf[24] +
+        u * (bf[25] +
+        u * (bf[26] +
+        u * (bf[27] +
+        u * (bf[28] +
+        u * (bf[29] +
+        u * (bf[30] +
+        u * (bf[31] +
+        u * (bf[32] +
+        u * (bf[33] +
+        u * (bf[34] +
+        u * (bf[35] +
+        u * (bf[36] +
+        u * (bf[37] +
+        u * (bf[38] +
+        u * (bf[39]))))))))))))))))))))))))))))))))))))))))
     }
 }
 
