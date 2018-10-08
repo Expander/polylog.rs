@@ -72,13 +72,15 @@ impl Li3<Complex<f64>> for Complex<f64> {
                 (647707./2822400. + 363.*(-1. + 2.*ceil)*ipi/1120. - 363./1120.*lzm1 - pi2/48.),
             ];
 
-            let mut sum = Complex::new(0.,0.);
-
-            for c in cs.iter().rev() {
-                sum = zm1 * (sum + c);
-            }
-
-            return z3 + sum;
+            return z3 +
+                zm1 * (cs[0] +
+                zm1 * (cs[1] +
+                zm1 * (cs[2] +
+                zm1 * (cs[3] +
+                zm1 * (cs[4] +
+                zm1 * (cs[5] +
+                zm1 * (cs[6] +
+                zm1 * (cs[7]))))))));
         }
         if is_close(self, -1., eps) {
             return Complex::new(-0.75*z3, 0.);
