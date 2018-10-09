@@ -15,7 +15,7 @@ fn bench_real_li2() {
 
     let time: f64 = numbers.iter().map(|z| time(|| { z.li2(); })).sum();
 
-    println!("Evaluation of real Li2 {} times took: {}ms", n, time);
+    println!("Evaluation of real Li2 {} times took: {}s", n, time);
 }
 
 
@@ -26,7 +26,7 @@ fn bench_complex_li2() {
 
     let time: f64 = numbers.iter().map(|z| time(|| { z.li2(); })).sum();
 
-    println!("Evaluation of complex Li2 {} times took: {}ms", n, time);
+    println!("Evaluation of complex Li2 {} times took: {}s", n, time);
 }
 
 
@@ -37,7 +37,7 @@ fn bench_complex_li3() {
 
     let time: f64 = numbers.iter().map(|z| time(|| { z.li3(); })).sum();
 
-    println!("Evaluation of complex Li3 {} times took: {}ms", n, time);
+    println!("Evaluation of complex Li3 {} times took: {}s", n, time);
 }
 
 
