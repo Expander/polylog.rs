@@ -23,10 +23,12 @@ pub trait Li3<T> {
 /// ```
 impl Li3<Complex<f64>> for Complex<f64> {
     fn li3(&self) -> Complex<f64> {
-        let pi  = 3.1415926535897932384626433832795;
+        let pi  = 3.141592653589793;
         let pi2 = pi*pi;
         let eps = std::f64::EPSILON;
-        let z3  = 1.2020569031595942853997381615114;
+        let z2  = 1.644934066848226;
+        let z3  = 1.202056903159594;
+        let ine = 0.3678794411714423; // 1/e
         let bf  = [
             1., -3./8., 17./216., -5./576.,
              0.00012962962962962962962962962962963,  0.000081018518518518518518518518518519,
@@ -55,32 +57,29 @@ impl Li3<Complex<f64>> for Complex<f64> {
         if is_close(self, 1., eps) {
             return Complex::new(z3, 0.);
         }
-        if is_close(self, 1., 0.02) {
-            let i    = Complex::i();
-            let ipi  = Complex::new(0., pi);
-            let zm1  = *self - 1.;
-            let lzm1 = zm1.cln();
-            let ceil = if zm1.arg() > 0. { 1. } else { 0. };
-            let cs: [Complex<f64>; 8] = [
-                Complex::new(pi2/6., 0.),
-                (ceil*ipi - lzm1/2. - 1./12.*pow2(3.*i + pi)),
-                (lzm1/2. + 1./36.*(-21. - 18.*(-1. + 2.*ceil)*ipi + 2.*pi2)),
-                (-11./24.*lzm1 + 1./288.*(131. + 132.*(-1. + 2.*ceil)*ipi - 12.*pi2)),
-                (5./12.*lzm1 + 1./720.*(-265. - 300.*(-1. + 2.*ceil)*ipi + 24.*pi2)),
-                (-137./360.*lzm1 + 1./7200.*(2213. + 2740.*(-1. + 2.*ceil)*ipi - 200.*pi2)),
-                (-947./3600. - 7./20.*(-1. + 2.*ceil)*ipi + 7./20.*lzm1 + pi2/42.),
-                (647707./2822400. + 363.*(-1. + 2.*ceil)*ipi/1120. - 363./1120.*lzm1 - pi2/48.),
-            ];
+        if is_close(self, 1., ine) {
+           let u  = self.cln();
+           let u2 = u*u;
+           let u3 = u*u2;
+           let c0 = z3 + z2*u - u3/12.;
+           let c1 = 0.25 * (3.0 - 2.0*(-u).cln());
 
-            return z3 +
-                zm1 * (cs[0] +
-                zm1 * (cs[1] +
-                zm1 * (cs[2] +
-                zm1 * (cs[3] +
-                zm1 * (cs[4] +
-                zm1 * (cs[5] +
-                zm1 * (cs[6] +
-                zm1 * (cs[7]))))))));
+           let cs = [
+              -3.472222222222222e-03, 1.157407407407407e-05,
+              -9.841899722852104e-08, 1.148221634332745e-09,
+              -1.581572499080917e-11, 2.419500979252515e-13,
+              -3.982897776989488e-15
+           ];
+
+           return c0 +
+              u2 * (c1 +
+              u2 * (cs[0] +
+              u2 * (cs[1] +
+              u2 * (cs[2] +
+              u2 * (cs[3] +
+              u2 * (cs[4] +
+              u2 * (cs[5] +
+              u2 * (cs[6]))))))));
         }
         if is_close(self, -1., eps) {
             return Complex::new(-0.75*z3, 0.);

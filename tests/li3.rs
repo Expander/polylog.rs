@@ -58,9 +58,9 @@ fn special_values() {
     use num::Zero;
     let pi  = std::f64::consts::PI;
     let pi2 = pi*pi;
-    let eps = std::f64::EPSILON;
+    let eps = 1e-15;
     let ln2 = 2.0.ln();
-    let z3  = 1.2020569031595942853997381615114;
+    let z3  = 1.202056903159594;
     let phi = 0.5*((5.0).sqrt() + 1.0); // golden ratio
     let zero = Complex::zero();
 
