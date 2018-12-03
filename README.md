@@ -14,7 +14,7 @@ Example
 extern crate num;
 extern crate polylog;
 use num::complex::Complex;
-use polylog::{Li2, Li3};
+use polylog::{Li2, Li3, Li4};
 
 fn main() {
     let x = 1.0;
@@ -22,6 +22,7 @@ fn main() {
     println!("Li2({}) = {}", x, x.li2());
     println!("Li2({}) = {}", z, z.li2());
     println!("Li3({}) = {}", z, z.li3());
+    println!("Li4({}) = {}", z, z.li4());
 }
 ```
 
@@ -30,7 +31,9 @@ Notes
 -----
 
 The implementation of the real dilogarithm has been taken from the
-[ROOT](root.cern.ch) package, licensed under the GNU LGPL.
+[ROOT](root.cern.ch) package, licensed under the GNU LGPL.  The
+original implementation was written by K.S. Kölbig and published in
+the CERNLIB DILOG function C332.
 
 The implementation of the complex dilogarithm has been taken from
 [SPheno](spheno.hepforge.org) and has been translated to Rust.
