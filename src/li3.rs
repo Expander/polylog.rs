@@ -7,7 +7,7 @@ pub trait Li3<T> {
     fn li3(&self) -> T;
 }
 
-/// Returns the trilogarithm of a real number of type `f64`.
+/// Returns the trilogarithm of a complex number of type `Complex<f64>`.
 ///
 /// # Example:
 /// ```
