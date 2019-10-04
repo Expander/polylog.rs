@@ -118,7 +118,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         let rz = self.re;
         let iz = self.im;
-        let az = self.norm();
+        let nz = self.norm_sqr();
 
         // special cases
         if iz == 0. {
@@ -127,21 +127,21 @@ impl Li2<Complex<f64>> for Complex<f64> {
             } else { // rz > 1.
                 return Complex::new(rz.li2(), -pi*rz.ln())
             }
-        } else if az < std::f64::EPSILON {
+        } else if nz < std::f64::EPSILON {
             return *self;
         }
 
         let (cy, cz, jsgn, ipi12) = if rz <= 0.5 {
-            if az > 1. {
+            if nz > 1. {
                 (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
-            } else { // az <= 1.
+            } else { // nz <= 1.
                 (Complex::new(0.,0.), -(1. - self).ln(), 1., 0.)
             }
         } else { // rz > 0.5
-            if az <= (2.0*rz).sqrt() {
+            if nz <= 2.0*rz {
                 let l = -(self).ln();
                 (l * (1. - self).ln(), l, -1., 2.)
-            } else { // az > sqrt(2*rz)
+            } else { // nz > 2.0*rz
                 (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
             }
         };
