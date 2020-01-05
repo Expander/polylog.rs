@@ -89,8 +89,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
             let pi4  = pi2*pi2;
             let lmz  = (-self).cln();
             let lmz2 = pow2(lmz);
-            let lmz4 = pow2(lmz2);
-            (-(1. - 1./self).cln(), 1./360.*(-7.*pi4 - 30.*pi2*lmz2 - 15.*lmz4), -1.)
+            (-(1. - 1./self).cln(), 1./360.*(-7.*pi4 + lmz2*(-30.*pi2 - 15.*lmz2)), -1.)
         };
 
         rest + sgn * (

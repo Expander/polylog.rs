@@ -61,8 +61,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
         if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
             let u  = self.cln();
             let u2 = u*u;
-            let u3 = u*u2;
-            let c0 = z3 + z2*u - u3/12.;
+            let c0 = z3 + u*(z2 - u2/12.);
             let c1 = 0.25 * (3.0 - 2.0*(-u).cln());
 
             let cs = [
