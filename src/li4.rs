@@ -55,7 +55,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
         let lnz = az.ln();
 
         if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
-            let u  = self.cln();
+            let u  = Complex::new(lnz, pz);
             let u2 = u*u;
             let c1 = 1.202056903159594; // zeta(3)
             let c2 = 0.8224670334241132;
@@ -87,7 +87,11 @@ impl Li4<Complex<f64>> for Complex<f64> {
             (-(1. - self).cln(), Complex::new(0.,0.), 1.)
         } else { // az > 1.
             let pi4  = pi2*pi2;
-            let lmz  = (-self).cln();
+            let arg = {
+                let res = pi + pz;
+                if res > pi { res - 2.*pi } else { res }
+            };
+            let lmz = Complex::new(lnz, arg); // (-self).cln()
             let lmz2 = pow2(lmz);
             (-(1. - 1./self).cln(), 1./360.*(-7.*pi4 + lmz2*(-30.*pi2 - 15.*lmz2)), -1.)
         };
