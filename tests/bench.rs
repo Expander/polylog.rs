@@ -3,7 +3,7 @@ extern crate polylog;
 extern crate rand;
 
 use num::complex::Complex;
-use polylog::{Li2, Li3, Li4};
+use polylog::{Li2, Li3, Li4, Li5};
 use rand::Rng;
 use std::time::{Duration, Instant};
 
@@ -49,6 +49,17 @@ fn bench_complex_li4() {
     let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li4()).collect(); });
 
     println!("Evaluation of complex Li4 {} times took: {}s", n, time);
+}
+
+
+#[test]
+fn bench_complex_li5() {
+    let n = 1000000;
+    let numbers = gen_complex_numbers(-10.0, 10.0, n);
+
+    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li5()).collect(); });
+
+    println!("Evaluation of complex Li5 {} times took: {}s", n, time);
 }
 
 
