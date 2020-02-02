@@ -10,43 +10,43 @@ use std::time::{Duration, Instant};
 
 #[test]
 fn bench_real_li2() {
-    let numbers = gen_real_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &f64| z.li2(), String::from("real Li2"), numbers);
+    let sample = gen_real_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &f64| z.li2(), String::from("real Li2"), sample);
 }
 
 
 #[test]
 fn bench_complex_li2() {
-    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &Complex<f64>| z.li2(), String::from("complex Li2"), numbers);
+    let sample = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li2(), String::from("complex Li2"), sample);
 }
 
 
 #[test]
 fn bench_complex_li3() {
-    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &Complex<f64>| z.li3(), String::from("complex Li3"), numbers);
+    let sample = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li3(), String::from("complex Li3"), sample);
 }
 
 
 #[test]
 fn bench_complex_li4() {
-    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &Complex<f64>| z.li4(), String::from("complex Li4"), numbers);
+    let sample = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li4(), String::from("complex Li4"), sample);
 }
 
 
 #[test]
 fn bench_complex_li5() {
-    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &Complex<f64>| z.li5(), String::from("complex Li5"), numbers);
+    let sample = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li5(), String::from("complex Li5"), sample);
 }
 
 
 #[test]
 fn bench_complex_li6() {
-    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
-    bench_fn(|z: &Complex<f64>| z.li6(), String::from("complex Li6"), numbers);
+    let sample = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li6(), String::from("complex Li6"), sample);
 }
 
 
