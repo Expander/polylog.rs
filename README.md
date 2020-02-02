@@ -26,6 +26,7 @@ fn main() {
     println!("Li3({}) = {}", z, z.li3());
     println!("Li4({}) = {}", z, z.li4());
     println!("Li5({}) = {}", z, z.li5());
+    println!("Li6({}) = {}", z, z.li6());
 }
 ```
 
