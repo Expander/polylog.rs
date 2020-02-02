@@ -10,67 +10,43 @@ use std::time::{Duration, Instant};
 
 #[test]
 fn bench_real_li2() {
-    let n = 1000000;
-    let numbers = gen_real_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<f64> = numbers.iter().map(|z| z.li2()).collect(); });
-
-    println!("Evaluation of real Li2 {} times took: {}s", n, time);
+    let numbers = gen_real_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &f64| z.li2(), String::from("real Li2"), numbers);
 }
 
 
 #[test]
 fn bench_complex_li2() {
-    let n = 1000000;
-    let numbers = gen_complex_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li2()).collect(); });
-
-    println!("Evaluation of complex Li2 {} times took: {}s", n, time);
+    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li2(), String::from("complex Li2"), numbers);
 }
 
 
 #[test]
 fn bench_complex_li3() {
-    let n = 1000000;
-    let numbers = gen_complex_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li3()).collect(); });
-
-    println!("Evaluation of complex Li3 {} times took: {}s", n, time);
+    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li3(), String::from("complex Li3"), numbers);
 }
 
 
 #[test]
 fn bench_complex_li4() {
-    let n = 1000000;
-    let numbers = gen_complex_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li4()).collect(); });
-
-    println!("Evaluation of complex Li4 {} times took: {}s", n, time);
+    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li4(), String::from("complex Li4"), numbers);
 }
 
 
 #[test]
 fn bench_complex_li5() {
-    let n = 1000000;
-    let numbers = gen_complex_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li5()).collect(); });
-
-    println!("Evaluation of complex Li5 {} times took: {}s", n, time);
+    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li5(), String::from("complex Li5"), numbers);
 }
 
 
 #[test]
 fn bench_complex_li6() {
-    let n = 1000000;
-    let numbers = gen_complex_numbers(-10.0, 10.0, n);
-
-    let time: f64 = time(|| { let _: Vec<Complex<f64>> = numbers.iter().map(|z| z.li6()).collect(); });
-
-    println!("Evaluation of complex Li6 {} times took: {}s", n, time);
+    let numbers = gen_complex_numbers(-10.0, 10.0, 1000000);
+    bench_fn(|z: &Complex<f64>| z.li6(), String::from("complex Li6"), numbers);
 }
 
 
@@ -106,4 +82,13 @@ fn time<F>(mut f: F) -> f64
     let end = Instant::now();
     let dur = duration_nanos(end.duration_since(start));
     f64::from(dur)
+}
+
+
+fn bench_fn<F, S>(fun: F, name: String, sample: Vec<S>)
+    where F: Fn(&S) -> S
+{
+    let sample_size = sample.len();
+    let time: f64 = time(|| { let _: Vec<S> = sample.iter().map(|z| fun(z)).collect(); });
+    println!("Evaluation of {} {} times took: {}s", name, sample_size, time); 
 }
