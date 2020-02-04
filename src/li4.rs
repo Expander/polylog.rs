@@ -7,22 +7,22 @@ pub trait Li4<T> {
     fn li4(&self) -> T;
 }
 
-/// Returns the fourth order polylogarithm of a complex number of type
-/// `Complex<f64>`.
-///
-/// # Example:
-/// ```
-/// extern crate num;
-/// extern crate polylog;
-/// use num::complex::Complex;
-/// use polylog::Li4;
-///
-/// fn main() {
-///     let z = Complex::new(1.0, 1.0);
-///     println!("Li4({}) = {}", z, z.li4());
-/// }
-/// ```
 impl Li4<Complex<f64>> for Complex<f64> {
+    /// Returns the fourth order polylogarithm of a complex number of type
+    /// `Complex<f64>`.
+    ///
+    /// # Example:
+    /// ```
+    /// extern crate num;
+    /// extern crate polylog;
+    /// use num::complex::Complex;
+    /// use polylog::Li4;
+    ///
+    /// fn main() {
+    ///     let z = Complex::new(1.0, 1.0);
+    ///     println!("Li4({}) = {}", z, z.li4());
+    /// }
+    /// ```
     fn li4(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;

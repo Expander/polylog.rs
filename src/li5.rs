@@ -1,28 +1,28 @@
 use std;
 use num::complex::Complex;
 
-/// Provides the fourth order polylogarithm function `li5()` of a
+/// Provides the fifth order polylogarithm function `li5()` of a
 /// number of type `T`.
 pub trait Li5<T> {
     fn li5(&self) -> T;
 }
 
-/// Returns the fifth order polylogarithm of a complex number of type
-/// `Complex<f64>`.
-///
-/// # Example:
-/// ```
-/// extern crate num;
-/// extern crate polylog;
-/// use num::complex::Complex;
-/// use polylog::Li5;
-///
-/// fn main() {
-///     let z = Complex::new(1.0, 1.0);
-///     println!("Li5({}) = {}", z, z.li5());
-/// }
-/// ```
 impl Li5<Complex<f64>> for Complex<f64> {
+    /// Returns the fifth order polylogarithm of a complex number of type
+    /// `Complex<f64>`.
+    ///
+    /// # Example:
+    /// ```
+    /// extern crate num;
+    /// extern crate polylog;
+    /// use num::complex::Complex;
+    /// use polylog::Li5;
+    ///
+    /// fn main() {
+    ///     let z = Complex::new(1.0, 1.0);
+    ///     println!("Li5({}) = {}", z, z.li5());
+    /// }
+    /// ```
     fn li5(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;

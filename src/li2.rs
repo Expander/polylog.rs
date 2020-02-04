@@ -6,25 +6,25 @@ pub trait Li2<T> {
     fn li2(&self) -> T;
 }
 
-/// Returns the dilogarithm of a real number of type `f64`.
-///
-/// This function has been translated from the
-/// [ROOT](https://root.cern.ch/) package.  Original implementation by
-/// K.S. Kölbig into CERNLIB DILOG function C332, translated to C++ by
-/// R.Brun.
-///
-/// Implemented as a truncated series expansion in terms of Chebyshev
-/// polynomials, see [Yudell L. Luke: Mathematical functions and their
-/// approximations, Academic Press Inc., New York 1975, p.67].
-///
-/// # Example:
-/// ```
-/// use polylog::Li2;
-///
-/// let z = 1.0;
-/// println!("Li2({}) = {}", z, z.li2());
-/// ```
 impl Li2<f64> for f64 {
+    /// Returns the real dilogarithm of a real number of type `f64`.
+    ///
+    /// This function has been translated from the
+    /// [ROOT](https://root.cern.ch/) package.  Original implementation by
+    /// K.S. Kölbig into CERNLIB DILOG function C332, translated to C++ by
+    /// R.Brun.
+    ///
+    /// Implemented as a truncated series expansion in terms of Chebyshev
+    /// polynomials, see [Yudell L. Luke: Mathematical functions and their
+    /// approximations, Academic Press Inc., New York 1975, p.67].
+    ///
+    /// # Example:
+    /// ```
+    /// use polylog::Li2;
+    ///
+    /// let z = 1.0;
+    /// println!("Li2({}) = {}", z, z.li2());
+    /// ```
     fn li2(&self) -> f64 {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
@@ -79,25 +79,25 @@ impl Li2<f64> for f64 {
     }
 }
 
-/// Returns the dilogarithm of a complex number of type
-/// `Complex<f64>`.
-///
-/// This function has been translated from the
-/// [SPheno](https://spheno.hepforge.org/) package.
-///
-/// # Example:
-/// ```
-/// extern crate num;
-/// extern crate polylog;
-/// use num::complex::Complex;
-/// use polylog::Li2;
-///
-/// fn main() {
-///     let z = Complex::new(1.0, 1.0);
-///     println!("Li2({}) = {}", z, z.li2());
-/// }
-/// ```
 impl Li2<Complex<f64>> for Complex<f64> {
+    /// Returns the dilogarithm of a complex number of type
+    /// `Complex<f64>`.
+    ///
+    /// This function has been translated from the
+    /// [SPheno](https://spheno.hepforge.org/) package.
+    ///
+    /// # Example:
+    /// ```
+    /// extern crate num;
+    /// extern crate polylog;
+    /// use num::complex::Complex;
+    /// use polylog::Li2;
+    ///
+    /// fn main() {
+    ///     let z = Complex::new(1.0, 1.0);
+    ///     println!("Li2({}) = {}", z, z.li2());
+    /// }
+    /// ```
     fn li2(&self) -> Complex<f64> {
         let pi = 3.141592653589793;
 

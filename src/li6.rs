@@ -1,28 +1,28 @@
 use std;
 use num::complex::Complex;
 
-/// Provides the fourth order polylogarithm function `li6()` of a
+/// Provides the sixths order polylogarithm function `li6()` of a
 /// number of type `T`.
 pub trait Li6<T> {
     fn li6(&self) -> T;
 }
 
-/// Returns the sixths order polylogarithm of a complex number of type
-/// `Complex<f64>`.
-///
-/// # Example:
-/// ```
-/// extern crate num;
-/// extern crate polylog;
-/// use num::complex::Complex;
-/// use polylog::Li6;
-///
-/// fn main() {
-///     let z = Complex::new(1.0, 1.0);
-///     println!("Li6({}) = {}", z, z.li6());
-/// }
-/// ```
 impl Li6<Complex<f64>> for Complex<f64> {
+    /// Returns the sixths order polylogarithm of a complex number of type
+    /// `Complex<f64>`.
+    ///
+    /// # Example:
+    /// ```
+    /// extern crate num;
+    /// extern crate polylog;
+    /// use num::complex::Complex;
+    /// use polylog::Li6;
+    ///
+    /// fn main() {
+    ///     let z = Complex::new(1.0, 1.0);
+    ///     println!("Li6({}) = {}", z, z.li6());
+    /// }
+    /// ```
     fn li6(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
