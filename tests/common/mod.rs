@@ -1,7 +1,7 @@
 extern crate num;
 use num::complex::Complex;
 use std::fs::File;
-use std::io::{BufReader, BufRead};
+use std::io::{BufReader, BufRead, Error, ErrorKind};
 use std::path::PathBuf;
 
 
@@ -52,16 +52,14 @@ pub fn read_data_file(filename: &str) -> Result<Vec<(Complex<f64>, Complex<f64>)
     let mut vec = Vec::new();
 
     for line in br.lines() {
-        let line = line?;
-        let vals = line
-            .trim()
-            .split("\t")
-            .collect::<Vec<&str>>()
-            .iter()
+        let vals = line?
+            .split_whitespace()
             .map(|s| s.parse::<f64>().unwrap())
             .collect::<Vec<f64>>();
 
-        assert!(vals.len() == 4);
+        if vals.len() != 4 {
+            return Err(Error::new(ErrorKind::UnexpectedEof, "line does not contain 4 real numbers"));
+        }
 
         vec.push((Complex::new(vals[0], vals[1]), Complex::new(vals[2], vals[3])));
     }
