@@ -4,6 +4,18 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use std::path::PathBuf;
 
+#[macro_export]
+macro_rules! assert_eq_float {
+    ($a:expr, $b:expr, $eps:expr) => {
+        assert!(($a - $b).abs() < $eps);
+    }
+}
+
+pub fn assert_eq_complex(a: Complex<f64>, b: Complex<f64>, eps: f64) -> () {
+    assert_eq_float!(a.re, b.re, eps);
+    assert_eq_float!(a.im, b.im, eps);
+}
+
 fn data_path(filename: &str) -> PathBuf {
     let mut path = PathBuf::from(file!());
     path.pop();

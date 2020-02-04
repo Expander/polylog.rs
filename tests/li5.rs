@@ -3,17 +3,8 @@ extern crate num;
 use num::complex::Complex;
 use polylog::Li5;
 mod common;
+use common::assert_eq_complex;
 
-macro_rules! assert_eq_float {
-    ($a:expr, $b:expr, $eps:expr) => {
-        assert!(($a - $b).abs() < $eps);
-    }
-}
-
-fn assert_eq_complex(a: Complex<f64>, b: Complex<f64>, eps: f64) -> () {
-    assert_eq_float!(a.re, b.re, eps);
-    assert_eq_float!(a.im, b.im, eps);
-}
 
 trait CLn<T> {
     fn cln(&self) -> T;
