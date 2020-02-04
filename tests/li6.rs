@@ -6,19 +6,6 @@ mod common;
 use common::assert_eq_complex;
 
 
-trait CLn<T> {
-    fn cln(&self) -> T;
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        Complex::new(
-            if self.re == 0. { 0. } else { self.re },
-            if self.im == 0. { 0. } else { self.im },
-        ).ln()
-    }
-}
-
 #[test]
 fn special_values() {
     use num::Zero;
@@ -34,6 +21,7 @@ fn special_values() {
     assert_eq_complex(Complex::new(0.5, 0.).li6(),
                       Complex::new(0.5040953978039886, 0.), eps);
 }
+
 
 #[test]
 fn test_values() {

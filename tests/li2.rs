@@ -4,25 +4,13 @@ use num::complex::Complex;
 use num::Float;
 use polylog::Li2;
 mod common;
-use common::assert_eq_complex;
+use common::{assert_eq_complex, CLn};
 
-
-trait CLn<T> {
-    fn cln(&self) -> T;
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        Complex::new(
-            if self.re == 0. { 0. } else { self.re },
-            if self.im == 0. { 0. } else { self.im },
-        ).ln()
-    }
-}
 
 fn id1(z: Complex<f64>) -> Complex<f64> {
     z.li2() + (-z).li2() - 0.5*(z*z).li2()
 }
+
 
 fn id2(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < std::f64::EPSILON || z.re < 0. {
@@ -31,6 +19,7 @@ fn id2(z: Complex<f64>) -> Complex<f64> {
         (1.-z).li2() + (1.-1./z).li2() + 0.5*z.cln().powf(2.)
     }
 }
+
 
 fn id3(z: Complex<f64>) -> Complex<f64> {
     let pi = std::f64::consts::PI;
@@ -42,6 +31,7 @@ fn id3(z: Complex<f64>) -> Complex<f64> {
     }
 }
 
+
 fn id4(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < 1e-10 || (z.re + 1.).abs() < 1e-10 || z.re < 0. || z.im < 0. {
         Complex::new(0.,0.)
@@ -51,6 +41,7 @@ fn id4(z: Complex<f64>) -> Complex<f64> {
     }
 }
 
+
 fn id5(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < 1e-10 || (z.re > 0. && z.re < 1.) {
         Complex::new(0.,0.)
@@ -59,6 +50,7 @@ fn id5(z: Complex<f64>) -> Complex<f64> {
         z.li2() + (1./z).li2() + pi.powi(2)/6. + 0.5*(-z).cln().powf(2.)
     }
 }
+
 
 #[test]
 fn special_values() {
@@ -89,6 +81,7 @@ fn special_values() {
                      pi.powf(2.)/10. - ((((5.).sqrt()-1.)/2.).ln()).powf(2.), eps);
 }
 
+
 #[test]
 fn special_value_identities() {
     let pi = std::f64::consts::PI;
@@ -115,6 +108,7 @@ fn special_value_identities() {
                      - 12.*(1./8.).li2() + 6.*(1./64.).li2(),
                      pi.powf(2.), eps);
 }
+
 
 #[test]
 fn identities() {
@@ -151,10 +145,10 @@ fn identities() {
     }
 }
 
+
 #[test]
 fn test_values() {
     let eps = 1e-14;
-
     let values = common::read_data_file("Li2.txt").unwrap();
 
     for &(v, li2) in values.iter() {

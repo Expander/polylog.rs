@@ -4,24 +4,13 @@ use num::complex::Complex;
 use num::Float;
 use polylog::Li3;
 mod common;
-use common::assert_eq_complex;
+use common::{assert_eq_complex, CLn};
 
-trait CLn<T> {
-    fn cln(&self) -> T;
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        Complex::new(
-            if self.re == 0. { 0. } else { self.re },
-            if self.im == 0. { 0. } else { self.im },
-        ).ln()
-    }
-}
 
 fn id1(z: Complex<f64>) -> Complex<f64> {
     z.li3() + (-z).li3() - 0.25*(z*z).li3()
 }
+
 
 fn id2(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < std::f64::EPSILON || (z.re > 0. && z.re < 1.) {
@@ -31,6 +20,7 @@ fn id2(z: Complex<f64>) -> Complex<f64> {
         z.li3() - (1./z).li3() + (-z).cln().powf(3.)/6. + pi*pi/6.*(-z).cln()
     }
 }
+
 
 fn id3(z: Complex<f64>) -> Complex<f64> {
     if (1.0 - z).re.abs() < std::f64::EPSILON || (z.re <= 0. && z.im == 0.) {
@@ -43,6 +33,7 @@ fn id3(z: Complex<f64>) -> Complex<f64> {
             - (z3 + z.cln().powf(3.)/6. + pi*pi/6.*z.cln() - 0.5*z.cln().powf(2.)*(1.-z).cln())
     }
 }
+
 
 #[test]
 fn special_values() {
@@ -66,6 +57,7 @@ fn special_values() {
                       Complex::new(4./5.*z3 + 2./3.*phi.ln().powf(3.) - 2./15.*pi2*phi.ln(), 0.), eps);
 }
 
+
 #[test]
 fn test_values() {
     let eps = 1e-14;
@@ -75,6 +67,7 @@ fn test_values() {
         assert_eq_complex(v.li3(), li3, eps);
     }
 }
+
 
 #[test]
 fn identities() {

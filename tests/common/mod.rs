@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::{BufReader, BufRead};
 use std::path::PathBuf;
 
+
 #[macro_export]
 macro_rules! assert_eq_float {
     ($a:expr, $b:expr, $eps:expr) => {
@@ -11,10 +12,27 @@ macro_rules! assert_eq_float {
     }
 }
 
+
 pub fn assert_eq_complex(a: Complex<f64>, b: Complex<f64>, eps: f64) -> () {
     assert_eq_float!(a.re, b.re, eps);
     assert_eq_float!(a.im, b.im, eps);
 }
+
+
+pub trait CLn<T> {
+    fn cln(&self) -> T;
+}
+
+
+impl CLn<Complex<f64>> for Complex<f64> {
+    fn cln(&self) -> Complex<f64> {
+        Complex::new(
+            if self.re == 0. { 0. } else { self.re },
+            if self.im == 0. { 0. } else { self.im },
+        ).ln()
+    }
+}
+
 
 fn data_path(filename: &str) -> PathBuf {
     let mut path = PathBuf::from(file!());
