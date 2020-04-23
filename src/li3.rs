@@ -85,10 +85,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
         let (u, rest) = if az <= 1. {
             (-(1. - self).cln(), Complex::new(0.,0.))
         } else { // az > 1.
-            let arg = {
-                let res = pi + pz;
-                if res > pi { res - 2.*pi } else { res }
-            };
+            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
             (-(1. - 1./self).cln(), -lmz*(pow2(lmz)/6. + pi2/6.))
         };

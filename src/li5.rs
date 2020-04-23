@@ -85,10 +85,7 @@ impl Li5<Complex<f64>> for Complex<f64> {
             (-(1.0 - self).cln(), Complex::new(0.0, 0.0))
         } else { // az > 1.
             let pi4  = pi2*pi2;
-            let arg = {
-                let res = pi + pz;
-                if res > pi { res - 2.*pi } else { res }
-            };
+            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
             let lmz2 = pow2(lmz);
             (-(1. - 1./self).cln(), -1./360.*lmz*(7.*pi4 + lmz2*(10.*pi2 + 3.*lmz2)))

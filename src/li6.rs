@@ -86,10 +86,7 @@ impl Li6<Complex<f64>> for Complex<f64> {
         } else { // az > 1.
             let pi4 = pi2*pi2;
             let pi6 = pi2*pi4;
-            let arg = {
-                let res = pi + pz;
-                if res > pi { res - 2.*pi } else { res }
-            };
+            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
             let lmz2 = pow2(lmz);
             (-(1. - 1./self).cln(), -31.*pi6/15120. + lmz2*(-7./720.*pi4 + lmz2*(-1./144.*pi2 - 1./720.*lmz2)), -1.)
