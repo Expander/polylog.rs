@@ -51,9 +51,9 @@ impl Li5<Complex<f64>> for Complex<f64> {
             return Complex::new(-15./16.*z5, 0.0);
         }
 
-        let az  = self.norm();
-        let pz  = self.arg();
-        let lnz = az.ln();
+        let nz  = self.re*self.re + self.im*self.im;
+        let pz  = self.im.atan2(self.re);
+        let lnz = 0.5*nz.ln();
 
         if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
             let u  = Complex::new(lnz, pz);
@@ -81,9 +81,9 @@ impl Li5<Complex<f64>> for Complex<f64> {
                 u2 * (cs[5]))))))));
         }
 
-        let (u, rest) = if az <= 1. {
+        let (u, rest) = if nz <= 1.0 {
             (-(1.0 - self).cln(), Complex::new(0.0, 0.0))
-        } else { // az > 1.
+        } else { // nz > 1.0
             let pi4  = pi2*pi2;
             let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
