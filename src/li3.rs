@@ -54,8 +54,8 @@ impl Li3<Complex<f64>> for Complex<f64> {
             return Complex::new((-2.*pi2*ln2 + 4.*ln23 + 21.*z3)/24., 0.);
         }
 
-        let nz  = self.re*self.re + self.im*self.im;
-        let pz  = self.im.atan2(self.re);
+        let nz  = self.norm_sqr();
+        let pz  = self.arg();
         let lnz = 0.5*nz.ln();
 
         if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
@@ -130,6 +130,6 @@ impl CLn<Complex<f64>> for Complex<f64> {
             if self.re == 0. { 0. } else { self.re },
             if self.im == 0. { 0. } else { self.im },
         );
-        Complex::new(0.5*(z.re*z.re + z.im*z.im).ln(), z.im.atan2(z.re))
+        Complex::new(0.5*z.norm_sqr().ln(), z.arg())
     }
 }
