@@ -87,7 +87,7 @@ impl Li5<Complex<f64>> for Complex<f64> {
             let pi4  = pi2*pi2;
             let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
-            let lmz2 = pow2(lmz);
+            let lmz2 = sqr(lmz);
             (-(1. - 1./self).cln(), -1./360.*lmz*(7.*pi4 + lmz2*(10.*pi2 + 3.*lmz2)))
         };
 
@@ -118,7 +118,7 @@ fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
     (a.re - b).abs() < eps && (a.im).abs() < eps
 }
 
-fn pow2(z : Complex<f64>) -> Complex<f64> {
+fn sqr(z : Complex<f64>) -> Complex<f64> {
     z * z
 }
 
@@ -128,9 +128,10 @@ trait CLn<T> {
 
 impl CLn<Complex<f64>> for Complex<f64> {
     fn cln(&self) -> Complex<f64> {
-        Complex::new(
+        let z = Complex::new(
             if self.re == 0. { 0. } else { self.re },
             if self.im == 0. { 0. } else { self.im },
-        ).ln()
+        );
+        Complex::new(0.5*(z.re*z.re + z.im*z.im).ln(), z.im.atan2(z.re))
     }
 }

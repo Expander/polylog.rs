@@ -133,16 +133,16 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         let (cy, cz, jsgn, ipi12) = if rz <= 0.5 {
             if nz > 1. {
-                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
+                (-0.5 * sqr((-self).cln()), -(1. - 1. / self).cln(), -1., -2.)
             } else { // nz <= 1.
-                (Complex::new(0.,0.), -(1. - self).ln(), 1., 0.)
+                (Complex::new(0.,0.), -(1. - self).cln(), 1., 0.)
             }
         } else { // rz > 0.5
             if nz <= 2.0*rz {
-                let l = -(self).ln();
-                (l * (1. - self).ln(), l, -1., 2.)
+                let l = -(self).cln();
+                (l * (1. - self).cln(), l, -1., 2.)
             } else { // nz > 2.0*rz
-                (-0.5 * sqr((-self).ln()), -(1. - 1. / self).ln(), -1., -2.)
+                (-0.5 * sqr((-self).cln()), -(1. - 1. / self).cln(), -1., -2.)
             }
         };
 
@@ -166,3 +166,17 @@ impl Li2<Complex<f64>> for Complex<f64> {
 }
 
 fn sqr(x: Complex<f64>) -> Complex<f64> { x*x }
+
+trait CLn<T> {
+    fn cln(&self) -> T;
+}
+
+impl CLn<Complex<f64>> for Complex<f64> {
+    fn cln(&self) -> Complex<f64> {
+        let z = Complex::new(
+            if self.re == 0. { 0. } else { self.re },
+            if self.im == 0. { 0. } else { self.im },
+        );
+        Complex::new(0.5*(z.re*z.re + z.im*z.im).ln(), z.im.atan2(z.re))
+    }
+}
