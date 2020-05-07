@@ -133,7 +133,8 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         let (cy, cz, jsgn, ipi12) = if rz <= 0.5 {
             if nz > 1. {
-                (-0.5 * sqr((-self).cln()), -(1. - 1. / self).cln(), -1., -2.)
+                let l = (-self).cln();
+                (-0.5 * l * l, -(1. - 1. / self).cln(), -1., -2.)
             } else { // nz <= 1.
                 (Complex::new(0.,0.), -(1. - self).cln(), 1., 0.)
             }
@@ -142,12 +143,13 @@ impl Li2<Complex<f64>> for Complex<f64> {
                 let l = -(self).cln();
                 (l * (1. - self).cln(), l, -1., 2.)
             } else { // nz > 2.0*rz
-                (-0.5 * sqr((-self).cln()), -(1. - 1. / self).cln(), -1., -2.)
+                let l = (-self).cln();
+                (-0.5 * l * l, -(1. - 1. / self).cln(), -1., -2.)
             }
         };
 
         // the dilogarithm
-        let cz2 = sqr(cz);
+        let cz2 = cz*cz;
         let sum =
             cz +
             cz2 * (bf[0] +
@@ -164,8 +166,6 @@ impl Li2<Complex<f64>> for Complex<f64> {
         jsgn * sum + cy + ipi12 * pi * pi / 12.
     }
 }
-
-fn sqr(x: Complex<f64>) -> Complex<f64> { x*x }
 
 trait CLn<T> {
     fn cln(&self) -> T;

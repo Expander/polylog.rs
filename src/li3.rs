@@ -87,7 +87,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
         } else { // nz > 1.0
             let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
-            (-(1. - 1./self).cln(), -lmz*(sqr(lmz)/6. + pi2/6.))
+            (-(1. - 1./self).cln(), -lmz*(lmz*lmz/6. + pi2/6.))
         };
 
         rest +
@@ -114,10 +114,6 @@ impl Li3<Complex<f64>> for Complex<f64> {
 
 fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
     (a.re - b).abs() < eps && (a.im).abs() < eps
-}
-
-fn sqr(z : Complex<f64>) -> Complex<f64> {
-    z * z
 }
 
 trait CLn<T> {
