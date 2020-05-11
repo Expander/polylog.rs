@@ -1,4 +1,3 @@
-use std;
 use num::complex::Complex;
 
 /// Provides the fourth order polylogarithm function `li4()` of a
@@ -26,7 +25,6 @@ impl Li4<Complex<f64>> for Complex<f64> {
     fn li4(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
-        let eps = std::f64::EPSILON;
         let z4  = 1.082323233711138;
         let bf  = [
             1., -7./16.,
@@ -40,14 +38,16 @@ impl Li4<Complex<f64>> for Complex<f64> {
             2.364757116861825e-14, -7.923135122031161e-15,
         ];
 
-        if is_close(self, 0., eps) {
-            return Complex::new(0., 0.);
-        }
-        if is_close(self, 1., eps) {
-            return Complex::new(z4, 0.);
-        }
-        if is_close(self, -1., eps) {
-            return Complex::new(-7./8.*z4, 0.);
+        if self.im == 0.0 {
+            if self.re == 0.0 {
+                return Complex::new(0., 0.);
+            }
+            if self.re == 1.0 {
+                return Complex::new(z4, 0.);
+            }
+            if self.re == -1.0 {
+                return Complex::new(-7./8.*z4, 0.);
+            }
         }
 
         let nz  = self.norm_sqr();
@@ -114,10 +114,6 @@ impl Li4<Complex<f64>> for Complex<f64> {
             u * (bf[17]))))))))))))))))))
         )
     }
-}
-
-fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
-    (a.re - b).abs() < eps && (a.im).abs() < eps
 }
 
 trait CLn<T> {

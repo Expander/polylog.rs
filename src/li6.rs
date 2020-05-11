@@ -1,4 +1,3 @@
-use std;
 use num::complex::Complex;
 
 /// Provides the sixths order polylogarithm function `li6()` of a
@@ -26,7 +25,6 @@ impl Li6<Complex<f64>> for Complex<f64> {
     fn li6(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
-        let eps = std::f64::EPSILON;
         let z6  = 1.017343061984449; // zeta(6)
         let bf  = [
             1.                   , -31./64.              ,
@@ -40,14 +38,16 @@ impl Li6<Complex<f64>> for Complex<f64> {
            -6.840881171901169e-15,  4.869117846200558e-15
         ];
 
-        if is_close(self, 0.0, eps) {
-            return Complex::new(0.0, 0.0);
-        }
-        if is_close(self, 1.0, eps) {
-            return Complex::new(z6, 0.0);
-        }
-        if is_close(self, -1.0, eps) {
-            return Complex::new(-31./32.*z6, 0.0);
+        if self.im == 0.0 {
+            if self.re == 0.0 {
+                return Complex::new(0., 0.);
+            }
+            if self.re == 1.0 {
+                return Complex::new(z6, 0.);
+            }
+            if self.re == -1.0 {
+                return Complex::new(-31./32.*z6, 0.0);
+            }
         }
 
         let nz  = self.norm_sqr();
@@ -112,10 +112,6 @@ impl Li6<Complex<f64>> for Complex<f64> {
             u * (bf[16] +
             u * (bf[17])))))))))))))))))))
     }
-}
-
-fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
-    (a.re - b).abs() < eps && (a.im).abs() < eps
 }
 
 trait CLn<T> {

@@ -1,4 +1,3 @@
-use std;
 use num::complex::Complex;
 
 /// Provides the trilogarithm function `li3()` of a number of type
@@ -25,7 +24,6 @@ impl Li3<Complex<f64>> for Complex<f64> {
     fn li3(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
-        let eps = std::f64::EPSILON;
         let z2  = 1.644934066848226;
         let z3  = 1.202056903159594;
         let bf  = [
@@ -39,19 +37,21 @@ impl Li3<Complex<f64>> for Complex<f64> {
             3.104357887965462e-14,  5.261758629912506e-15,
         ];
 
-        if is_close(self, 0., eps) {
-            return Complex::new(0., 0.);
-        }
-        if is_close(self, 1., eps) {
-            return Complex::new(z3, 0.);
-        }
-        if is_close(self, -1., eps) {
-            return Complex::new(-0.75*z3, 0.);
-        }
-        if is_close(self, 0.5, eps) {
-            let ln2  = 0.6931471805599453; // ln(2)
-            let ln23 = 0.3330246519889295; // ln(2)^3
-            return Complex::new((-2.*pi2*ln2 + 4.*ln23 + 21.*z3)/24., 0.);
+        if self.im == 0.0 {
+            if self.re == 0.0 {
+                return Complex::new(0., 0.);
+            }
+            if self.re == 1.0 {
+                return Complex::new(z3, 0.);
+            }
+            if self.re == -1.0 {
+                return Complex::new(-0.75*z3, 0.);
+            }
+            if self.re == 0.5 {
+                let ln2  = 0.6931471805599453; // ln(2)
+                let ln23 = 0.3330246519889295; // ln(2)^3
+                return Complex::new((-2.*pi2*ln2 + 4.*ln23 + 21.*z3)/24., 0.);
+            }
         }
 
         let nz  = self.norm_sqr();
@@ -110,10 +110,6 @@ impl Li3<Complex<f64>> for Complex<f64> {
         u * (bf[16] +
         u * (bf[17]))))))))))))))))))
     }
-}
-
-fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
-    (a.re - b).abs() < eps && (a.im).abs() < eps
 }
 
 trait CLn<T> {

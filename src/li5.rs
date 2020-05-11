@@ -1,4 +1,3 @@
-use std;
 use num::complex::Complex;
 
 /// Provides the fifth order polylogarithm function `li5()` of a
@@ -26,7 +25,6 @@ impl Li5<Complex<f64>> for Complex<f64> {
     fn li5(&self) -> Complex<f64> {
         let pi  = 3.141592653589793;
         let pi2 = pi*pi;
-        let eps = std::f64::EPSILON;
         let z5  = 1.036927755143370; // zeta(5)
         let bf  = [
             1.                   , -15./32.              ,
@@ -41,14 +39,16 @@ impl Li5<Complex<f64>> for Complex<f64> {
             1.090354540133339e-15
         ];
 
-        if is_close(self, 0.0, eps) {
-            return Complex::new(0.0, 0.0);
-        }
-        if is_close(self, 1.0, eps) {
-            return Complex::new(z5, 0.0);
-        }
-        if is_close(self, -1.0, eps) {
-            return Complex::new(-15./16.*z5, 0.0);
+        if self.im == 0.0 {
+            if self.re == 0.0 {
+                return Complex::new(0., 0.);
+            }
+            if self.re == 1.0 {
+                return Complex::new(z5, 0.);
+            }
+            if self.re == -1.0 {
+                return Complex::new(-15./16.*z5, 0.0);
+            }
         }
 
         let nz  = self.norm_sqr();
@@ -112,10 +112,6 @@ impl Li5<Complex<f64>> for Complex<f64> {
             u * (bf[17] +
             u * (bf[18])))))))))))))))))))
     }
-}
-
-fn is_close(a : &Complex<f64>, b : f64, eps : f64) -> bool {
-    (a.re - b).abs() < eps && (a.im).abs() < eps
 }
 
 trait CLn<T> {

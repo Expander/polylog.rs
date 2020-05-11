@@ -72,7 +72,7 @@ fn test_values() {
 #[test]
 fn identities() {
     use num::Zero;
-    let eps = 1e-14;
+    let eps = 1e-9;
     let zero = Complex::zero();
     let values = common::read_data_file("Li3.txt").unwrap();
 
