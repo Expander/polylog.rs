@@ -10,4 +10,6 @@ repository = "https://github.com/Expander/polylog"
 
 [dependencies]
 num = "0.2"
+
+[dev-dependencies]
 rand = "0.7"
