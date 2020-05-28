@@ -131,20 +131,20 @@ impl Li2<Complex<f64>> for Complex<f64> {
             return *self;
         }
 
-        let (cy, cz, jsgn, ipi12) = if rz <= 0.5 {
+        let (cy, cz, sgn) = if rz <= 0.5 {
             if nz > 1. {
                 let l = (-self).cln();
-                (-0.5 * l * l, -(1. - 1. / self).cln(), -1., -2.)
+                (-0.5 * l * l - pi * pi / 6., -(1. - 1. / self).cln(), -1.)
             } else { // nz <= 1.
-                (Complex::new(0.,0.), -(1. - self).cln(), 1., 0.)
+                (Complex::new(0.,0.), -(1. - self).cln(), 1.)
             }
         } else { // rz > 0.5
             if nz <= 2.0*rz {
                 let l = -(self).cln();
-                (l * (1. - self).cln(), l, -1., 2.)
+                (l * (1. - self).cln() + pi * pi / 6., l, -1.)
             } else { // nz > 2.0*rz
                 let l = (-self).cln();
-                (-0.5 * l * l, -(1. - 1. / self).cln(), -1., -2.)
+                (-0.5 * l * l - pi * pi / 6., -(1. - 1. / self).cln(), -1.)
             }
         };
 
@@ -163,7 +163,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
             cz2 * (bf[8] +
             cz2 * (bf[9]))))))))));
 
-        jsgn * sum + cy + ipi12 * pi * pi / 12.
+        sgn * sum + cy
     }
 }
 
