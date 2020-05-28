@@ -92,25 +92,18 @@ impl Li6<Complex<f64>> for Complex<f64> {
             (-(1. - 1./self).cln(), -31.*pi6/15120. + lmz2*(-7./720.*pi4 + lmz2*(-1./144.*pi2 - 1./720.*lmz2)), -1.)
         };
 
+        let u2 = u*u;
+        let u4 = u2*u2;
+        let u8 = u4*u4;
+
         rest + sgn * (
-            u * (bf[0] +
-            u * (bf[1] +
-            u * (bf[2] +
-            u * (bf[3] +
-            u * (bf[4] +
-            u * (bf[5] +
-            u * (bf[6] +
-            u * (bf[7] +
-            u * (bf[8] +
-            u * (bf[9] +
-            u * (bf[10] +
-            u * (bf[11] +
-            u * (bf[12] +
-            u * (bf[13] +
-            u * (bf[14] +
-            u * (bf[15] +
-            u * (bf[16] +
-            u * (bf[17])))))))))))))))))))
+           u*bf[0] +
+           u2*(bf[1] + u*bf[2]) +
+           u4*(bf[3] + u*bf[4] + u2*(bf[5] + u*bf[6])) +
+           u8*(bf[7] + u*bf[8] + u2*(bf[9] + u*bf[10]) +
+               u4*(bf[11] + u*bf[12] + u2*(bf[13] + u*bf[14]))) +
+           u8*u8*(bf[15] + u*bf[16] + u2*bf[17])
+        )
     }
 }
 
