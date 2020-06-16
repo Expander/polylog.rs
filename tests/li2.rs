@@ -16,7 +16,7 @@ fn id2(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < std::f64::EPSILON || z.re < 0. {
         Complex::new(0.,0.)
     } else {
-        (1.-z).li2() + (1.-1./z).li2() + 0.5*z.cln().powf(2.)
+        (1.-z).li2() + (1.-1./z).li2() + 0.5*z.cln().powi(2)
     }
 }
 
@@ -27,7 +27,7 @@ fn id3(z: Complex<f64>) -> Complex<f64> {
     if z.norm() < 1e-10 || (z.re - 1.).abs() < 1e-10 {
         Complex::new(0.,0.)
     } else {
-        z.li2() + (1.-z).li2() - pi.powf(2.)/6. + z.cln()*(1.-z).cln()
+        z.li2() + (1.-z).li2() - pi.powi(2)/6. + z.cln()*(1.-z).cln()
     }
 }
 
@@ -37,7 +37,7 @@ fn id4(z: Complex<f64>) -> Complex<f64> {
         Complex::new(0.,0.)
     } else {
         let pi = std::f64::consts::PI;
-        (-z).li2() - (1.-z).li2() + 0.5*(1.-z*z).li2() + pi.powf(2.)/12. + z.cln()*(1.+z).cln()
+        (-z).li2() - (1.-z).li2() + 0.5*(1.-z*z).li2() + pi.powi(2)/12. + z.cln()*(1.+z).cln()
     }
 }
 
@@ -47,7 +47,7 @@ fn id5(z: Complex<f64>) -> Complex<f64> {
         Complex::new(0.,0.)
     } else {
         let pi = std::f64::consts::PI;
-        z.li2() + (1./z).li2() + pi.powi(2)/6. + 0.5*(-z).cln().powf(2.)
+        z.li2() + (1./z).li2() + pi.powi(2)/6. + 0.5*(-z).cln().powi(2)
     }
 }
 
@@ -57,28 +57,28 @@ fn special_values() {
     let pi = std::f64::consts::PI;
     let eps = 1e-15;
 
-    assert_eq_float!((-1.).li2(), -pi.powf(2.)/12., eps);
+    assert_eq_float!((-1.).li2(), -pi.powi(2)/12., eps);
 
     assert_eq_float!((0.).li2(), 0., eps);
 
-    assert_eq_float!((0.5).li2(), pi.powf(2.)/12. - 0.5*(2.0.ln()).powf(2.), eps);
+    assert_eq_float!((0.5).li2(), pi.powi(2)/12. - 0.5*(2.0.ln()).powi(2), eps);
 
-    assert_eq_float!((1.).li2(), pi.powf(2.)/6., eps);
+    assert_eq_float!((1.).li2(), pi.powi(2)/6., eps);
 
     assert_eq_complex(Complex::new(2.,0.).li2(),
-                      Complex::new(pi.powf(2.)/4.,0.) - Complex::i()*pi*(2.).ln(), eps);
+                      Complex::new(pi.powi(2)/4.,0.) - Complex::i()*pi*(2.).ln(), eps);
 
     assert_eq_float!((-((5.).sqrt()-1.)/2.).li2(),
-                     -pi.powf(2.)/15. + 0.5*((((5.).sqrt()-1.)/2.).ln()).powf(2.), eps);
+                     -pi.powi(2)/15. + 0.5*((((5.).sqrt()-1.)/2.).ln()).powi(2), eps);
 
     assert_eq_float!((-((5.).sqrt()+1.)/2.).li2(),
-                     -pi.powf(2.)/10. - ((((5.).sqrt()+1.)/2.).ln()).powf(2.), eps);
+                     -pi.powi(2)/10. - ((((5.).sqrt()+1.)/2.).ln()).powi(2), eps);
 
     assert_eq_float!(((3.-(5.).sqrt())/2.).li2(),
-                     pi.powf(2.)/15. - ((((5.).sqrt()-1.)/2.).ln()).powf(2.), eps);
+                     pi.powi(2)/15. - ((((5.).sqrt()-1.)/2.).ln()).powi(2), eps);
 
     assert_eq_float!((((5.).sqrt()-1.)/2.).li2(),
-                     pi.powf(2.)/10. - ((((5.).sqrt()-1.)/2.).ln()).powf(2.), eps);
+                     pi.powi(2)/10. - ((((5.).sqrt()-1.)/2.).ln()).powi(2), eps);
 }
 
 
@@ -88,25 +88,25 @@ fn special_value_identities() {
     let eps = 1e-14;
 
     assert_eq_float!((1./3.).li2() - (1./9.).li2()/6.,
-                     pi.powf(2.)/18. - ((3.).ln()).powf(2.)/6., eps);
+                     pi.powi(2)/18. - ((3.).ln()).powi(2)/6., eps);
 
     assert_eq_float!((-0.5).li2() + (1./9.).li2()/6.,
-                     -pi.powf(2.)/18. + (2.).ln()*(3.).ln()
-                     - ((2.).ln()).powf(2.)/2. - ((3.).ln()).powf(2.)/3., eps);
+                     -pi.powi(2)/18. + (2.).ln()*(3.).ln()
+                     - ((2.).ln()).powi(2)/2. - ((3.).ln()).powi(2)/3., eps);
 
     assert_eq_float!((0.25).li2() + (1./9.).li2()/3.,
-                     pi.powf(2.)/18. + 2.*(2.).ln()*(3.).ln()
-                     - 2.*((2.).ln()).powf(2.) - 2.*((3.).ln()).powf(2.)/3., eps);
+                     pi.powi(2)/18. + 2.*(2.).ln()*(3.).ln()
+                     - 2.*((2.).ln()).powi(2) - 2.*((3.).ln()).powi(2)/3., eps);
 
     assert_eq_float!((-1./3.).li2() - (1./9.).li2()/3.,
-                     -pi.powf(2.)/18. + ((3.).ln()).powf(2.)/6., eps);
+                     -pi.powi(2)/18. + ((3.).ln()).powi(2)/6., eps);
 
     assert_eq_float!((-1./8.).li2() + (1./9.).li2(),
-                     - 0.5*((9./8.).ln()).powf(2.), eps);
+                     - 0.5*((9./8.).ln()).powi(2), eps);
 
     assert_eq_float!(36.*(0.5).li2() - 36.*(0.25).li2()
                      - 12.*(1./8.).li2() + 6.*(1./64.).li2(),
-                     pi.powf(2.), eps);
+                     pi.powi(2), eps);
 }
 
 
@@ -131,7 +131,7 @@ fn identities() {
         Complex::new(((5.).sqrt() + 1.)/2.,0.),
         Complex::new(((5.).sqrt() + 3.)/2.,0.),
         omega,
-        omega.powf(2.),
+        omega.powi(2),
         1. + omega,
         1./(1. + omega),
     ];

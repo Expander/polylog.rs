@@ -17,7 +17,7 @@ fn id2(z: Complex<f64>) -> Complex<f64> {
         Complex::new(0.,0.)
     } else {
         let pi = std::f64::consts::PI;
-        z.li3() - (1./z).li3() + (-z).cln().powf(3.)/6. + pi*pi/6.*(-z).cln()
+        z.li3() - (1./z).li3() + (-z).cln().powi(3)/6. + pi*pi/6.*(-z).cln()
     }
 }
 
@@ -30,7 +30,7 @@ fn id3(z: Complex<f64>) -> Complex<f64> {
         let z3 = 1.202056903159594;
 
         z.li3() + (1.-z).li3() + (1.-1./z).li3()
-            - (z3 + z.cln().powf(3.)/6. + pi*pi/6.*z.cln() - 0.5*z.cln().powf(2.)*(1.-z).cln())
+            - (z3 + z.cln().powi(3)/6. + pi*pi/6.*z.cln() - 0.5*z.cln().powi(2)*(1.-z).cln())
     }
 }
 
@@ -52,9 +52,9 @@ fn special_values() {
     assert_eq_complex(Complex::new(-1., 0.).li3(),
                       Complex::new(-3./4.*z3, 0.), eps);
     assert_eq_complex(Complex::new(0.5, 0.).li3(),
-                      Complex::new(ln2.powf(3.)/6. - pi2/12.*ln2 + 7./8.*z3, 0.), eps);
+                      Complex::new(ln2.powi(3)/6. - pi2/12.*ln2 + 7./8.*z3, 0.), eps);
     assert_eq_complex(Complex::new(1./(phi*phi), 0.).li3(),
-                      Complex::new(4./5.*z3 + 2./3.*phi.ln().powf(3.) - 2./15.*pi2*phi.ln(), 0.), eps);
+                      Complex::new(4./5.*z3 + 2./3.*phi.ln().powi(3) - 2./15.*pi2*phi.ln(), 0.), eps);
 }
 
 
