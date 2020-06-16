@@ -2,6 +2,7 @@ Polylog
 =======
 
 [![Build Status](https://travis-ci.org/Expander/polylog.svg?branch=master)](https://travis-ci.org/Expander/polylog)
+[![Documentation](https://docs.rs/polylog/badge.svg)](https://docs.rs/polylog/)
 
 The Polylog package provides Rust implementations of real and complex
 polylogarithms.
