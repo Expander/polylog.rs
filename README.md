@@ -34,13 +34,9 @@ fn main() {
 Notes
 -----
 
-The implementation of the real dilogarithm has been taken from the
-[ROOT](root.cern.ch) package, licensed under the GNU LGPL.  The
-original implementation was written by K.S. Kölbig and published in
-the CERNLIB DILOG function C332.
-
-The implementation of the complex dilogarithm has been taken from
-[SPheno](spheno.hepforge.org) and has been translated to Rust.
+The implementation of the complex dilogarithm has been inspired by the
+implementation in [SPheno](spheno.hepforge.org) and has been
+translated to Rust.
 
 
 Copying

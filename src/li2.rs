@@ -9,14 +9,8 @@ pub trait Li2<T> {
 impl Li2<f64> for f64 {
     /// Returns the real dilogarithm of a real number of type `f64`.
     ///
-    /// This function has been translated from the
-    /// [ROOT](https://root.cern.ch/) package.  Original implementation by
-    /// K.S. Kölbig into CERNLIB DILOG function C332, translated to C++ by
-    /// R.Brun.
-    ///
-    /// Implemented as a truncated series expansion in terms of Chebyshev
-    /// polynomials, see [Yudell L. Luke: Mathematical functions and their
-    /// approximations, Academic Press Inc., New York 1975, p.67].
+    /// Implemented as an economized Pade approximation with a maximum
+    /// error of 4.16e-18.
     ///
     /// # Example:
     /// ```
@@ -26,56 +20,60 @@ impl Li2<f64> for f64 {
     /// println!("Li2({}) = {}", z, z.li2());
     /// ```
     fn li2(&self) -> f64 {
-        let pi  = 3.141592653589793;
-        let pi2 = pi*pi;
-        let pi3 = pi2/3.;
-        let pi6 = pi2/6.;
-        let coeffs = [           0.42996693560813697, 0.40975987533077106,
-           -0.01858843665014592, 0.00145751084062268,-0.00014304184442340,
-            0.00001588415541880,-0.00000190784959387, 0.00000024195180854,
-           -0.00000003193341274, 0.00000000434545063,-0.00000000060578480,
-            0.00000000008612098,-0.00000000001244332, 0.00000000000182256,
-           -0.00000000000027007, 0.00000000000004042,-0.00000000000000610,
-            0.00000000000000093,-0.00000000000000014, 0.00000000000000002];
+        let pi = 3.141592653589793;
+        let cp = [
+            1.0706105563309304277e+0,
+           -4.5353562730201404017e+0,
+            7.4819657596286408905e+0,
+           -6.0516124315132409155e+0,
+            2.4733515209909815443e+0,
+           -4.6937565143754629578e-1,
+            3.1608910440687221695e-2,
+           -2.4630612614645039828e-4
+        ];
+        let cq = [
+            1.0000000000000000000e+0,
+           -4.5355682121856044935e+0,
+            8.1790029773247428573e+0,
+           -7.4634190853767468810e+0,
+            3.6245392503925290187e+0,
+           -8.9936784740041174897e-1,
+            9.8554565816757007266e-2,
+           -3.2116618742475189569e-3
+        ];
 
-        if *self == 1.0 {
-            pi6
-        } else if *self == -1.0 {
-            -pi2/12.
+        let x = *self;
+
+        // transform to [0, 1/2)
+        let (y, r, s) = if x < -1. {
+            let l = (1. - x).ln();
+            (1./(1. - x), -pi*pi/6. + l*(0.5*l - (-x).ln()), 1.)
+        } else if x == -1. {
+            return -pi*pi/12.;
+        } else if x < 0. {
+            let l = (-x).ln_1p();
+            (x/(x - 1.), -0.5*l*l, -1.)
+        } else if x == 0. {
+            return 0.;
+        } else if x < 0.5 {
+            (x, 0., 1.)
+        } else if x < 1. {
+            (1. - x, pi*pi/6. - x.ln()*(1. - x).ln(), -1.)
+        } else if x == 1. {
+            return pi*pi/6.;
+        } else if x < 2. {
+            let l = x.ln();
+            (1. - 1./x, pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l), 1.)
         } else {
-            let t = -*self;
-            let (y, s, a) = if t <= -2.0 {
-                let b1 = (-t).ln();
-                let b2 = (1.0 + 1.0/t).ln();
-                (-1.0/(1.0 + t), 1.0, -pi3 + 0.5*(b1*b1 - b2*b2))
-            } else if t < -1.0 {
-                let a = (-t).ln();
-                (-1.0 - t, -1.0, -pi6 + a*(a + (1.0 + 1.0/t).ln()))
-            } else if t <= -0.5 {
-                let a = (-t).ln();
-                (-(1.0 + t)/t, 1.0, -pi6 + a*(-0.5*a + (1.0 + t).ln()))
-            } else if t < 0.0 {
-                let b1 = (1.0 + t).ln();
-                (-t/(1.0 + t), -1.0, 0.5*b1*b1)
-            } else if t <= 1.0 {
-                (t, 1.0, 0.)
-            } else {
-                let b1 = t.ln();
-                (1.0/t, -1.0, pi6 + 0.5*b1*b1)
-            };
+            let l = x.ln();
+            (1./x, pi*pi/3. - 0.5*l*l, -1.)
+        };
 
-            let h      = y+y - 1.0;
-            let alfa   = h+h;
-            let mut b0 = 0.0;
-            let mut b1 = 0.0;
-            let mut b2 = 0.0;
-            for c in coeffs.iter().rev() {
-                b0 = c + alfa*b1 - b2;
-                b2 = b1;
-                b1 = b0;
-            }
-            -(s*(b0 - h*b2) + a)
-        }
+        let z = y - 0.25;
+        let p = horner(z, &cp);
+        let q = horner(z, &cq);
+
+        r + s*y*p/q
     }
 }
 
@@ -177,4 +175,13 @@ impl CLn<Complex<f64>> for Complex<f64> {
         );
         Complex::new(0.5*z.norm_sqr().ln(), z.arg())
     }
+}
+
+/// evaluation of polynomial P(x) with coefficients `coeffs`
+fn horner(x: f64, coeffs: &[f64]) -> f64 {
+    let mut p = 0.;
+    for c in coeffs.iter().rev() {
+        p = p*x + c;
+    }
+    p
 }
