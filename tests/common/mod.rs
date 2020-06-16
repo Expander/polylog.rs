@@ -8,7 +8,10 @@ use std::path::PathBuf;
 #[macro_export]
 macro_rules! assert_eq_float {
     ($a:expr, $b:expr, $eps:expr) => {
-        assert!(($a - $b).abs() < $eps);
+        if ($a - $b).abs() >= $eps {
+            println!("Numbers differ by more than {}: {} != {}", $eps, $a, $b);
+            assert!(false);
+        }
     }
 }
 
