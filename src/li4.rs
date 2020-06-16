@@ -23,7 +23,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
     /// }
     /// ```
     fn li4(&self) -> Complex<f64> {
-        let pi  = 3.141592653589793;
+        let pi  = std::f64::consts::PI;
         let pi2 = pi*pi;
         let z4  = 1.082323233711138;
         let bf  = [

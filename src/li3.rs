@@ -22,7 +22,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
     /// }
     /// ```
     fn li3(&self) -> Complex<f64> {
-        let pi  = 3.141592653589793;
+        let pi  = std::f64::consts::PI;
         let pi2 = pi*pi;
         let z2  = 1.644934066848226;
         let z3  = 1.202056903159594;

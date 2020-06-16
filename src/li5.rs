@@ -23,7 +23,7 @@ impl Li5<Complex<f64>> for Complex<f64> {
     /// }
     /// ```
     fn li5(&self) -> Complex<f64> {
-        let pi  = 3.141592653589793;
+        let pi  = std::f64::consts::PI;
         let pi2 = pi*pi;
         let z5  = 1.036927755143370; // zeta(5)
         let bf  = [

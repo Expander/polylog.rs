@@ -23,7 +23,7 @@ impl Li6<Complex<f64>> for Complex<f64> {
     /// }
     /// ```
     fn li6(&self) -> Complex<f64> {
-        let pi  = 3.141592653589793;
+        let pi  = std::f64::consts::PI;
         let pi2 = pi*pi;
         let z6  = 1.017343061984449; // zeta(6)
         let bf  = [
