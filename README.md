@@ -36,7 +36,7 @@ Notes
 -----
 
 The implementation of the complex dilogarithm has been inspired by the
-implementation in [SPheno](spheno.hepforge.org) and has been
+implementation in [SPheno](https://spheno.hepforge.org) and has been
 translated to Rust.
 
 
