@@ -1,4 +1,5 @@
 use num::complex::Complex;
+use cln::CLn;
 
 /// Provides the sixths order polylogarithm function `li6()` of a
 /// number of type `T`.
@@ -104,19 +105,5 @@ impl Li6<Complex<f64>> for Complex<f64> {
                u4*(bf[11] + u*bf[12] + u2*(bf[13] + u*bf[14]))) +
            u8*u8*(bf[15] + u*bf[16] + u2*bf[17])
         )
-    }
-}
-
-trait CLn<T> {
-    fn cln(&self) -> T;
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        let z = Complex::new(
-            if self.re == 0. { 0. } else { self.re },
-            if self.im == 0. { 0. } else { self.im },
-        );
-        Complex::new(0.5*z.norm_sqr().ln(), z.arg())
     }
 }

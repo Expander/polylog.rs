@@ -1,5 +1,6 @@
 use std;
 use num::complex::Complex;
+use cln::CLn;
 
 /// Provides the dilogarithm function `li2()` of a number of type `T`.
 pub trait Li2<T> {
@@ -160,20 +161,6 @@ impl Li2<Complex<f64>> for Complex<f64> {
             )));
 
         sgn * sum + cy
-    }
-}
-
-trait CLn<T> {
-    fn cln(&self) -> T;
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        let z = Complex::new(
-            if self.re == 0. { 0. } else { self.re },
-            if self.im == 0. { 0. } else { self.im },
-        );
-        Complex::new(0.5*z.norm_sqr().ln(), z.arg())
     }
 }
 

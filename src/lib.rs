@@ -26,6 +26,7 @@
 
 extern crate num;
 
+mod cln;
 mod li2;
 mod li3;
 mod li4;
