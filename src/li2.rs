@@ -165,9 +165,5 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
 /// evaluation of polynomial P(x) with coefficients `coeffs`
 fn horner(x: f64, coeffs: &[f64]) -> f64 {
-    let mut p = 0.;
-    for c in coeffs.iter().rev() {
-        p = p*x + c;
-    }
-    p
+    coeffs.iter().rev().fold(0., |p, c| p*x + c)
 }
