@@ -116,7 +116,6 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         let rz = self.re;
         let iz = self.im;
-        let nz = self.norm_sqr();
 
         // special cases
         if iz == 0. {
@@ -125,41 +124,45 @@ impl Li2<Complex<f64>> for Complex<f64> {
             } else { // rz > 1.
                 return Complex::new(rz.li2(), -pi*rz.ln())
             }
-        } else if nz < std::f64::EPSILON {
+        }
+
+        let nz = self.norm_sqr();
+
+        if nz < std::f64::EPSILON {
             return *self;
         }
 
-        let (cy, cz, sgn) = if rz <= 0.5 {
+        let (u, rest, sgn) = if rz <= 0.5 {
             if nz > 1. {
                 let l = (-self).cln();
-                (-0.5 * l * l - pi * pi / 6., -(1. - 1. / self).cln(), -1.)
+                (-(1. - 1. / self).cln(), -0.5 * l * l - pi * pi / 6., -1.)
             } else { // nz <= 1.
-                (Complex::new(0.,0.), -(1. - self).cln(), 1.)
+                (-(1. - self).cln(), Complex::new(0.,0.), 1.)
             }
         } else { // rz > 0.5
             if nz <= 2.0*rz {
                 let l = -(self).cln();
-                (l * (1. - self).cln() + pi * pi / 6., l, -1.)
+                (l, l * (1. - self).cln() + pi * pi / 6., -1.)
             } else { // nz > 2.0*rz
                 let l = (-self).cln();
-                (-0.5 * l * l - pi * pi / 6., -(1. - 1. / self).cln(), -1.)
+                (-(1. - 1. / self).cln(), -0.5 * l * l - pi * pi / 6., -1.)
             }
         };
 
-        let cz2 = cz*cz;
-        let cz4 = cz2*cz2;
+        let u2 = u*u;
+        let u4 = u2*u2;
         let sum =
-            cz +
-            cz2 * (bf[0] +
-            cz  * (bf[1] +
-            cz2 * (
+            u +
+            u2 * (bf[0] +
+            u  * (bf[1] +
+            u2 * (
                 bf[2] +
-                cz2*bf[3] +
-                cz4*(bf[4] + cz2*bf[5]) +
-                cz4*cz4*(bf[6] + cz2*bf[7] + cz4*(bf[8] + cz2*bf[9]))
+                u2*bf[3] +
+                u4*(bf[4] + u2*bf[5]) +
+                u4*u4*(bf[6] + u2*bf[7] + u4*(bf[8] + u2*bf[9]))
             )));
 
-        sgn * sum + cy
+        sgn * sum + rest
     }
 }
 
