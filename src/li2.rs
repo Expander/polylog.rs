@@ -70,8 +70,13 @@ impl Li2<f64> for f64 {
         };
 
         let z = y - 0.25;
-        let p = horner(z, &cp);
-        let q = horner(z, &cq);
+        let z2 = z*z;
+        let z4 = z2*z2;
+
+        let p = cp[0] + z * cp[1] + z2 * (cp[2] + z * cp[3]) +
+                z4 * (cp[4] + z * cp[5] + z2 * (cp[6] + z * cp[7]));
+        let q = cq[0] + z * cq[1] + z2 * (cq[2] + z * cq[3]) +
+                z4 * (cq[4] + z * cq[5] + z2 * (cq[6] + z * cq[7]));
 
         r + s*y*p/q
     }
@@ -164,9 +169,4 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         sgn * sum + rest
     }
-}
-
-/// evaluation of polynomial P(x) with coefficients `coeffs`
-fn horner(x: f64, coeffs: &[f64]) -> f64 {
-    coeffs.iter().rev().fold(0., |p, c| p*x + c)
 }
