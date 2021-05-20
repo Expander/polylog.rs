@@ -134,7 +134,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
         let nz = self.norm_sqr();
 
         if nz < std::f64::EPSILON {
-            return *self;
+            return self*(1.0 + 0.25*self);
         }
 
         let (u, rest, sgn) = if rz <= 0.5 {

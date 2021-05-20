@@ -79,6 +79,14 @@ fn special_values() {
 
     assert_eq_float!((((5.).sqrt()-1.)/2.).li2(),
                      pi.powi(2)/10. - ((((5.).sqrt()-1.)/2.).ln()).powi(2), eps);
+
+    {
+        let z = Complex::new(-1.08371e-08, 1.32716e-24);
+        let li2 = z.li2();
+        let li2_expected = Complex::new(-1.08370999706393160389154078878181e-8, 1.3271599928087172e-24);
+        assert_eq!(li2.re, li2_expected.re);
+        assert_eq!(li2.im, li2_expected.im);
+    }
 }
 
 
