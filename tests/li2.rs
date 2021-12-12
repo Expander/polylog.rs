@@ -114,7 +114,7 @@ fn special_value_identities() {
 
     assert_eq_float!(36.*(0.5).li2() - 36.*(0.25).li2()
                      - 12.*(1./8.).li2() + 6.*(1./64.).li2(),
-                     pi.powi(2), eps);
+                     pi.powi(2), 2.0*eps);
 }
 
 
