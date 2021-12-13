@@ -9,8 +9,8 @@ pub trait Li2<T> {
 impl Li2<f64> for f64 {
     /// Returns the real dilogarithm of a real number of type `f64`.
     ///
-    /// Implemented as an economized Pade approximation with a maximum
-    /// error of 4.16e-18.
+    /// Implemented as rational function approximation with a maximum
+    /// error of 5.8e-17.
     ///
     /// # Example:
     /// ```
