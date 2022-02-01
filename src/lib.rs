@@ -2,7 +2,8 @@
 //! =======
 //!
 //! The Polylog package provides Rust implementations of real and
-//! complex polylogarithms.
+//! complex polylogarithms, including the dilogarithm and
+//! trilogarithm.
 //!
 //! # Example:
 //! ```
@@ -14,12 +15,13 @@
 //! fn main() {
 //!     let x = 1.0;
 //!     let z = Complex::new(1.0, 1.0);
-//!     println!("Li2({}) = {}", x, x.li2());
-//!     println!("Li2({}) = {}", z, z.li2());
-//!     println!("Li3({}) = {}", z, z.li3());
-//!     println!("Li4({}) = {}", z, z.li4());
-//!     println!("Li5({}) = {}", z, z.li5());
-//!     println!("Li6({}) = {}", z, z.li6());
+//!     println!("Li2({}) = {}", x, x.li2()); // Re[Li_2(x)] (real dilogarithm)
+//!     println!("Li2({}) = {}", z, z.li2()); // Li_2(z)     (complex dilogarithm)
+//!     println!("Li3({}) = {}", x, x.li3()); // Re[Li_3(x)] (real trilogarithm)
+//!     println!("Li3({}) = {}", z, z.li3()); // Li_3(z)     (complex trilogarithm)
+//!     println!("Li4({}) = {}", z, z.li4()); // Li_4(z)
+//!     println!("Li5({}) = {}", z, z.li5()); // Li_5(z)
+//!     println!("Li6({}) = {}", z, z.li6()); // Li_6(z)
 //! }
 //! ```
 
