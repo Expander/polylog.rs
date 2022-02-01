@@ -26,6 +26,7 @@ fn main() {
     println!("Li2({}) = {}", z, z.li2()); // Li_2(z)     (complex dilogarithm)
     println!("Li3({}) = {}", x, x.li3()); // Re[Li_3(x)] (real trilogarithm)
     println!("Li3({}) = {}", z, z.li3()); // Li_3(z)     (complex trilogarithm)
+    println!("Li4({}) = {}", x, x.li4()); // Re[Li_4(x)]
     println!("Li4({}) = {}", z, z.li4()); // Li_4(z)
     println!("Li5({}) = {}", z, z.li5()); // Li_5(z)
     println!("Li6({}) = {}", z, z.li6()); // Li_6(z)

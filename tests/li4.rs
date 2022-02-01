@@ -30,5 +30,9 @@ fn test_values() {
 
     for &(v, li4) in values.iter() {
         assert_eq_complex(v.li4(), li4, eps);
+
+        if v.im == 0.0 {
+            assert_eq_float!(v.re.li4(), li4.re, eps);
+        }
     }
 }

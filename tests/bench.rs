@@ -37,6 +37,13 @@ fn bench_complex_li3() {
 
 
 #[test]
+fn bench_real_li4() {
+    let sample = gen_real_numbers(-1.0, 1.0, 10_000_000);
+    bench_fn(|z: &f64| z.li4(), String::from("real Li4"), sample);
+}
+
+
+#[test]
 fn bench_complex_li4() {
     let sample = gen_complex_numbers(-1.0, 1.0, 10_000_000);
     bench_fn(|z: &Complex<f64>| z.li4(), String::from("complex Li4"), sample);
