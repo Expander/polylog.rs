@@ -5,7 +5,7 @@ Polylog
 [![Documentation](https://docs.rs/polylog/badge.svg)](https://docs.rs/polylog/)
 
 The Polylog package provides Rust implementations of real and complex
-polylogarithms.
+polylogarithms, including the dilogarithm and trilogarithm.
 
 The Polylog package depends on the `num` crate.
 
@@ -24,6 +24,7 @@ fn main() {
     let z = Complex::new(1.0, 1.0);
     println!("Li2({}) = {}", x, x.li2());
     println!("Li2({}) = {}", z, z.li2());
+    println!("Li3({}) = {}", x, x.li3());
     println!("Li3({}) = {}", z, z.li3());
     println!("Li4({}) = {}", z, z.li4());
     println!("Li5({}) = {}", z, z.li5());

@@ -7,6 +7,100 @@ pub trait Li3<T> {
     fn li3(&self) -> T;
 }
 
+impl Li3<f64> for f64 {
+    /// Returns the real trilogarithm of a real number of type `f64`.
+    ///
+    /// # Example:
+    /// ```
+    /// use polylog::Li3;
+    ///
+    /// let x = 1.0;
+    /// println!("Li3({}) = {}", x, x.li3());
+    /// ```
+    fn li3(&self) -> f64 {
+        let z2 = 1.6449340668482264;
+        let z3 = 1.2020569031595943;
+        let x = *self;
+
+        // transformation to [-1,0] and [0,1/2]
+        let (neg, pos, sgn, rest) = if x < -1.0 {
+            let l = (-x).ln();
+            (li3_neg(1.0/x), 0.0, 1.0, -l*(z2 + 1.0/6.0*l*l))
+        } else if x == -1.0 {
+            return -0.75*z3
+        } else if x < 0.0 {
+            (li3_neg(x), 0.0, 1.0, 0.0)
+        } else if x == 0.0 {
+            return 0.0
+        } else if x < 0.5 {
+            (0.0, li3_pos(x), 1.0, 0.0)
+        } else if x == 0.5 {
+            return 0.53721319360804020
+        } else if x < 1.0 {
+            let l = x.ln();
+            (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, z3 + l*(z2 + l*(-0.5*(1.0 - x).ln() + 1.0/6.0*l)))
+        } else if x == 1.0 {
+            return z3
+        } else if x < 2.0 {
+            let l = x.ln();
+            (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, z3 + l*(z2 + l*(-0.5*(x - 1.0).ln() + 1.0/6.0*l)))
+        } else { // x >= 2.0
+            let l = x.ln();
+            (0.0, li3_pos(1.0/x), 1.0, l*(2.0*z2 - 1.0/6.0*l*l))
+        };
+
+        rest + sgn*(neg + pos)
+    }
+}
+
+// Li_3(x) for x in [-1,0]
+fn li3_neg(x: f64) -> f64 {
+    let cp = [
+        0.9999999999999999795e+0, -2.0281801754117129576e+0,
+        1.4364029887561718540e+0, -4.2240680435713030268e-1,
+        4.7296746450884096877e-2, -1.3453536579918419568e-3
+    ];
+    let cq = [
+        1.0000000000000000000e+0, -2.1531801754117049035e+0,
+        1.6685134736461140517e+0, -5.6684857464584544310e-1,
+        8.1999463370623961084e-2, -4.0756048502924149389e-3,
+        3.4316398489103212699e-5
+    ];
+
+    let x2 = x*x;
+    let x4 = x2*x2;
+    let p = cp[0] + x * cp[1] + x2 * (cp[2] + x * cp[3]) +
+            x4 * (cp[4] + x * cp[5]);
+    let q = cq[0] + x * cq[1] + x2 * (cq[2] + x * cq[3]) +
+            x4 * (cq[4] + x * cq[5] + x2 * cq[6]);
+
+    x*p/q
+}
+
+// Li_3(x) for x in [0,1/2]
+fn li3_pos(x: f64) -> f64 {
+    let cp = [
+        0.9999999999999999893e+0, -2.5224717303769789628e+0,
+        2.3204919140887894133e+0, -9.3980973288965037869e-1,
+        1.5728950200990509052e-1, -7.5485193983677071129e-3
+    ];
+    let cq = [
+        1.0000000000000000000e+0, -2.6474717303769836244e+0,
+        2.6143888433492184741e+0, -1.1841788297857667038e+0,
+        2.4184938524793651120e-1, -1.8220900115898156346e-2,
+        2.4927971540017376759e-4
+    ];
+
+    let x2 = x*x;
+    let x4 = x2*x2;
+    let p = cp[0] + x * cp[1] + x2 * (cp[2] + x * cp[3]) +
+            x4 * (cp[4] + x * cp[5]);
+    let q = cq[0] + x * cq[1] + x2 * (cq[2] + x * cq[3]) +
+            x4 * (cq[4] + x * cq[5] + x2 * cq[6]);
+
+    x*p/q
+}
+
 impl Li3<Complex<f64>> for Complex<f64> {
     /// Returns the trilogarithm of a complex number of type `Complex<f64>`.
     ///
