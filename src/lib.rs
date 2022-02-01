@@ -27,12 +27,14 @@
 extern crate num;
 
 mod cln;
+mod li1;
 mod li2;
 mod li3;
 mod li4;
 mod li5;
 mod li6;
 
+pub use self::li1::Li1;
 pub use self::li2::Li2;
 pub use self::li3::Li3;
 pub use self::li4::Li4;
