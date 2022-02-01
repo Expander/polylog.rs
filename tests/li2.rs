@@ -161,5 +161,9 @@ fn test_values() {
 
     for &(v, li2) in values.iter() {
         assert_eq_complex(v.li2(), li2, eps);
+
+        if v.im == 0.0 {
+            assert_eq_float!(v.re.li2(), li2.re, eps);
+        }
     }
 }
