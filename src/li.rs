@@ -21,17 +21,17 @@ impl Li<f64> for f64 {
         if n < 0 {
             panic!("li(n) not implemented for n < 0 (given value: n = {})", n);
         } else if n == 0 {
-            return self.li0();
+            self.li0()
         } else if n == 1 {
-            return self.li1();
+            self.li1()
         } else if n == 2 {
-            return self.li2();
+            self.li2()
         } else if n == 3 {
-            return self.li3();
+            self.li3()
         } else if n == 4 {
-            return self.li4();
+            self.li4()
+        } else {
+            0.0
         }
-
-        0.0
     }
 }
