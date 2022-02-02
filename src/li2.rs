@@ -41,8 +41,8 @@ impl Li2<f64> for f64 {
 
         let x = *self;
 
-        // transform to [0, 1/2)
-        let (y, r, s) = if x < -1. {
+        // transform to [0, 1/2]
+        let (y, rest, sgn) = if x < -1. {
             let l = (1. - x).ln();
             (1./(1. - x), -pi*pi/6. + l*(0.5*l - (-x).ln()), 1.)
         } else if x == -1. {
@@ -73,7 +73,7 @@ impl Li2<f64> for f64 {
         let q = cq[0] + y * cq[1] + y2 * (cq[2] + y * cq[3]) +
                 y4 * (cq[4] + y * cq[5] + y2 * cq[6]);
 
-        r + s*y*p/q
+        rest + sgn*y*p/q
     }
 }
 
