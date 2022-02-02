@@ -38,9 +38,64 @@ impl Li<f64> for f64 {
         } else if self.is_nan() {
             std::f64::NAN
         } else {
-            0.0
+            let x = *self;
+            let is_odd = |x: i32| x & 1 == 1;
+
+            // transform x to y in [-1,1]
+            let (y, rest, sgn) = if x < -1.0 {
+                (1.0/x, li_neg_rest(n, x), if is_odd(n) { 1.0 } else { -1.0 })
+            } else if x < 1.0 {
+                (x, 0.0, 1.0)
+            } else { // x > 1.0
+                (1.0/x, li_pos_rest(n, x), if is_odd(n) { 1.0 } else { -1.0})
+            };
+
+            let li = if n < 20 && y > 0.75 {
+                li_series_one(n, y)
+            } else {
+                li_series_naive(n, y)
+            };
+
+            rest + sgn*li
         }
     }
+}
+
+/// returns r.h.s. of inversion formula for x < -1:
+///
+/// Li(n,-x) + (-1)^n Li(n,-1/x)
+///    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
+fn li_neg_rest(n: i32, x: f64) -> f64 {
+    0.0
+}
+
+/// returns r.h.s. of inversion formula for x > 1;
+/// same expression as in li_neg_rest(n,x), but with
+/// complex logarithm log(Complex(-x))
+fn li_pos_rest(n: i32, x: f64) -> f64 {
+    0.0
+}
+
+/// returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
+/// where 0 < x < 1:
+///
+/// Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
+///
+/// where
+///
+/// zeta(1) = -log(-log(x)) + harmonic(n - 1)
+///
+/// harmonic(n) = sum(k=1:n, 1/k)
+fn li_series_one(n: i32, x: f64) -> f64 {
+    0.0
+}
+
+/// returns Li(n,x) using the naive series expansion of Li(n,x)
+/// for |x| < 1:
+///
+/// Li(n,x) = sum(k=1:Inf, x^k/k^n)
+fn li_series_naive(n: i32, x: f64) -> f64 {
+    0.0
 }
 
 // Table[PolyLog[n,-1], {n,1,54}]
