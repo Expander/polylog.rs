@@ -38,6 +38,7 @@ mod li4;
 mod li5;
 mod li6;
 mod li;
+mod zeta;
 
 pub use self::li0::Li0;
 pub use self::li1::Li1;

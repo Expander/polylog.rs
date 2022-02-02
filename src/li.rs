@@ -1,8 +1,9 @@
 use {Li0, Li1, Li2, Li3, Li4};
+use zeta;
 
 /// Provides the n-th order polylogarithm function `li()` of a number of type `T`.
 pub trait Li<T> {
-    fn li(&self, i64) -> T;
+    fn li(&self, i32) -> T;
 }
 
 impl Li<f64> for f64 {
@@ -17,7 +18,7 @@ impl Li<f64> for f64 {
     /// let n = 10;
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
-    fn li(&self, n: i64) -> f64 {
+    fn li(&self, n: i32) -> f64 {
         if n < 0 {
             panic!("li(n) not implemented for n < 0 (given value: n = {})", n);
         } else if n == 0 {
@@ -30,6 +31,8 @@ impl Li<f64> for f64 {
             self.li3()
         } else if n == 4 {
             self.li4()
+        } else if *self == 1.0 {
+            zeta::zeta(n)
         } else {
             0.0
         }
