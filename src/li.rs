@@ -13,7 +13,7 @@ impl Li<f64> for f64 {
     ///
     /// let z = 1.0;
     /// let n = 10;
-    /// println!("Li({},{}) = {}", n, z, z.li());
+    /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i64) -> f64 {
         0.0
