@@ -19,5 +19,7 @@ fn test_values() {
                 }
             }
         }
+
+        assert!(std::f64::NAN.li(n).is_nan());
     }
 }

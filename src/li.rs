@@ -35,6 +35,8 @@ impl Li<f64> for f64 {
             zeta::zeta(n)
         } else if *self == -1.0 {
             li_minus_1(n)
+        } else if self.is_nan() {
+            std::f64::NAN
         } else {
             0.0
         }
