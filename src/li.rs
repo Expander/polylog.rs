@@ -3,7 +3,7 @@ use zeta;
 
 /// Provides the n-th order polylogarithm function `li()` of a number of type `T`.
 pub trait Li<T> {
-    fn li(&self, i32) -> T;
+    fn li(&self, n: i32) -> T;
 }
 
 impl Li<f64> for f64 {
@@ -96,7 +96,7 @@ fn li_series_one(n: i32, x: f64) -> f64 {
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
 fn li_series_naive(n: i32, x: f64) -> f64 {
     let mut sum = x;
-    let mut old_sum = 0.0;
+    let mut old_sum;
     let mut xn = x*x;
 
     for k in 2..i32::MAX {
