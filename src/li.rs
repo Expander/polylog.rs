@@ -95,7 +95,20 @@ fn li_series_one(n: i32, x: f64) -> f64 {
 ///
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
 fn li_series_naive(n: i32, x: f64) -> f64 {
-    0.0
+    let mut sum = x;
+    let mut old_sum = 0.0;
+    let mut xn = x*x;
+
+    for k in 2..i32::MAX {
+        old_sum = sum;
+        sum += xn/(k as f64).powi(n);
+        if sum == old_sum {
+            break;
+        }
+        xn *= x;
+    }
+
+    sum
 }
 
 // Table[PolyLog[n,-1], {n,1,54}]
