@@ -18,12 +18,11 @@ pub fn digamma(n: i32) -> f64 {
     let mut res = 0.0;
 
     let m = if n < 7 { // recurrence formula
-        let k = 7 - n;
-        for nu in 1..=(k - 1) {
+        for nu in 1..(7 - n) {
             res -= 1.0/((n + nu) as f64);
         }
         res -= 1.0/(n as f64);
-        n + k
+        7
     } else {
         n
     };
