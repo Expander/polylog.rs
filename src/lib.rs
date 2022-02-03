@@ -30,7 +30,7 @@
 extern crate num;
 
 mod cln;
-mod digamma;
+mod harmonic;
 mod li0;
 mod li1;
 mod li2;

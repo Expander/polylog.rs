@@ -1,9 +1,38 @@
+/// returns n-th harmonic number, n > 0
+pub fn harmonic(n: i32) -> f64 {
+    if n <= 0 {
+        panic!("harmonic not implemented for n <= 0 (given value: n = {})",  n)
+    } else if n < 20 {
+        let mut sum = 1.0;
+        for k in 2..=n {
+            sum += 1.0/(k as f64)
+        }
+        sum
+    } else {
+        let eulergamma = 0.57721566490153286;
+        eulergamma + digamma(n + 1)
+    }
+}
+
+#[test]
+fn test_harmonic() {
+    let abs = |x: f64| if x >= 0.0 { x } else { -x };
+
+    assert!(harmonic(1) == 1.0);
+    assert!(harmonic(2) == 3.0/2.0);
+    assert!(harmonic(3) == 11.0/6.0);
+    assert!(abs(harmonic( 4) - 25.0/12.0         ) < 1e-14);
+    assert!(abs(harmonic(19) - 3.5477396571436819) < 1e-14);
+    assert!(abs(harmonic(20) - 3.5977396571436819) < 1e-14);
+    assert!(abs(harmonic(21) - 3.6453587047627295) < 1e-14);
+}
+
 /// digamma for integer n > 0, following
 /// [K.S. Kölbig: Programs for computing the logarithm of the gamma
 /// function, and the digamma function, for complex argument, Computer
 /// Physics Communications, Volume 4, Issue 2, 1972, Pages 221-226, ISSN
 /// 0010-4655, https://doi.org/10.1016/0010-4655(72)90012-4]
-pub fn digamma(n: i32) -> f64 {
+fn digamma(n: i32) -> f64 {
     // Table[BernoulliB[2n]/(2 n), {n,1,8}]
     let c = [
         0.083333333333333333, -0.0083333333333333333,  0.0039682539682539683,
@@ -34,7 +63,7 @@ pub fn digamma(n: i32) -> f64 {
 }
 
 #[test]
-fn test_values() {
+fn test_digamma() {
     let abs = |x: f64| if x >= 0.0 { x } else { -x };
 
     assert!(abs(digamma( 1) - -0.57721566490153286) < 1e-14);
