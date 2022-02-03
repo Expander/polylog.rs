@@ -14,7 +14,7 @@ fn test_values() {
 
         for &(v, res) in values.iter() {
             if v.im == 0.0 {
-                if n <= 4 || v.re == 1.0 || v.re == -1.0 || (n >= 20 && v.re > 0.75 && v.re < 1.0) {
+                if n <= 4 || (v.re <= 1.0 && v.re >= -1.0) {
                     assert_eq_float!(v.re.li(n), res.re, eps);
                 }
             }

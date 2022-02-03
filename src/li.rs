@@ -1,5 +1,5 @@
 use {Li0, Li1, Li2, Li3, Li4};
-use zeta;
+use {harmonic, zeta};
 
 /// Provides the n-th order polylogarithm function `li()` of a number of type `T`.
 pub trait Li<T> {
@@ -87,7 +87,37 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
 ///
 /// harmonic(n) = sum(k=1:n, 1/k)
 fn li_series_one(n: i32, x: f64) -> f64 {
-    0.0
+    let l = x.ln();
+    let mut sum = zeta::zeta(n);
+    let mut p = 1.0; // collects l^j/j!
+
+    for j in 1..(n - 1) {
+        p *= l/(j as f64);
+        sum += zeta::zeta(n - j)*p;
+    }
+
+    p *= l/((n - 1) as f64);
+    sum += (harmonic::harmonic(n - 1) - (-l).ln())*p;
+
+    p *= l/(n as f64);
+    sum += zeta::zeta(0)*p;
+
+    p *= l/((n + 1) as f64);
+    sum += zeta::zeta(-1)*p;
+
+    let l2 = l*l;
+    let mut old_sum;
+
+    for j in ((n + 3)..i32::MAX).step_by(2) {
+        p *= l2/(((j - 1)*j) as f64);
+        old_sum = sum;
+        sum += zeta::zeta(n - j)*p;
+        if sum == old_sum {
+            break;
+        }
+    }
+
+    sum
 }
 
 /// returns Li(n,x) using the naive series expansion of Li(n,x)
