@@ -15,22 +15,21 @@ pub fn digamma(n: i32) -> f64 {
         panic!("digamma not implemented for n <= 0 (given value: n = {})", n);
     }
 
-    let mut res = 0.0;
-
-    let m = if n < 7 { // recurrence formula
+    // map potentially small n to m >= 7
+    let (m, res) = if n < 7 { // recurrence formula
+        let mut res = 0.0;
         for nu in 1..(7 - n) {
             res -= 1.0/((n + nu) as f64);
         }
-        res -= 1.0/(n as f64);
-        7
+        (7.0, res - 1.0/(n as f64))
     } else {
-        n
+        (n as f64, 0.0)
     };
 
-    let t = 1.0/(m as f64);
+    let t = 1.0/m;
     let t2 = t*t;
 
-    res + (m as f64).ln() - 0.5*t
+    res + m.ln() - 0.5*t
     - t2*(c[0] + t2*(c[1] + t2*(c[2] + t2*(c[3] + t2*(c[4] + t2*(c[5] + t2*(c[6] + t2*c[7])))))))
 }
 
