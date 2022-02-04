@@ -21,7 +21,7 @@ impl Li1<f64> for f64 {
     fn li1(&self) -> f64 {
         let x = *self;
         if x < 1.0 {
-            -(1.0 - x).ln()
+            -(-x).ln_1p()
         } else if x == 1.0 {
             std::f64::INFINITY
         } else { // x > 1.0
