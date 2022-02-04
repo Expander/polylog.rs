@@ -76,9 +76,7 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         for u in 0..n/2 {
             let old_sum = sum;
             sum += p*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
-            if sum == old_sum {
-                break;
-            }
+            if sum == old_sum { break; }
             p *= l2;
         }
         2.0*sum - p*inv_fac::inv_fac(n)
@@ -88,9 +86,7 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
             sum += p*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
-            if sum == old_sum {
-                break;
-            }
+            if sum == old_sum { break; }
             p *= l2;
         }
         2.0*sum - p*inv_fac::inv_fac(n)
@@ -123,9 +119,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         for u in 0..n/2 {
             let old_sum = sum;
             sum += p*cosi.1*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
-            if sum == old_sum {
-                break;
-            }
+            if sum == old_sum { break; }
             p *= l2;
             cosi = next_cosi(cosi, cosi2);
         }
@@ -139,9 +133,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
             sum += p*cosi.1*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
-            if sum == old_sum {
-                break;
-            }
+            if sum == old_sum { break; }
             p *= l2;
             cosi = next_cosi(cosi, cosi2);
         }
@@ -184,9 +176,7 @@ fn li_series_one(n: i32, x: f64) -> f64 {
         p *= l2/(((j - 1)*j) as f64);
         let old_sum = sum;
         sum += zeta::zeta(n - j)*p;
-        if sum == old_sum {
-            break;
-        }
+        if sum == old_sum { break; }
     }
 
     sum
@@ -203,9 +193,7 @@ fn li_series_naive(n: i32, x: f64) -> f64 {
     for k in 2..i32::MAX {
         let old_sum = sum;
         sum += xn/(k as f64).powi(n);
-        if sum == old_sum {
-            break;
-        }
+        if sum == old_sum { break; }
         xn *= x;
     }
 
