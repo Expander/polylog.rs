@@ -98,7 +98,7 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
 }
 
 /// calculate (cos((n+1)*x), sin((n+1)*x)) from (cos(n*x), sin(n*x))
-fn calc_cosi(co: f64, si: f64, c2: f64, s2: f64) -> (f64, f64) {
+fn calc_cosi((co, si): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
     (co*c2 - si*s2, si*c2 + co*s2)
 }
 
@@ -116,7 +116,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
     if is_even(n) {
         let mut sum = 0.0;
         let mut p = 1.0; // collects mag^(2u)
-        let (s2, c2) = (2.0*arg).sin_cos();
+        let sico = (2.0*arg).sin_cos();
         let mut cosi = (1.0, 0.0); // collects (cos(2*u*arg), sin(2*u*arg))
         for u in 0..=(n/2 - 1) {
             let old_sum = sum;
@@ -125,14 +125,14 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi.0, cosi.1, c2, s2);
+            cosi = calc_cosi(cosi, sico);
         }
         2.0*sum - p*cosi.0*inverse_factorial(n)
     } else {
         let mut sum = 0.0;
         let mut p = mag; // collects mag^(2u + 1)
         let (s, c) = arg.sin_cos();
-        let (s2, c2) = (2.0*s*c, 2.0*c*c - 1.0); // sincos(2*arg)
+        let sico = (2.0*s*c, 2.0*c*c - 1.0); // sincos(2*arg)
         let mut cosi = (c, s); // collects (cos((2*u + 1)*arg), sin((2*u + 1)*arg))
         for u in 0..=((n - 3)/2) {
             let old_sum = sum;
@@ -141,7 +141,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi.0, cosi.1, c2, s2);
+            cosi = calc_cosi(cosi, sico);
         }
         2.0*sum - p*cosi.0*inverse_factorial(n)
     }
