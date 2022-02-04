@@ -97,7 +97,9 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
     }
 }
 
-/// calculate (cos((2n+1)x), sin((2n+1)x)) from (cos(2n*x), sin(2n*x))
+/// returns (cos((2n+1)x), sin((2n+1)x)), given
+/// (co, si) = (cos(2nx), sin(2nx))
+/// (s2, c2) = (sin(2x), sin(2x))
 fn calc_cosi((co, si): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
     (co*c2 - si*s2, si*c2 + co*s2)
 }
