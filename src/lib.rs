@@ -31,6 +31,7 @@ extern crate num;
 
 mod cln;
 mod harmonic;
+mod inv_fac;
 mod li0;
 mod li1;
 mod li2;
