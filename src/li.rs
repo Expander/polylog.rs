@@ -66,7 +66,34 @@ impl Li<f64> for f64 {
 /// Li(n,-x) + (-1)^n Li(n,-1/x)
 ///    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
 fn li_neg_rest(n: i32, x: f64) -> f64 {
-    0.0
+    let is_even = |x| x & 1 == 0;
+    let l = (-x).ln();
+    let l2 = l*l;
+    let mut sum = 0.0;
+
+    if is_even(n) {
+        let mut p = 1.0; // collects l^(2u)
+        for u in 0..n/2 {
+            let old_sum = sum;
+            sum += p*inverse_factorial(2*u)*li_minus_1(n - 2*u);
+            if sum == old_sum {
+                break;
+            }
+            p *= l2;
+        }
+        2.0*sum - p*inverse_factorial(n)
+    } else {
+        let mut p = l; // collects l^(2u + 1)
+        for u in 0..(n - 1)/2 {
+            let old_sum = sum;
+            sum += p*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u);
+            if sum == old_sum {
+                break;
+            }
+            p *= l2;
+        }
+        2.0*sum - p*inverse_factorial(n)
+    }
 }
 
 /// returns r.h.s. of inversion formula for x > 1;
