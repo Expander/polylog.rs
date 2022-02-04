@@ -5,7 +5,7 @@ pub fn harmonic(n: i32) -> f64 {
     } else if n < 20 {
         let mut sum = 1.0;
         for k in 2..=n {
-            sum += 1.0/(k as f64)
+            sum += (k as f64).recip();
         }
         sum
     } else {
@@ -48,14 +48,14 @@ fn digamma(n: i32) -> f64 {
     let (m, res) = if n < 7 { // recurrence formula
         let mut res = 0.0;
         for nu in 1..(7 - n) {
-            res -= 1.0/((n + nu) as f64);
+            res -= ((n + nu) as f64).recip();
         }
-        (7.0, res - 1.0/(n as f64))
+        (7.0, res - (n as f64).recip())
     } else {
         (n as f64, 0.0)
     };
 
-    let t = 1.0/m;
+    let t = m.recip();
     let t2 = t*t;
 
     res + m.ln() - 0.5*t

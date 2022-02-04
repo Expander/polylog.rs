@@ -82,7 +82,7 @@ pub fn zeta(n: i32) -> f64 {
     } else if (n - 1) as usize <= ZETAS_POS.len() {
         ZETAS_POS[(n - 2) as usize]
     } else {
-        1.0/(1.0 - 0.5_f64.powi(n))
+        (1.0 - 0.5_f64.powi(n)).recip()
     }
 }
 
