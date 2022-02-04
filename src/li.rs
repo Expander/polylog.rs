@@ -134,11 +134,10 @@ fn li_series_one(n: i32, x: f64) -> f64 {
     sum += zeta::zeta(-1)*p;
 
     let l2 = l*l;
-    let mut old_sum;
 
     for j in ((n + 3)..i32::MAX).step_by(2) {
         p *= l2/(((j - 1)*j) as f64);
-        old_sum = sum;
+        let old_sum = sum;
         sum += zeta::zeta(n - j)*p;
         if sum == old_sum {
             break;
@@ -154,11 +153,10 @@ fn li_series_one(n: i32, x: f64) -> f64 {
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
 fn li_series_naive(n: i32, x: f64) -> f64 {
     let mut sum = x;
-    let mut old_sum;
     let mut xn = x*x;
 
     for k in 2..i32::MAX {
-        old_sum = sum;
+        let old_sum = sum;
         sum += xn/(k as f64).powi(n);
         if sum == old_sum {
             break;
