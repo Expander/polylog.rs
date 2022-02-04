@@ -69,9 +69,9 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
     let is_even = |x| x & 1 == 0;
     let l = (-x).ln();
     let l2 = l*l;
-    let mut sum = 0.0;
 
     if is_even(n) {
+        let mut sum = 0.0;
         let mut p = 1.0; // collects l^(2u)
         for u in 0..n/2 {
             let old_sum = sum;
@@ -83,6 +83,7 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         }
         2.0*sum - p*inverse_factorial(n)
     } else {
+        let mut sum = 0.0;
         let mut p = l; // collects l^(2u + 1)
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
