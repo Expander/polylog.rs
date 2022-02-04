@@ -97,11 +97,54 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
     }
 }
 
+/// calculate (cos((n+1)*x), sin((n+1)*x)) from (cos(n*x), sin(n*x))
+fn calc_cosi(co: f64, c2: f64, si: f64, s2: f64) -> (f64, f64) {
+    (co*c2 - si*s2, si*c2 + co*s2)
+}
+
 /// returns r.h.s. of inversion formula for x > 1;
 /// same expression as in li_neg_rest(n,x), but with
 /// complex logarithm log(Complex(-x))
 fn li_pos_rest(n: i32, x: f64) -> f64 {
-    0.0
+    let is_even = |x| x & 1 == 0;
+    let pi = std::f64::consts::PI;
+    let l = x.ln();
+    let mag = l.hypot(pi); // |log(-x)|
+    let arg = pi.atan2(l); // angle(log(-x))
+    let l2 = mag*mag;      // |log(-x)|^2
+
+    if is_even(n) {
+        let mut sum = 0.0;
+        let mut p = 1.0; // collects mag^(2u)
+        let (s2, c2) = (2.0*arg).sin_cos();
+        let mut cosi = (1.0, 0.0); // collects (cos(2*u*arg), sin(2*u*arg))
+        for u in 0..=(n/2 - 1) {
+            let old_sum = sum;
+            sum += p*cosi.0*inverse_factorial(2*u)*li_minus_1(n - 2*u);
+            if sum == old_sum {
+                break;
+            }
+            p *= l2;
+            cosi = calc_cosi(cosi.0, c2, cosi.1, s2);
+        }
+        2.0*sum - p*cosi.0*inverse_factorial(n)
+    } else {
+        let mut sum = 0.0;
+        let mut p = mag; // collects mag^(2u + 1)
+        let (s, c) = arg.sin_cos();
+        let (s2, c2) = (2.0*s*c, 2.0*c*c - 1.0); // sincos(2*arg)
+        let mut cosi = (c, s); // collects (cos((2*u + 1)*arg), sin((2*u + 1)*arg))
+        for u in 0..=((n - 3)/2) {
+            let old_sum = sum;
+            sum += p*cosi.0*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u);
+            if sum == old_sum {
+                break;
+            }
+            p *= l2;
+            cosi = calc_cosi(cosi.0, c2, cosi.1, s2);
+        }
+        2.0*sum - p*cosi.0*inverse_factorial(n)
+    }
 }
 
 /// returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
