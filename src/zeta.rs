@@ -68,7 +68,7 @@ pub fn zeta(n: i32) -> f64 {
     if n < 0 {
         if is_even(n) {
             0.0
-        } else if ((1 - n)/2) as usize <= ZETAS_NEG.len() {
+        } else if ((-(1 + n)/2) as usize) < ZETAS_NEG.len() {
             ZETAS_NEG[(-(1 + n)/2) as usize]
         } else if is_even((1 - n)/2) {
             std::f64::INFINITY
@@ -79,7 +79,7 @@ pub fn zeta(n: i32) -> f64 {
         -0.5
     } else if n == 1 {
         std::f64::INFINITY
-    } else if (n - 1) as usize <= ZETAS_POS.len() {
+    } else if ((n - 2) as usize) < ZETAS_POS.len() {
         ZETAS_POS[(n - 2) as usize]
     } else {
         (1.0 - 0.5_f64.powi(n)).recip()
