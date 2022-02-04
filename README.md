@@ -22,6 +22,9 @@ use polylog::{Li2, Li3, Li4, Li5, Li6};
 fn main() {
     let x = 1.0;
     let z = Complex::new(1.0, 1.0);
+    let n = 10;
+
+    // polylogarithms for fixed n
     println!("Li2({}) = {}", x, x.li2()); // Re[Li_2(x)] (real dilogarithm)
     println!("Li2({}) = {}", z, z.li2()); // Li_2(z)     (complex dilogarithm)
     println!("Li3({}) = {}", x, x.li3()); // Re[Li_3(x)] (real trilogarithm)
@@ -30,6 +33,9 @@ fn main() {
     println!("Li4({}) = {}", z, z.li4()); // Li_4(z)
     println!("Li5({}) = {}", z, z.li5()); // Li_5(z)
     println!("Li6({}) = {}", z, z.li6()); // Li_6(z)
+
+    // polylogarithms for all integers n >= 0
+    println!("Li({},{}) = {}", n, x, x.li(n)); // Re[Li_n(x)]
 }
 ```
 
