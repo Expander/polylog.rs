@@ -118,7 +118,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         let mut p = 1.0; // collects mag^(2u)
         let sico = (2.0*arg).sin_cos();
         let mut cosi = (1.0, 0.0); // collects (cos(2*u*arg), sin(2*u*arg))
-        for u in 0..=(n/2 - 1) {
+        for u in 0..n/2 {
             let old_sum = sum;
             sum += p*cosi.0*inverse_factorial(2*u)*li_minus_1(n - 2*u);
             if sum == old_sum {
@@ -134,7 +134,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         let (s, c) = arg.sin_cos();
         let sico = (2.0*s*c, 2.0*c*c - 1.0); // sincos(2*arg)
         let mut cosi = (c, s); // collects (cos((2*u + 1)*arg), sin((2*u + 1)*arg))
-        for u in 0..=((n - 3)/2) {
+        for u in 0..(n - 1)/2 {
             let old_sum = sum;
             sum += p*cosi.0*inverse_factorial(2*u + 1)*li_minus_1(n - 1 - 2*u);
             if sum == old_sum {
