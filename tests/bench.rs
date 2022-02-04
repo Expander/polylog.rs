@@ -3,7 +3,7 @@ extern crate polylog;
 extern crate rand;
 
 use num::complex::Complex;
-use polylog::{Li2, Li3, Li4, Li5, Li6};
+use polylog::{Li2, Li3, Li4, Li5, Li6, Li};
 use rand::Rng;
 use std::time::{Duration, Instant};
 
@@ -61,6 +61,21 @@ fn bench_complex_li5() {
 fn bench_complex_li6() {
     let sample = gen_complex_numbers(-1.0, 1.0, 10_000_000);
     bench_fn(|z: &Complex<f64>| z.li6(), String::from("complex Li6"), sample);
+}
+
+
+#[test]
+fn bench_real_li() {
+    println!("Benchmark of Li(n,x):");
+
+    let mut ni: Vec<_> = (5..10).collect();
+    let n2 = vec![100, 1000, 1000_000];
+    ni.extend(n2);
+
+    for n in ni.into_iter() {
+        let sample = gen_real_numbers(-1.0, 1.0, 10_000_000);
+        bench_fn(|z: &f64| z.li(n), format!("real Li_{}", n), sample);
+    }
 }
 
 
