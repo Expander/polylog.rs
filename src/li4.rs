@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use cln::CLn;
+use crate::cln::CLn;
 
 /// Provides the fourth order polylogarithm function `li4()` of a
 /// number of type `T`.

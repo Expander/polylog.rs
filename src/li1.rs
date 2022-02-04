@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use cln::CLn;
+use crate::cln::CLn;
 
 /// Provides the first order polylogarithm function `li1()` of a
 /// number of type `T`.

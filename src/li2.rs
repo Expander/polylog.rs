@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use cln::CLn;
+use crate::cln::CLn;
 
 /// Provides the dilogarithm function `li2()` of a number of type `T`.
 pub trait Li2<T> {
