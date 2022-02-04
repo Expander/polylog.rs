@@ -98,10 +98,10 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
 }
 
 /// returns (cos((2n+1)x), sin((2n+1)x)), given
-/// (co, si) = (cos(2nx), sin(2nx))
+/// (cn, sn) = (cos(2nx), sin(2nx))
 /// (s2, c2) = (sin(2x), sin(2x))
-fn calc_cosi((co, si): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
-    (co*c2 - si*s2, si*c2 + co*s2)
+fn calc_cosi((cn, sn): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
+    (cn*c2 - sn*s2, sn*c2 + cn*s2)
 }
 
 /// returns r.h.s. of inversion formula for x > 1;
