@@ -97,55 +97,55 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
     }
 }
 
-/// returns (cos((2n+1)x), sin((2n+1)x)), given
-/// (cn, sn) = (cos(2nx), sin(2nx))
-/// (s2, c2) = (sin(2x), sin(2x))
-fn calc_cosi((cn, sn): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
-    (cn*c2 - sn*s2, sn*c2 + cn*s2)
+/// returns (sin((2n+1)x), cos((2n+1)x)), given
+/// (sn, cn) = (sin(2nx), cos(2nx))   (previous value)
+/// (s2, c2) = (sin(2x), sin(2x))     (initial value)
+fn next_cosi((sn, cn): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
+    (sn*c2 + cn*s2, cn*c2 - sn*s2)
 }
 
 /// returns r.h.s. of inversion formula for x > 1;
 /// same expression as in li_neg_rest(n,x), but with
-/// complex logarithm log(Complex(-x))
+/// complex logarithm log(-x)
 fn li_pos_rest(n: i32, x: f64) -> f64 {
     let is_even = |x| x & 1 == 0;
     let pi = std::f64::consts::PI;
     let l = x.ln();
     let mag = l.hypot(pi); // |log(-x)|
-    let arg = pi.atan2(l); // angle(log(-x))
+    let arg = pi.atan2(l); // arg(log(-x))
     let l2 = mag*mag;      // |log(-x)|^2
 
     if is_even(n) {
         let mut sum = 0.0;
         let mut p = 1.0; // collects mag^(2u)
-        let sico = (2.0*arg).sin_cos();
-        let mut cosi = (1.0, 0.0); // collects (cos(2*u*arg), sin(2*u*arg))
+        let mut cosi = (0.0, 1.0); // collects (sin(2*u*arg), cos(2*u*arg))
+        let cosi2 = (2.0*arg).sin_cos();
         for u in 0..n/2 {
             let old_sum = sum;
-            sum += p*cosi.0*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
+            sum += p*cosi.1*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
             if sum == old_sum {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi, sico);
+            cosi = next_cosi(cosi, cosi2);
         }
-        2.0*sum - p*cosi.0*inv_fac::inv_fac(n)
+        2.0*sum - p*cosi.1*inv_fac::inv_fac(n)
     } else {
         let mut sum = 0.0;
         let mut p = mag; // collects mag^(2u + 1)
         let (s, c) = arg.sin_cos();
-        let sico = (2.0*s*c, 2.0*c*c - 1.0); // sincos(2*arg)
-        let mut cosi = (c, s); // collects (cos((2*u + 1)*arg), sin((2*u + 1)*arg))
+        let mut cosi = (s, c); // collects (sin((2*u + 1)*arg), cos((2*u + 1)*arg))
+        let cosi2 = (2.0*s*c, 2.0*c*c - 1.0); // (2.0*arg).sin_cos()
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
-            sum += p*cosi.0*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
+            sum += p*cosi.1*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
             if sum == old_sum {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi, sico);
+            cosi = next_cosi(cosi, cosi2);
         }
-        2.0*sum - p*cosi.0*inv_fac::inv_fac(n)
+        2.0*sum - p*cosi.1*inv_fac::inv_fac(n)
     }
 }
 
