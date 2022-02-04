@@ -98,7 +98,7 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
 }
 
 /// calculate (cos((n+1)*x), sin((n+1)*x)) from (cos(n*x), sin(n*x))
-fn calc_cosi(co: f64, c2: f64, si: f64, s2: f64) -> (f64, f64) {
+fn calc_cosi(co: f64, si: f64, c2: f64, s2: f64) -> (f64, f64) {
     (co*c2 - si*s2, si*c2 + co*s2)
 }
 
@@ -125,7 +125,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi.0, c2, cosi.1, s2);
+            cosi = calc_cosi(cosi.0, cosi.1, c2, s2);
         }
         2.0*sum - p*cosi.0*inverse_factorial(n)
     } else {
@@ -141,7 +141,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
                 break;
             }
             p *= l2;
-            cosi = calc_cosi(cosi.0, c2, cosi.1, s2);
+            cosi = calc_cosi(cosi.0, cosi.1, c2, s2);
         }
         2.0*sum - p*cosi.0*inverse_factorial(n)
     }
