@@ -17,7 +17,7 @@ Example
 extern crate num;
 extern crate polylog;
 use num::complex::Complex;
-use polylog::{Li2, Li3, Li4, Li5, Li6};
+use polylog::{Li, Li2, Li3, Li4, Li5, Li6};
 
 fn main() {
     let x = 1.0;
