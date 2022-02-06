@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use cln::CLn;
+use crate::cln::CLn;
 
 /// Provides the fifth order polylogarithm function `li5()` of a
 /// number of type `T`.

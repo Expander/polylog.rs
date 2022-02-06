@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use cln::CLn;
+use crate::cln::CLn;
 
 /// Provides the trilogarithm function `li3()` of a number of type
 /// `T`.
