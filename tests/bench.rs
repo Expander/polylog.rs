@@ -82,7 +82,7 @@ fn bench_real_li() {
 fn gen_real_numbers(min: f64, max: f64, n: u32) -> Vec<f64> {
     let mut rng = rand::thread_rng();
 
-    (0..n).map(|_| rng.gen_range(min, max)).collect()
+    (0..n).map(|_| rng.gen_range(min..max)).collect()
 }
 
 
@@ -91,8 +91,8 @@ fn gen_complex_numbers(min: f64, max: f64, n: u32) -> Vec<Complex<f64>> {
 
     (0..n).map(|_| {
         Complex::new(
-            rng.gen_range(min, max),
-            rng.gen_range(min, max)
+            rng.gen_range(min..max),
+            rng.gen_range(min..max)
         )        
     }).collect()
 }

@@ -9,7 +9,7 @@ homepage = "https://github.com/Expander/polylog"
 repository = "https://github.com/Expander/polylog"
 
 [dependencies]
-num = "0.2"
+num = "0.4"
 
 [dev-dependencies]
-rand = "0.7"
+rand = "0.8"
