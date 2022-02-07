@@ -1,5 +1,7 @@
 use crate::{Li0, Li1, Li2, Li3, Li4};
-use crate::{harmonic, inv_fac, zeta};
+mod harmonic;
+mod inv_fac;
+mod zeta;
 
 /// Provides the n-th order polylogarithm function `li()` of a number of type `T`.
 pub trait Li<T> {
