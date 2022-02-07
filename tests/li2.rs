@@ -4,7 +4,7 @@ use num::complex::Complex;
 use num::Float;
 use polylog::Li2;
 mod common;
-use common::{assert_eq_complex, CLn};
+use common::CLn;
 
 
 fn id1(z: Complex<f64>) -> Complex<f64> {
@@ -65,8 +65,8 @@ fn special_values() {
 
     assert_eq_float!((1.).li2(), pi.powi(2)/6., eps);
 
-    assert_eq_complex(Complex::new(2.,0.).li2(),
-                      Complex::new(pi.powi(2)/4.,0.) - Complex::i()*pi*(2.).ln(), eps);
+    assert_eq_complex!(Complex::new(2.,0.).li2(),
+                       Complex::new(pi.powi(2)/4.,0.) - Complex::i()*pi*(2.).ln(), eps);
 
     assert_eq_float!((-((5.).sqrt()-1.)/2.).li2(),
                      -pi.powi(2)/15. + 0.5*((((5.).sqrt()-1.)/2.).ln()).powi(2), eps);
@@ -123,7 +123,7 @@ fn identities() {
     use num::Zero;
 
     let eps = 1e-14;
-    let zero = Complex::zero();
+    let zero = Complex::<f64>::zero();
     let omega = Complex::new(0.5, (3.).sqrt()/2.);
     let values = [
         Complex::new(0.,0.),
@@ -145,11 +145,11 @@ fn identities() {
     ];
 
     for v in &values {
-        assert_eq_complex(id1(*v), zero, eps);
-        assert_eq_complex(id2(*v), zero, eps);
-        assert_eq_complex(id3(*v), zero, eps);
-        assert_eq_complex(id4(*v), zero, eps);
-        assert_eq_complex(id5(*v), zero, eps);
+        assert_eq_complex!(id1(*v), zero, eps);
+        assert_eq_complex!(id2(*v), zero, eps);
+        assert_eq_complex!(id3(*v), zero, eps);
+        assert_eq_complex!(id4(*v), zero, eps);
+        assert_eq_complex!(id5(*v), zero, eps);
     }
 }
 
@@ -160,7 +160,7 @@ fn test_values() {
     let values = common::read_data_file("Li2.txt").unwrap();
 
     for &(v, li2) in values.iter() {
-        assert_eq_complex(v.li2(), li2, eps);
+        assert_eq_complex!(v.li2(), li2, eps);
 
         if v.im == 0.0 {
             assert_eq_float!(v.re.li2(), li2.re, eps);

@@ -16,9 +16,12 @@ macro_rules! assert_eq_float {
 }
 
 
-pub fn assert_eq_complex(a: Complex<f64>, b: Complex<f64>, eps: f64) -> () {
-    assert_eq_float!(a.re, b.re, eps);
-    assert_eq_float!(a.im, b.im, eps);
+#[macro_export]
+macro_rules! assert_eq_complex {
+    ($a:expr, $b:expr, $eps:expr) => {
+        assert_eq_float!($a.re, $b.re, $eps);
+        assert_eq_float!($a.im, $b.im, $eps);
+    }
 }
 
 

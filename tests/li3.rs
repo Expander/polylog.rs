@@ -4,7 +4,7 @@ use num::complex::Complex;
 use num::Float;
 use polylog::Li3;
 mod common;
-use common::{assert_eq_complex, CLn};
+use common::CLn;
 
 
 fn id1(z: Complex<f64>) -> Complex<f64> {
@@ -46,15 +46,15 @@ fn special_values() {
     let phi = 0.5*((5.0).sqrt() + 1.0); // golden ratio
     let zero = Complex::zero();
 
-    assert_eq_complex(zero.li3(), zero, eps);
-    assert_eq_complex(Complex::new(1., 0.).li3(),
-                      Complex::new(z3, 0.), eps);
-    assert_eq_complex(Complex::new(-1., 0.).li3(),
-                      Complex::new(-3./4.*z3, 0.), eps);
-    assert_eq_complex(Complex::new(0.5, 0.).li3(),
-                      Complex::new(ln2.powi(3)/6. - pi2/12.*ln2 + 7./8.*z3, 0.), eps);
-    assert_eq_complex(Complex::new(1./(phi*phi), 0.).li3(),
-                      Complex::new(4./5.*z3 + 2./3.*phi.ln().powi(3) - 2./15.*pi2*phi.ln(), 0.), eps);
+    assert_eq_complex!(zero.li3(), zero, eps);
+    assert_eq_complex!(Complex::new(1., 0.).li3(),
+                       Complex::new(z3, 0.), eps);
+    assert_eq_complex!(Complex::new(-1., 0.).li3(),
+                       Complex::new(-3./4.*z3, 0.), eps);
+    assert_eq_complex!(Complex::new(0.5, 0.).li3(),
+                       Complex::new(ln2.powi(3)/6. - pi2/12.*ln2 + 7./8.*z3, 0.), eps);
+    assert_eq_complex!(Complex::new(1./(phi*phi), 0.).li3(),
+                       Complex::new(4./5.*z3 + 2./3.*phi.ln().powi(3) - 2./15.*pi2*phi.ln(), 0.), eps);
 }
 
 
@@ -64,7 +64,7 @@ fn test_values() {
     let values = common::read_data_file("Li3.txt").unwrap();
 
     for &(v, li3) in values.iter() {
-        assert_eq_complex(v.li3(), li3, eps);
+        assert_eq_complex!(v.li3(), li3, eps);
 
         if v.im == 0.0 {
             assert_eq_float!(v.re.li3(), li3.re, eps);
@@ -77,15 +77,15 @@ fn test_values() {
 fn identities() {
     use num::Zero;
     let eps = 1e-9;
-    let zero = Complex::zero();
+    let zero = Complex::<f64>::zero();
     let values = common::read_data_file("Li3.txt").unwrap();
 
     for &(v1, v2) in &values {
-        assert_eq_complex(id1(v1), zero, eps);
-        assert_eq_complex(id1(v2), zero, eps);
-        assert_eq_complex(id2(v1), zero, eps);
-        assert_eq_complex(id2(v2), zero, eps);
-        assert_eq_complex(id3(v1), zero, eps);
-        assert_eq_complex(id3(v2), zero, eps);
+        assert_eq_complex!(id1(v1), zero, eps);
+        assert_eq_complex!(id1(v2), zero, eps);
+        assert_eq_complex!(id2(v1), zero, eps);
+        assert_eq_complex!(id2(v2), zero, eps);
+        assert_eq_complex!(id3(v1), zero, eps);
+        assert_eq_complex!(id3(v2), zero, eps);
     }
 }
