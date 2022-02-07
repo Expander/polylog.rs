@@ -40,16 +40,17 @@ impl Li<f64> for f64 {
         } else if self.is_nan() {
             std::f64::NAN
         } else {
+            let is_even = |n| n & 1 == 0;
+            let odd_sgn = |n| if is_even(n) { -1.0 } else { 1.0 };
             let x = *self;
-            let is_even = |x| x & 1 == 0;
 
             // transform x to y in [-1,1]
             let (y, rest, sgn) = if x < -1.0 {
-                (x.recip(), li_neg_rest(n, x), if is_even(n) { -1.0 } else { 1.0 })
+                (x.recip(), li_neg_rest(n, x), odd_sgn(n))
             } else if x < 1.0 {
                 (x, 0.0, 1.0)
             } else { // x > 1.0
-                (x.recip(), li_pos_rest(n, x), if is_even(n) { -1.0 } else { 1.0})
+                (x.recip(), li_pos_rest(n, x), odd_sgn(n))
             };
 
             let li = if n < 20 && y > 0.75 {
