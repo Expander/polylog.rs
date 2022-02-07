@@ -41,15 +41,15 @@ impl Li<f64> for f64 {
             std::f64::NAN
         } else {
             let x = *self;
-            let is_odd = |x: i32| x & 1 == 1;
+            let is_even = |x| x & 1 == 0;
 
             // transform x to y in [-1,1]
             let (y, rest, sgn) = if x < -1.0 {
-                (x.recip(), li_neg_rest(n, x), if is_odd(n) { 1.0 } else { -1.0 })
+                (x.recip(), li_neg_rest(n, x), if is_even(n) { -1.0 } else { 1.0 })
             } else if x < 1.0 {
                 (x, 0.0, 1.0)
             } else { // x > 1.0
-                (x.recip(), li_pos_rest(n, x), if is_odd(n) { 1.0 } else { -1.0})
+                (x.recip(), li_pos_rest(n, x), if is_even(n) { -1.0 } else { 1.0})
             };
 
             let li = if n < 20 && y > 0.75 {
