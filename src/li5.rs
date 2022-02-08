@@ -1,7 +1,7 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
-/// Provides the fifth order polylogarithm function `li5()` of a
+/// Provides the 5-th order polylogarithm function `li5()` of a
 /// number of type `T`.
 pub trait Li5<T> {
     fn li5(&self) -> T;

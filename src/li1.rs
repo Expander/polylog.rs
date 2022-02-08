@@ -1,7 +1,7 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
-/// Provides the first order polylogarithm function `li1()` of a
+/// Provides the 1st order polylogarithm function `li1()` of a
 /// number of type `T`.
 pub trait Li1<T> {
     fn li1(&self) -> T;

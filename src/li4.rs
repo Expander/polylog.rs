@@ -1,7 +1,7 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
-/// Provides the fourth order polylogarithm function `li4()` of a
+/// Provides the 4-th order polylogarithm function `li4()` of a
 /// number of type `T`.
 pub trait Li4<T> {
     fn li4(&self) -> T;

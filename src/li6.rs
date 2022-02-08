@@ -1,7 +1,7 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
-/// Provides the sixths order polylogarithm function `li6()` of a
+/// Provides the 6-th order polylogarithm function `li6()` of a
 /// number of type `T`.
 pub trait Li6<T> {
     fn li6(&self) -> T;

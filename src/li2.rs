@@ -1,7 +1,8 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
-/// Provides the dilogarithm function `li2()` of a number of type `T`.
+/// Provides the 2nd order polylogarithm (dilogarithm) function
+/// `li2()` of a number of type `T`.
 pub trait Li2<T> {
     fn li2(&self) -> T;
 }
@@ -10,7 +11,9 @@ impl Li2<f64> for f64 {
     /// Returns the real dilogarithm of a real number of type `f64`.
     ///
     /// Implemented as rational function approximation with a maximum
-    /// error of 5.8e-17.
+    /// error of 5e-17 [[arXiv:2201.01678]].
+    ///
+    /// [arXiv:2201.01678]: https://arxiv.org/abs/2201.01678
     ///
     /// # Example:
     /// ```

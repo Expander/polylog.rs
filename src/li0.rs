@@ -1,6 +1,6 @@
 use num::complex::Complex;
 
-/// Provides the 0th order polylogarithm function `li0()` of a
+/// Provides the 0-th order polylogarithm function `li0()` of a
 /// number of type `T`.
 pub trait Li0<T> {
     fn li0(&self) -> T;
