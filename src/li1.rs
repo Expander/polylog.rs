@@ -37,7 +37,6 @@ impl Li1<Complex<f64>> for Complex<f64> {
     /// # Example:
     /// ```
     /// extern crate num;
-    /// extern crate polylog;
     /// use num::complex::Complex;
     /// use polylog::Li1;
     ///
