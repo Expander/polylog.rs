@@ -40,8 +40,7 @@ impl Li<f64> for f64 {
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
             } else {
-                let sqrtx = x.sqrt();
-                2.0_f64.powi(n - 1)*(sqrtx.li(n) + (-sqrtx).li(n))
+                li_series_naive(n, x.recip())
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
