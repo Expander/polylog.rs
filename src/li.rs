@@ -81,7 +81,37 @@ impl Li<f64> for f64 {
 
 /// returns expansion of Li(n,x) for x ~ 1
 fn li_unity_neg(n: i32, x: f64) -> f64 {
-    0.0
+    let is_even = |x| x & 1 == 0;
+
+    let lnz = x.ln(); // @todo(alex): treat case when x < 0
+    let lnz2 = lnz*lnz;
+    let mut sum = gamma(1 - n)*(-lnz).powi(n - 1);
+    let (mut k, mut lnzk) = if is_even(n) {
+        (1, lnz)
+    } else {
+        sum += zeta::zeta(n);
+        (2, lnz2)
+    };
+
+    loop {
+        let sum_old = sum;
+        sum += zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
+        if sum == sum_old { break; }
+        lnzk *= lnz2;
+        k += 2;
+    }
+
+    sum
+}
+
+#[link(name = "m")]
+extern {
+    fn tgamma(x: f64) -> f64;
+}
+
+/// gamma function
+fn gamma(x: i32) -> f64 {
+    unsafe { tgamma(x.into()) }
 }
 
 /// returns |log(x)|^2 for all x
