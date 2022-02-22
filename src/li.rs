@@ -22,7 +22,18 @@ impl Li<f64> for f64 {
     /// ```
     fn li(&self, n: i32) -> f64 {
         if n < -1 {
-            panic!("li(n) not implemented for n < -1 (given value: n = {})", n);
+            // arXiv:2010.09860
+            let x = *self;
+            let fp = 4.0*std::f64::consts::PI*std::f64::consts::PI;
+            let nl = ln_sqr(x);
+            if x.abs() <= 0.25 && fp*x.abs() < nl {
+                li_series_naive(n, x)
+            } else if nl < 0.512*0.512*fp {
+                li_unity_neg(n, x)
+            } else {
+                let sqrtx = x.sqrt();
+                2.0_f64.powi(n - 1)*(sqrtx.li(n) + (-sqrtx).li(n))
+            }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
         } else if n == 0 {
@@ -63,6 +74,24 @@ impl Li<f64> for f64 {
 
             rest + sgn*li
         }
+    }
+}
+
+/// returns expansion of Li(n,x) for x ~ 1
+fn li_unity_neg(n: i32, x: f64) -> f64 {
+    0.0
+}
+
+/// returns |log(x)|^2 for all x
+fn ln_sqr(x: f64) -> f64 {
+    if x < 0.0 {
+        let l = (-x).ln();
+        l*l + std::f64::consts::PI*std::f64::consts::PI
+    } else if x == 0.0 {
+        std::f64::NAN
+    } else {
+        let l = x.ln();
+        l*l
     }
 }
 
