@@ -6,7 +6,7 @@ mod common;
 #[test]
 fn test_values() {
     let eps = 1e-14;
-    let ni = vec![0, 1, 2, 3, 4, 5, 6, 100];
+    let ni = vec![-1, 0, 1, 2, 3, 4, 5, 6, 100];
 
     for n in ni.into_iter() {
         let filename = format!("Li{}.txt", n);

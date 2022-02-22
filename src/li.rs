@@ -21,8 +21,10 @@ impl Li<f64> for f64 {
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i32) -> f64 {
-        if n < 0 {
-            panic!("li(n) not implemented for n < 0 (given value: n = {})", n);
+        if n < -1 {
+            panic!("li(n) not implemented for n < -1 (given value: n = {})", n);
+        } else if n == -1 {
+            *self/((1.0 - *self)*(1.0 - *self))
         } else if n == 0 {
             self.li0()
         } else if n == 1 {

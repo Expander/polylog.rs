@@ -13,12 +13,12 @@ fn special_values() {
     let zero = Complex::zero();
 
     assert_eq_complex!(zero.li4(), zero, eps);
-    assert_eq_complex!(Complex::new(1., 0.).li4(),
-                       Complex::new(z4, 0.), eps);
-    assert_eq_complex!(Complex::new(-1., 0.).li4(),
-                       Complex::new(-7./8.*z4, 0.), eps);
-    assert_eq_complex!(Complex::new(0.5, 0.).li4(),
-                       Complex::new(0.5174790616738994, 0.), eps);
+    assert_eq_complex!(Complex::<f64>::new(1., 0.).li4(),
+                       Complex::<f64>::new(z4, 0.), eps);
+    assert_eq_complex!(Complex::<f64>::new(-1., 0.).li4(),
+                       Complex::<f64>::new(-7./8.*z4, 0.), eps);
+    assert_eq_complex!(Complex::<f64>::new(0.5, 0.).li4(),
+                       Complex::<f64>::new(0.5174790616738994, 0.), eps);
 }
 
 
