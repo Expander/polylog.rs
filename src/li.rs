@@ -1,4 +1,5 @@
 use crate::{Li0, Li1, Li2, Li3, Li4};
+mod gamma;
 mod harmonic;
 mod inv_fac;
 mod zeta;
@@ -85,7 +86,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
 
     let lnz = x.ln(); // @todo(alex): treat case when x < 0
     let lnz2 = lnz*lnz;
-    let mut sum = gamma(1 - n)*(-lnz).powi(n - 1);
+    let mut sum = gamma::gamma(1 - n)*(-lnz).powi(n - 1);
     let (mut k, mut lnzk) = if is_even(n) {
         (1, lnz)
     } else {
@@ -102,16 +103,6 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
     }
 
     sum
-}
-
-#[link(name = "m")]
-extern {
-    fn tgamma(x: f64) -> f64;
-}
-
-/// gamma function
-fn gamma(x: i32) -> f64 {
-    unsafe { tgamma(x.into()) }
 }
 
 /// returns |log(x)|^2 for all x
