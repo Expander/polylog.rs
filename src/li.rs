@@ -21,7 +21,9 @@ impl Li<f64> for f64 {
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i32) -> f64 {
-        if *self == 1.0 {
+        if *self == 0.0 {
+            0.0
+        } else if *self == 1.0 {
             zeta::zeta(n)
         } else if *self == -1.0 {
             li_minus_1(n)
