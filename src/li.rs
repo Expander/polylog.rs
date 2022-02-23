@@ -1,3 +1,5 @@
+use num::complex::Complex;
+use crate::cln::CLn;
 use crate::{Li0, Li1, Li2, Li3, Li4};
 mod gamma;
 mod harmonic;
@@ -22,6 +24,9 @@ impl Li<f64> for f64 {
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i32) -> f64 {
+        let is_even = |n| n & 1 == 0;
+        let odd_sgn = |n| if is_even(n) { -1.0 } else { 1.0 };
+
         if *self == 0.0 {
             0.0
         } else if *self == 1.0 {
@@ -40,7 +45,7 @@ impl Li<f64> for f64 {
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
             } else {
-                li_series_naive(n, x.recip())
+                odd_sgn(n)*li_series_naive(n, x.recip())
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
@@ -55,8 +60,6 @@ impl Li<f64> for f64 {
         } else if n == 4 {
             self.li4()
         } else {
-            let is_even = |n| n & 1 == 0;
-            let odd_sgn = |n| if is_even(n) { -1.0 } else { 1.0 };
             let x = *self;
 
             // transform x to y in [-1,1]
@@ -83,7 +86,8 @@ impl Li<f64> for f64 {
 fn li_unity_neg(n: i32, x: f64) -> f64 {
     let is_even = |x| x & 1 == 0;
 
-    let lnz = x.ln(); // @todo(alex): treat case when x < 0
+    let z = Complex::new(x, 0.0);
+    let lnz = z.cln();
     let lnz2 = lnz*lnz;
     let mut sum = gamma::gamma(1 - n)*(-lnz).powi(n - 1);
     let (mut k, mut lnzk) = if is_even(n) {
@@ -101,7 +105,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
         k += 2;
     }
 
-    sum
+    sum.re
 }
 
 /// returns |log(x)|^2 for all x

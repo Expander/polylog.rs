@@ -14,7 +14,6 @@ fn test_values() {
 
         for &(v, res) in values.iter() {
             if v.im == 0.0 {
-                if n < -1 && v.re < 0.0 { continue; } // @todo(alex) remove
                 assert_eq_float!(v.re.li(n), res.re, eps);
             }
         }
