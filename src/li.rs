@@ -24,7 +24,6 @@ impl Li<f64> for f64 {
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i32) -> f64 {
-        let is_even = |n| n & 1 == 0;
         let odd_sgn = |n| if is_even(n) { -1.0 } else { 1.0 };
 
         if *self == 0.0 {
@@ -85,8 +84,6 @@ impl Li<f64> for f64 {
 
 /// returns expansion of Li(n,x) for x ~ 1
 fn li_unity_neg(n: i32, x: f64) -> f64 {
-    let is_even = |x| x & 1 == 0;
-
     let z = Complex::new(x, 0.0);
     let lnz = z.cln();
     let lnz2 = lnz*lnz;
@@ -127,7 +124,6 @@ fn ln_sqr(x: f64) -> f64 {
 /// Li(n,-x) + (-1)^n Li(n,-1/x)
 ///    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
 fn li_neg_rest(n: i32, x: f64) -> f64 {
-    let is_even = |x| x & 1 == 0;
     let l = (-x).ln();
     let l2 = l*l;
 
@@ -165,7 +161,6 @@ fn next_cosi((sn, cn): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
 /// same expression as in li_neg_rest(n,x), but with
 /// complex logarithm log(-x)
 fn li_pos_rest(n: i32, x: f64) -> f64 {
-    let is_even = |x| x & 1 == 0;
     let pi = std::f64::consts::PI;
     let l = x.ln();
     let mag = l.hypot(pi); // |log(-x)|
@@ -241,6 +236,11 @@ fn li_series_one(n: i32, x: f64) -> f64 {
     }
 
     sum
+}
+
+/// returns true if x is even, false otherwise
+fn is_even(x: i32) -> bool {
+    x & 1 == 0
 }
 
 /// returns Li(n,x) using the naive series expansion of Li(n,x)
@@ -326,7 +326,6 @@ const LI_MINUS_1_COEFF: [f64; 54] = [
 // returns Li(n,-1) = (2.0^(1 - n) - 1.0)*zeta(n) for n > 0
 fn li_minus_1(n: i32) -> f64 {
     if n < 0 {
-        let is_even = |x| x & 1 == 0;
         if is_even(n) {
             0.0
         } else if ((-(1 + n)/2) as usize) < LI_MINUS_1_COEFF_NEG.len() {
