@@ -40,7 +40,8 @@ impl Li<f64> for f64 {
             let x = *self;
             let fp = 4.0*std::f64::consts::PI*std::f64::consts::PI;
             let nl = ln_sqr(x);
-            if x.abs() <= 0.25 && fp*x.abs() < nl {
+            let x2 = x*x;
+            if x2 <= 0.25 && fp*x2 < nl {
                 li_series_naive(n, x)
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
