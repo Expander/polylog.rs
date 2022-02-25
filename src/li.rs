@@ -44,8 +44,12 @@ impl Li<f64> for f64 {
                 li_series_naive(n, x)
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
-            } else {
+            } else if x.abs() <= 0.75 {
+                li_series_naive(n, x)
+            } else if x.abs() > 1.4 {
                 odd_sgn(n)*li_series_naive(n, x.recip())
+            } else {
+                panic!("panic: n = {}, x = {}", n, x);
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
