@@ -44,6 +44,8 @@ impl Li<f64> for f64 {
                 li_series_naive(n, x)
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
+            } else if x2 < 0.75*0.75 {
+                li_series_naive(n, x)
             } else {
                 odd_sgn(n)*li_series_naive(n, x.recip())
             }
@@ -96,9 +98,11 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
     };
 
     loop {
+        let term = zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
+        if !term.is_finite() { break; }
         let sum_old = sum;
-        sum += zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
-        if sum == sum_old { break; }
+        sum += term;
+        if sum == sum_old || k >= i32::MAX - 2 { break; }
         lnzk *= lnz2;
         k += 2;
     }
@@ -252,8 +256,10 @@ fn li_series_naive(n: i32, x: f64) -> f64 {
     let mut xn = x*x;
 
     for k in 2..i32::MAX {
+        let term = xn/(k as f64).powi(n);
+        if !term.is_finite() { break; }
         let old_sum = sum;
-        sum += xn/(k as f64).powi(n);
+        sum += term;
         if sum == old_sum { break; }
         xn *= x;
     }

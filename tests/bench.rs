@@ -68,12 +68,12 @@ fn bench_complex_li6() {
 fn bench_real_li() {
     println!("Benchmark of Li(n,x):");
 
-    let mut ni: Vec<_> = (5..10).collect();
-    let n2 = vec![100, 1000, 1000_000];
+    let mut ni: Vec<_> = (-10..10).step_by(2).collect();
+    let n2 = vec![-10000, -1000, -100, 100, 1000, 1000_000];
     ni.extend(n2);
 
     for n in ni.into_iter() {
-        let sample = gen_real_numbers(-1.0, 1.0, 10_000_000);
+        let sample = gen_real_numbers(-1.0, 1.0, 1000_000);
         bench_fn(|z: &f64| z.li(n), format!("real Li_{}", n), sample);
     }
 }
