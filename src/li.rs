@@ -1,9 +1,8 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 use crate::{Li0, Li1, Li2, Li3, Li4};
-mod gamma;
 mod harmonic;
-mod inv_fac;
+mod fac;
 mod zeta;
 
 /// Provides the n-th order polylogarithm function `li()` of a number of type `T`.
@@ -113,21 +112,21 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         let mut p = 1.0; // collects l^(2u)
         for u in 0..n/2 {
             let old_sum = sum;
-            sum += p*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
+            sum += p*fac::inv_fac(2*u)*li_minus_1(n - 2*u);
             if sum == old_sum { break; }
             p *= l2;
         }
-        2.0*sum - p*inv_fac::inv_fac(n)
+        2.0*sum - p*fac::inv_fac(n)
     } else {
         let mut sum = 0.0;
         let mut p = l; // collects l^(2u + 1)
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
-            sum += p*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
+            sum += p*fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
             if sum == old_sum { break; }
             p *= l2;
         }
-        2.0*sum - p*inv_fac::inv_fac(n)
+        2.0*sum - p*fac::inv_fac(n)
     }
 }
 
@@ -155,12 +154,12 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         let cosi2 = (2.0*arg).sin_cos();
         for u in 0..n/2 {
             let old_sum = sum;
-            sum += p*cosi.1*inv_fac::inv_fac(2*u)*li_minus_1(n - 2*u);
+            sum += p*cosi.1*fac::inv_fac(2*u)*li_minus_1(n - 2*u);
             if sum == old_sum { break; }
             p *= l2;
             cosi = next_cosi(cosi, cosi2);
         }
-        2.0*sum - p*cosi.1*inv_fac::inv_fac(n)
+        2.0*sum - p*cosi.1*fac::inv_fac(n)
     } else {
         let mut sum = 0.0;
         let mut p = mag; // collects mag^(2u + 1)
@@ -169,12 +168,12 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
         let cosi2 = (2.0*s*c, 2.0*c*c - 1.0); // (2.0*arg).sin_cos()
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
-            sum += p*cosi.1*inv_fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
+            sum += p*cosi.1*fac::inv_fac(2*u + 1)*li_minus_1(n - 1 - 2*u);
             if sum == old_sum { break; }
             p *= l2;
             cosi = next_cosi(cosi, cosi2);
         }
-        2.0*sum - p*cosi.1*inv_fac::inv_fac(n)
+        2.0*sum - p*cosi.1*fac::inv_fac(n)
     }
 }
 
@@ -227,7 +226,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
     let z = Complex::new(x, 0.0);
     let lnz = z.cln();
     let lnz2 = lnz*lnz;
-    let mut sum = gamma::gamma(1 - n)*(-lnz).powi(n - 1);
+    let mut sum = fac::gamma(1 - n)*(-lnz).powi(n - 1);
     let (mut k, mut lnzk) = if is_even(n) {
         (1, lnz)
     } else {
@@ -236,7 +235,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
     };
 
     loop {
-        let term = zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
+        let term = zeta::zeta(n - k)*fac::inv_fac(k)*lnzk;
         if !term.is_finite() { break; }
         let sum_old = sum;
         sum += term;
