@@ -40,4 +40,7 @@ fn test_values() {
 
         assert!(std::f64::NAN.li(n.n).is_nan());
     }
+
+    // value close to boundary between series 1 and 2 in arXiv:2010.09860
+    assert_eq_float!((-0.50001_f64).li(-2), -0.074072592582716422_f64, 1e-14);
 }
