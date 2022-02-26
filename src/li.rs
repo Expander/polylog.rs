@@ -41,11 +41,11 @@ impl Li<f64> for f64 {
             let nl = ln_sqr(x);
             let x2 = x*x;
             if fp*x2 < nl {
-                li_series_naive(n, x)
+                li_series(n, x)
             } else if nl < 0.512*0.512*fp {
                 li_unity_neg(n, x)
             } else {
-                odd_sgn(n)*li_series_naive(n, x.recip())
+                odd_sgn(n)*li_series(n, x.recip())
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
@@ -72,9 +72,9 @@ impl Li<f64> for f64 {
             };
 
             let li = if n < 20 && y > 0.75 {
-                li_series_one(n, y)
+                li_unity_pos(n, y)
             } else {
-                li_series_naive(n, y)
+                li_series(n, y)
             };
 
             rest + sgn*li
@@ -199,8 +199,8 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
     }
 }
 
-/// returns Li(n,x) using the series expansion of Li(n,x) for x ~ 1
-/// where 0 < x < 1:
+/// returns Li(n,x) using the series expansion of Li(n,x) for n > 0
+/// and x ~ 1 where 0 < x < 1:
 ///
 /// Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
 ///
@@ -209,7 +209,7 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
 /// zeta(1) = -log(-log(x)) + harmonic(n - 1)
 ///
 /// harmonic(n) = sum(k=1:n, 1/k)
-fn li_series_one(n: i32, x: f64) -> f64 {
+fn li_unity_pos(n: i32, x: f64) -> f64 {
     let l = x.ln();
     let mut sum = zeta::zeta(n);
     let mut p = 1.0; // collects l^j/j!
@@ -249,7 +249,7 @@ fn is_even(x: i32) -> bool {
 /// for |x| < 1:
 ///
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
-fn li_series_naive(n: i32, x: f64) -> f64 {
+fn li_series(n: i32, x: f64) -> f64 {
     let mut sum = x;
     let mut xn = x*x;
 
