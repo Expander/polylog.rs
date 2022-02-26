@@ -23,7 +23,7 @@
 //!     println!("Li2({}) = {}", x, x.li2());      // Re[Li_2(x)] (dilogarithm)
 //!     println!("Li3({}) = {}", x, x.li3());      // Re[Li_3(x)] (trilogarithm)
 //!     println!("Li4({}) = {}", x, x.li4());      // Re[Li_4(x)]
-//!     println!("Li_{}({}) = {}", n, x, x.li(n)); // Re[Li_n(x)], n >= 0
+//!     println!("Li_{}({}) = {}", n, x, x.li(n)); // Re[Li_n(x)]
 //!
 //!     // complex polylogarithms for complex arguments
 //!     println!("Li0({}) = {}", z, z.li0());      // Li_0(z)
