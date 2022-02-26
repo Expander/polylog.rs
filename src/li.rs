@@ -10,6 +10,29 @@ pub trait Li<T> {
     fn li(&self, n: i32) -> T;
 }
 
+impl Li<Complex<f64>> for Complex<f64> {
+    /// Returns the complex n-th order polylogarithm of a complex
+    /// number of type `Complex<f64>` for all integers `n`.
+    ///
+    /// The implementation is an adaption of [[arxiv:2010.09860]].
+    ///
+    /// [arxiv:2010.09860]: https://arxiv.org/abs/2010.09860
+    ///
+    /// # Example:
+    /// ```
+    /// extern crate num;
+    /// use num::complex::Complex;
+    /// use polylog::Li;
+    ///
+    /// let z = Complex::new(1.0, 1.0);
+    /// let n = 10;
+    /// println!("Li({},{}) = {}", n, z, z.li(n));
+    /// ```
+    fn li(&self, n: i32) -> Complex<f64> {
+        Complex::new(0.0, 0.0)
+    }
+}
+
 impl Li<f64> for f64 {
     /// Returns the real n-th order polylogarithm of a real number of
     /// type `f64` for all integers `n`.

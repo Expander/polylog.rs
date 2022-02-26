@@ -33,6 +33,7 @@
 //!     println!("Li4({}) = {}", z, z.li4());      // Li_4(z)
 //!     println!("Li5({}) = {}", z, z.li5());      // Li_5(z)
 //!     println!("Li6({}) = {}", z, z.li6());      // Li_6(z)
+//!     println!("Li_{}({}) = {}", n, z, z.li(n)); // Li_n(z)
 //! }
 //! ```
 
