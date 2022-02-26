@@ -36,11 +36,11 @@ impl Li<f64> for f64 {
         } else if n < -1 {
             // arXiv:2010.09860
             let x = *self;
-            let fp = 4.0*std::f64::consts::PI*std::f64::consts::PI;
-            let nl = ln_sqr(x);
-            if fp*x*x < nl {
+            let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
+            let l2 = ln_sqr(x);
+            if c*x*x < l2 {
                 li_series(n, x)
-            } else if nl < 0.512*0.512*fp {
+            } else if l2 < 0.512*0.512*c {
                 li_unity_neg(n, x)
             } else {
                 odd_sgn(n)*li_series(n, x.recip())
