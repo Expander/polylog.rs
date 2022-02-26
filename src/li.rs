@@ -12,7 +12,7 @@ pub trait Li<T> {
 
 impl Li<f64> for f64 {
     /// Returns the real n-th order polylogarithm of a real number of
-    /// type `f64` for all integers `n >= 0`.
+    /// type `f64` for all integers `n`.
     ///
     /// # Example:
     /// ```
