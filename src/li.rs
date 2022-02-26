@@ -226,7 +226,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
     let z = Complex::new(x, 0.0);
     let lnz = z.cln();
     let lnz2 = lnz*lnz;
-    let mut sum = fac::gamma(1 - n)*(-lnz).powi(n - 1);
+    let mut sum = fac::fac(-n)*(-lnz).powi(n - 1);
     let (mut k, mut lnzk) = if is_even(n) {
         (1, lnz)
     } else {

@@ -80,19 +80,20 @@ fn test_inv_fac() {
     assert!(inv_fac(177) == 2.8547896502574379e-323);
     assert!(inv_fac(178) == 0.0);
 }
-/// gamma function for integer n > 0
-pub fn gamma(n: i32) -> f64 {
-    if n < 1 {
-        panic!("gamma not implemented for n < 1 (given value: n = {})", n);
-    } else if ((n - 1) as usize) < GAMMA.len() {
-        GAMMA[(n - 1) as usize]
+
+/// factorial for integer n >= 0
+pub fn fac(n: i32) -> f64 {
+    if n < 0 {
+        panic!("fac not implemented for n < 0 (given value: n = {})", n);
+    } else if (n as usize) < FACTORIALS.len() {
+        FACTORIALS[n as usize]
     } else {
         std::f64::INFINITY
     }
 }
 
-// Table[Gamma[n], {n,1,171}]
-const GAMMA: [f64; 171] = [
+// Table[Factorial[n], {n,0,170}]
+const FACTORIALS: [f64; 171] = [
     1.0, 1.0, 2.0, 6.0, 24.0, 120.0, 720.0, 5040.0, 40320.0,
     362880.0              , 3.6288000000000000e006, 3.9916800000000000e007,
     4.7900160000000000e008, 6.2270208000000000e009, 8.7178291200000000e010,
@@ -151,11 +152,11 @@ const GAMMA: [f64; 171] = [
 ];
 
 #[test]
-fn test_gamma() {
-    assert!(gamma(  1) == 1.0);
-    assert!(gamma(  2) == 1.0);
-    assert!(gamma(  3) == 2.0);
-    assert!(gamma(170) == 4.2690680090047053e304);
-    assert!(gamma(171) == 7.257415615307999e306);
-    assert!(gamma(172).is_infinite());
+fn test_fac() {
+    assert!(fac(  0) == 1.0);
+    assert!(fac(  1) == 1.0);
+    assert!(fac(  2) == 2.0);
+    assert!(fac(169) == 4.2690680090047053e304);
+    assert!(fac(170) == 7.257415615307999e306);
+    assert!(fac(171).is_infinite());
 }
