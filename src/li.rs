@@ -29,7 +29,23 @@ impl Li<Complex<f64>> for Complex<f64> {
     /// println!("Li({},{}) = {}", n, z, z.li(n));
     /// ```
     fn li(&self, n: i32) -> Complex<f64> {
-        Complex::new(0.0, 0.0)
+        if self.is_nan() {
+            Complex::new(f64::NAN, f64::NAN)
+        } else if self.is_infinite() {
+            Complex::new(f64::NEG_INFINITY, 0.0)
+        } else if *self == Complex::new(0.0, 0.0) {
+            Complex::new(0.0, 0.0)
+        } else if *self == Complex::new(1.0, 0.0) {
+            if n <= 0 {
+                Complex::new(f64::INFINITY, f64::INFINITY)
+            } else {
+                Complex::new(zeta::zeta(n), 0.0)
+            }
+        } else if *self == Complex::new(-1.0, 0.0) {
+            Complex::new(li_minus_1(n), 0.0)
+        } else {
+            Complex::new(0.0, 0.0)
+        }
     }
 }
 
