@@ -82,33 +82,12 @@ impl Li<f64> for f64 {
     }
 }
 
-/// returns expansion of Li(n,x) for x ~ 1
-fn li_unity_neg(n: i32, x: f64) -> f64 {
-    let z = Complex::new(x, 0.0);
-    let lnz = z.cln();
-    let lnz2 = lnz*lnz;
-    let mut sum = gamma::gamma(1 - n)*(-lnz).powi(n - 1);
-    let (mut k, mut lnzk) = if is_even(n) {
-        (1, lnz)
-    } else {
-        sum += zeta::zeta(n);
-        (2, lnz2)
-    };
-
-    loop {
-        let term = zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
-        if !term.is_finite() { break; }
-        let sum_old = sum;
-        sum += term;
-        if sum == sum_old || k >= i32::MAX - 2 { break; }
-        lnzk *= lnz2;
-        k += 2;
-    }
-
-    sum.re
+/// returns true if x is even, false otherwise
+fn is_even(x: i32) -> bool {
+    x & 1 == 0
 }
 
-/// returns |log(x)|^2 for all x
+/// returns |ln(x)|^2 for all x
 fn ln_sqr(x: f64) -> f64 {
     if x < 0.0 {
         let l = (-x).ln();
@@ -124,7 +103,7 @@ fn ln_sqr(x: f64) -> f64 {
 /// returns r.h.s. of inversion formula for x < -1:
 ///
 /// Li(n,-x) + (-1)^n Li(n,-1/x)
-///    = -log(n,x)^n/n! + 2 sum(r=1:(n÷2), log(x)^(n-2r)/(n-2r)! Li(2r,-1))
+///    = -ln(n,x)^n/n! + 2 sum(r=1:(n÷2), ln(x)^(n-2r)/(n-2r)! Li(2r,-1))
 fn li_neg_rest(n: i32, x: f64) -> f64 {
     let l = (-x).ln();
     let l2 = l*l;
@@ -161,13 +140,13 @@ fn next_cosi((sn, cn): (f64, f64), (s2, c2): (f64, f64)) -> (f64, f64) {
 
 /// returns r.h.s. of inversion formula for x > 1;
 /// same expression as in li_neg_rest(n,x), but with
-/// complex logarithm log(-x)
+/// complex logarithm ln(-x)
 fn li_pos_rest(n: i32, x: f64) -> f64 {
     let pi = std::f64::consts::PI;
     let l = x.ln();
-    let mag = l.hypot(pi); // |log(-x)|
-    let arg = pi.atan2(l); // arg(log(-x))
-    let l2 = mag*mag;      // |log(-x)|^2
+    let mag = l.hypot(pi); // |ln(-x)|
+    let arg = pi.atan2(l); // arg(ln(-x))
+    let l2 = mag*mag;      // |ln(-x)|^2
 
     if is_even(n) {
         let mut sum = 0.0;
@@ -202,11 +181,11 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
 /// returns Li(n,x) using the series expansion of Li(n,x) for n > 0
 /// and x ~ 1 where 0 < x < 1:
 ///
-/// Li(n,x) = sum(j=0:Inf, zeta(n-j) log(x)^j/j!)
+/// Li(n,x) = sum(j=0:Inf, zeta(n-j) ln(x)^j/j!)
 ///
 /// where
 ///
-/// zeta(1) = -log(-log(x)) + harmonic(n - 1)
+/// zeta(1) = -ln(-ln(x)) + harmonic(n - 1)
 ///
 /// harmonic(n) = sum(k=1:n, 1/k)
 fn li_unity_pos(n: i32, x: f64) -> f64 {
@@ -240,9 +219,33 @@ fn li_unity_pos(n: i32, x: f64) -> f64 {
     sum
 }
 
-/// returns true if x is even, false otherwise
-fn is_even(x: i32) -> bool {
-    x & 1 == 0
+/// returns Li(n,x) using the series expansion for n < 0 and x ~ 1
+///
+/// Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
+///           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
+fn li_unity_neg(n: i32, x: f64) -> f64 {
+    let z = Complex::new(x, 0.0);
+    let lnz = z.cln();
+    let lnz2 = lnz*lnz;
+    let mut sum = gamma::gamma(1 - n)*(-lnz).powi(n - 1);
+    let (mut k, mut lnzk) = if is_even(n) {
+        (1, lnz)
+    } else {
+        sum += zeta::zeta(n);
+        (2, lnz2)
+    };
+
+    loop {
+        let term = zeta::zeta(n - k)*inv_fac::inv_fac(k)*lnzk;
+        if !term.is_finite() { break; }
+        let sum_old = sum;
+        sum += term;
+        if sum == sum_old || k >= i32::MAX - 2 { break; }
+        lnzk *= lnz2;
+        k += 2;
+    }
+
+    sum.re
 }
 
 /// returns Li(n,x) using the naive series expansion of Li(n,x)
