@@ -14,6 +14,11 @@ impl Li<f64> for f64 {
     /// Returns the real n-th order polylogarithm of a real number of
     /// type `f64` for all integers `n`.
     ///
+    /// The implementation for `n < 0` is an adaption of
+    /// [[arxiv:2010.09860]].
+    ///
+    /// [arxiv:2010.09860]: https://arxiv.org/abs/2010.09860
+    ///
     /// # Example:
     /// ```
     /// use polylog::Li;
