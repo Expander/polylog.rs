@@ -1,3 +1,5 @@
+use std::ops::{AddAssign, Div, Mul, MulAssign};
+use std::cmp::PartialEq;
 use num::complex::Complex;
 use crate::cln::CLn;
 use crate::{Li0, Li1, Li2, Li3, Li4, Li5, Li6};
@@ -49,7 +51,7 @@ impl Li<Complex<f64>> for Complex<f64> {
             let z = *self;
             let l2 = z.cln().norm_sqr();
             if c*z.norm_sqr() < l2 {
-                li_series_complex(n, z)
+                li_series(n, z)
             } else if l2 < 0.512*0.512*c {
                 li_unity_neg(n, z)
             } else {
@@ -113,11 +115,11 @@ impl Li<f64> for f64 {
             let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
             let l2 = ln_sqr(x);
             if c*x*x < l2 {
-                li_series_real(n, x)
+                li_series(n, x)
             } else if l2 < 0.512*0.512*c {
                 li_unity_neg(n, Complex::new(x, 0.0)).re
             } else {
-                odd_sgn(n)*li_series_real(n, x.recip())
+                odd_sgn(n)*li_series(n, x.recip())
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
@@ -146,7 +148,7 @@ impl Li<f64> for f64 {
             let li = if n < 20 && y > 0.75 {
                 li_unity_pos(n, y)
             } else {
-                li_series_real(n, y)
+                li_series(n, y)
             };
 
             rest + sgn*li
@@ -323,33 +325,15 @@ fn li_unity_neg(n: i32, z: Complex<f64>) -> Complex<f64> {
 /// for |x| < 1:
 ///
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
-fn li_series_real(n: i32, x: f64) -> f64 {
-    let mut sum = x;
-    let mut xn = x*x;
-
-    for k in 2..i32::MAX {
-        let term = xn/(k as f64).powi(n);
-        if !term.is_finite() { break; }
-        let old_sum = sum;
-        sum += term;
-        if sum == old_sum { break; }
-        xn *= x;
-    }
-
-    sum
-}
-
-/// returns Li(n,x) using the naive series expansion of Li(n,x)
-/// for |x| < 1:
-///
-/// Li(n,x) = sum(k=1:Inf, x^k/k^n)
-fn li_series_complex(n: i32, z: Complex<f64>) -> Complex<f64> {
+fn li_series<T>(n: i32, z: T) -> T
+    where T: AddAssign + Div<f64, Output = T> + Mul<Output = T> + MulAssign + PartialEq + Copy + IsInfinite<T>
+{
     let mut sum = z;
     let mut zn = z*z;
 
     for k in 2..i32::MAX {
         let term = zn/(k as f64).powi(n);
-        if !term.is_finite() { break; }
+        if term.is_inf() { break; }
         let old_sum = sum;
         sum += term;
         if sum == old_sum { break; }
@@ -461,4 +445,22 @@ fn test_li_minus_1() {
     assert!(li_minus_1(  54) == -0.9999999999999999);
     assert!(li_minus_1(  55) == -1.0);
     assert!(li_minus_1(  56) == -1.0);
+}
+
+/// provides the is_inf() function to test whether T is non-finite
+/// (nan or infinite)
+trait IsInfinite<T> {
+    fn is_inf(&self) -> bool;
+}
+
+impl IsInfinite<f64> for f64 {
+    fn is_inf(&self) -> bool {
+        !self.is_finite()
+    }
+}
+
+impl IsInfinite<Complex<f64>> for Complex<f64> {
+    fn is_inf(&self) -> bool {
+        !self.is_finite()
+    }
 }
