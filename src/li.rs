@@ -77,6 +77,9 @@ impl Li<Complex<f64>> for Complex<f64> {
             self.li6()
         } else if self.norm_sqr() <= 0.75*0.75 {
             li_series(n, *self)
+        } else if self.norm_sqr() >= 1.4*1.4 {
+            let sgn = if is_even(n) { -1.0 } else { 1.0 };
+            sgn*li_series(n, 1.0/self) + li_rest(n, *self)
         } else {
             Complex::new(0.0, 0.0) // @todo
         }
@@ -174,6 +177,27 @@ fn ln_sqr(x: f64) -> f64 {
         let l = x.ln();
         l*l
     }
+}
+
+/// returns r.h.s. of inversion formula for complex z
+///
+/// Li(n,-z) + (-1)^n Li(n,-1/z)
+///    = -ln(n,z)^n/n! + 2 sum(k=1:(n÷2), ln(z)^(n-2k)/(n-2k)! Li(2k,-1))
+fn li_rest(n: i32, z: Complex<f64>) -> Complex<f64> {
+    let lnz = (-z).cln();
+    let lnz2 = lnz*lnz;
+    let kmax = if is_even(n) { n/2 } else { (n - 1)/2 };
+    let mut p = if is_even(n) { Complex::new(1.0, 0.0) } else { lnz };
+    let mut sum = Complex::new(0.0, 0.0);
+
+    for k in (1..=kmax).rev() {
+        let ifac = fac::inv_fac(n - 2*k);
+        if ifac == 0.0 { return 2.0*sum; }
+        sum += li_minus_1(2*k)*ifac*p;
+        p *= lnz2;
+    }
+
+    2.0*sum - p*fac::inv_fac(n)
 }
 
 /// returns r.h.s. of inversion formula for x < -1:
