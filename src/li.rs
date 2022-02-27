@@ -104,7 +104,7 @@ impl Li<f64> for f64 {
             if c*x*x < l2 {
                 li_series(n, x)
             } else if l2 < 0.512*0.512*c {
-                li_unity_neg(n, x)
+                li_unity_neg(n, Complex::new(x, 0.0)).re
             } else {
                 odd_sgn(n)*li_series(n, x.recip())
             }
@@ -284,8 +284,7 @@ fn li_unity_pos(n: i32, x: f64) -> f64 {
 ///
 /// Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
 ///           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
-fn li_unity_neg(n: i32, x: f64) -> f64 {
-    let z = Complex::new(x, 0.0);
+fn li_unity_neg(n: i32, z: Complex<f64>) -> Complex<f64> {
     let lnz = z.cln();
     let lnz2 = lnz*lnz;
     let mut sum = fac::fac(-n)*(-lnz).powi(n - 1);
@@ -306,7 +305,7 @@ fn li_unity_neg(n: i32, x: f64) -> f64 {
         k += 2;
     }
 
-    sum.re
+    sum
 }
 
 /// returns Li(n,x) using the naive series expansion of Li(n,x)
