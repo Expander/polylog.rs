@@ -1,5 +1,6 @@
 extern crate polylog;
 extern crate num;
+use num::complex::Complex;
 use polylog::Li;
 mod common;
 
@@ -44,4 +45,6 @@ fn test_values() {
 
     // value close to boundary between series 1 and 2 in arXiv:2010.09860
     assert_eq_float!((-0.50001_f64).li(-2), -0.074072592582716422_f64, 1e-14);
+    assert_eq_complex!(Complex::<f64>::new(-0.50001, 0.0).li(-2),
+                       Complex::<f64>::new(-0.074072592582716422, 0.0), 1e-14);
 }
