@@ -44,7 +44,18 @@ impl Li<Complex<f64>> for Complex<f64> {
         } else if *self == Complex::new(-1.0, 0.0) {
             Complex::new(li_minus_1(n), 0.0)
         } else if n < -1 {
-            Complex::new(0.0, 0.0) // @todo
+            // arXiv:2010.09860
+            let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
+            let z = *self;
+            let l2 = z.cln().norm_sqr();
+            if c*z.norm_sqr() < l2 {
+                li_series_complex(n, z)
+            } else if l2 < 0.512*0.512*c {
+                li_unity_neg(n, z)
+            } else {
+                let sqrtz = z.sqrt();
+                2.0_f64.powi(n - 1)*(sqrtz.li(n) + (-sqrtz).li(n))
+            }
         } else if n == -1 {
             let z = *self;
             z/((1.0 - z)*(1.0 - z))
@@ -102,11 +113,11 @@ impl Li<f64> for f64 {
             let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
             let l2 = ln_sqr(x);
             if c*x*x < l2 {
-                li_series(n, x)
+                li_series_real(n, x)
             } else if l2 < 0.512*0.512*c {
                 li_unity_neg(n, Complex::new(x, 0.0)).re
             } else {
-                odd_sgn(n)*li_series(n, x.recip())
+                odd_sgn(n)*li_series_real(n, x.recip())
             }
         } else if n == -1 {
             *self/((1.0 - *self)*(1.0 - *self))
@@ -135,7 +146,7 @@ impl Li<f64> for f64 {
             let li = if n < 20 && y > 0.75 {
                 li_unity_pos(n, y)
             } else {
-                li_series(n, y)
+                li_series_real(n, y)
             };
 
             rest + sgn*li
@@ -312,7 +323,7 @@ fn li_unity_neg(n: i32, z: Complex<f64>) -> Complex<f64> {
 /// for |x| < 1:
 ///
 /// Li(n,x) = sum(k=1:Inf, x^k/k^n)
-fn li_series(n: i32, x: f64) -> f64 {
+fn li_series_real(n: i32, x: f64) -> f64 {
     let mut sum = x;
     let mut xn = x*x;
 
@@ -323,6 +334,26 @@ fn li_series(n: i32, x: f64) -> f64 {
         sum += term;
         if sum == old_sum { break; }
         xn *= x;
+    }
+
+    sum
+}
+
+/// returns Li(n,x) using the naive series expansion of Li(n,x)
+/// for |x| < 1:
+///
+/// Li(n,x) = sum(k=1:Inf, x^k/k^n)
+fn li_series_complex(n: i32, z: Complex<f64>) -> Complex<f64> {
+    let mut sum = z;
+    let mut zn = z*z;
+
+    for k in 2..i32::MAX {
+        let term = zn/(k as f64).powi(n);
+        if !term.is_finite() { break; }
+        let old_sum = sum;
+        sum += term;
+        if sum == old_sum { break; }
+        zn *= z;
     }
 
     sum

@@ -10,13 +10,13 @@ fn test_values() {
     let ni = vec![
         Ni { n: -10, eps: 1e-09},
         Ni { n:  -9, eps: 1e-10},
-        Ni { n:  -8, eps: 1e-11},
+        Ni { n:  -8, eps: 1e-10},
         Ni { n:  -7, eps: 1e-12},
-        Ni { n:  -6, eps: 1e-13},
-        Ni { n:  -5, eps: 1e-13},
-        Ni { n:  -4, eps: 1e-14},
-        Ni { n:  -3, eps: 1e-14},
-        Ni { n:  -2, eps: 1e-14},
+        Ni { n:  -6, eps: 1e-12},
+        Ni { n:  -5, eps: 1e-10},
+        Ni { n:  -4, eps: 1e-13},
+        Ni { n:  -3, eps: 1e-13},
+        Ni { n:  -2, eps: 1e-13},
         Ni { n:  -1, eps: 1e-14},
         Ni { n:   0, eps: 1e-14},
         Ni { n:   1, eps: 1e-14},
@@ -36,7 +36,8 @@ fn test_values() {
             if v.im == 0.0 {
                 assert_eq_float!(v.re.li(n.n), res.re, n.eps);
             }
-            if n.n == -1 || n.n == 0 || n.n == 1 || n.n == 2 || n.n == 3 || n.n == 4 || n.n == 5 || n.n == 6 {
+            if n.n <= 6 {
+                // println!("n = {}, z = {}", n.n, v);
                 assert_eq_complex!(v.li(n.n), res, n.eps);
             }
         }
