@@ -60,6 +60,32 @@ pub fn cli(n: i32, z: Complex<f64>) -> Complex<f64> {
     }
 }
 
+/// returns true if x is even, false otherwise
+fn is_even(x: i32) -> bool {
+    x & 1 == 0
+}
+
+/// returns r.h.s. of inversion formula for complex z
+///
+/// Li(n,-z) + (-1)^n Li(n,-1/z)
+///    = -ln(n,z)^n/n! + 2 sum(k=1:(n÷2), ln(z)^(n-2k)/(n-2k)! Li(2k,-1))
+fn li_rest(n: i32, z: Complex<f64>) -> Complex<f64> {
+    let lnz = (-z).cln();
+    let lnz2 = lnz*lnz;
+    let kmax = if is_even(n) { n/2 } else { (n - 1)/2 };
+    let mut p = if is_even(n) { Complex::new(1.0, 0.0) } else { lnz };
+    let mut sum = Complex::new(0.0, 0.0);
+
+    for k in (1..=kmax).rev() {
+        let ifac = inv_fac(n - 2*k);
+        if ifac == 0.0 { return 2.0*sum; }
+        sum += neg_eta(2*k)*ifac*p;
+        p *= lnz2;
+    }
+
+    2.0*sum - p*inv_fac(n)
+}
+
 /// returns Li(n,z) using the series expansion of Li(n,z) for n > 0
 /// and complex z ~ 1:
 ///
@@ -101,53 +127,6 @@ fn li_unity_pos(n: i32, z: Complex<f64>) -> Complex<f64> {
     sum
 }
 
-/// returns r.h.s. of inversion formula for complex z
-///
-/// Li(n,-z) + (-1)^n Li(n,-1/z)
-///    = -ln(n,z)^n/n! + 2 sum(k=1:(n÷2), ln(z)^(n-2k)/(n-2k)! Li(2k,-1))
-fn li_rest(n: i32, z: Complex<f64>) -> Complex<f64> {
-    let lnz = (-z).cln();
-    let lnz2 = lnz*lnz;
-    let kmax = if is_even(n) { n/2 } else { (n - 1)/2 };
-    let mut p = if is_even(n) { Complex::new(1.0, 0.0) } else { lnz };
-    let mut sum = Complex::new(0.0, 0.0);
-
-    for k in (1..=kmax).rev() {
-        let ifac = inv_fac(n - 2*k);
-        if ifac == 0.0 { return 2.0*sum; }
-        sum += neg_eta(2*k)*ifac*p;
-        p *= lnz2;
-    }
-
-    2.0*sum - p*inv_fac(n)
-}
-
-/// returns Li(n,x) using the naive series expansion of Li(n,x)
-/// for |x| < 1:
-///
-/// Li(n,x) = sum(k=1:Inf, x^k/k^n)
-fn li_series(n: i32, z: Complex<f64>) -> Complex<f64>
-{
-    let mut sum = z;
-    let mut zn = z*z;
-
-    for k in 2..i32::MAX {
-        let term = zn/(k as f64).powi(n);
-        if !term.is_finite() { break; }
-        let old_sum = sum;
-        sum += term;
-        if sum == old_sum { break; }
-        zn *= z;
-    }
-
-    sum
-}
-
-/// returns true if x is even, false otherwise
-fn is_even(x: i32) -> bool {
-    x & 1 == 0
-}
-
 /// returns Li(n,x) using the series expansion for n < 0 and x ~ 1
 ///
 /// Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
@@ -171,6 +150,27 @@ fn li_unity_neg(n: i32, z: Complex<f64>) -> Complex<f64> {
         if sum == sum_old || k >= i32::MAX - 2 { break; }
         lnzk *= lnz2;
         k += 2;
+    }
+
+    sum
+}
+
+/// returns Li(n,x) using the naive series expansion of Li(n,x)
+/// for |x| < 1:
+///
+/// Li(n,x) = sum(k=1:Inf, x^k/k^n)
+fn li_series(n: i32, z: Complex<f64>) -> Complex<f64>
+{
+    let mut sum = z;
+    let mut zn = z*z;
+
+    for k in 2..i32::MAX {
+        let term = zn/(k as f64).powi(n);
+        if !term.is_finite() { break; }
+        let old_sum = sum;
+        sum += term;
+        if sum == old_sum { break; }
+        zn *= z;
     }
 
     sum
