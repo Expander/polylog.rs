@@ -1,6 +1,6 @@
 use num::complex::Complex;
 use crate::cln::CLn;
-use crate::{Li0, Li1, Li2, Li3, Li4};
+use crate::{Li0, Li1, Li2, Li3, Li4, Li5, Li6};
 mod harmonic;
 mod fac;
 mod zeta;
@@ -43,8 +43,27 @@ impl Li<Complex<f64>> for Complex<f64> {
             }
         } else if *self == Complex::new(-1.0, 0.0) {
             Complex::new(li_minus_1(n), 0.0)
+        } else if n < -1 {
+            Complex::new(0.0, 0.0) // @todo
+        } else if n == -1 {
+            let z = *self;
+            z/((1.0 - z)*(1.0 - z))
+        } else if n == 0 {
+            self.li0()
+        } else if n == 1 {
+            self.li1()
+        } else if n == 2 {
+            self.li2()
+        } else if n == 3 {
+            self.li3()
+        } else if n == 4 {
+            self.li4()
+        } else if n == 5 {
+            self.li5()
+        } else if n == 6 {
+            self.li6()
         } else {
-            Complex::new(0.0, 0.0)
+            Complex::new(0.0, 0.0) // @todo
         }
     }
 }

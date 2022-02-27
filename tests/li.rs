@@ -35,6 +35,8 @@ fn test_values() {
         for &(v, res) in values.iter() {
             if v.im == 0.0 {
                 assert_eq_float!(v.re.li(n.n), res.re, n.eps);
+            } else if n.n == -1 || n.n == 0 || n.n == 1 || n.n == 2 || n.n == 3 || n.n == 4 || n.n == 5 || n.n == 6 {
+                assert_eq_complex!(v.li(n.n), res, n.eps);
             }
         }
 
