@@ -53,7 +53,7 @@ impl Li<Complex<f64>> for Complex<f64> {
             if c*z.norm_sqr() < l2 {
                 li_series(n, z)
             } else if l2 < 0.512*0.512*c {
-                li_unity_neg(n, z)
+                li_unity_neg_complex(n, z)
             } else {
                 let sqrtz = z.sqrt();
                 2.0_f64.powi(n - 1)*(sqrtz.li(n) + (-sqrtz).li(n))
@@ -122,7 +122,7 @@ impl Li<f64> for f64 {
             if c*x*x < l2 {
                 li_series(n, x)
             } else if l2 < 0.512*0.512*c {
-                li_unity_neg(n, Complex::new(x, 0.0)).re
+                li_unity_neg_complex(n, Complex::new(x, 0.0)).re
             } else {
                 odd_sgn(n)*li_series(n, x.recip())
             }
@@ -151,7 +151,7 @@ impl Li<f64> for f64 {
             };
 
             let li = if n < 20 && y > 0.75 {
-                li_unity_pos(n, y)
+                li_unity_pos_real(n, y)
             } else {
                 li_series(n, y)
             };
@@ -329,7 +329,7 @@ fn li_unity_pos_complex(n: i32, z: Complex<f64>) -> Complex<f64> {
 /// zeta(1) = -ln(-ln(x)) + harmonic(n - 1)
 ///
 /// harmonic(n) = sum(k=1:n, 1/k)
-fn li_unity_pos(n: i32, x: f64) -> f64 {
+fn li_unity_pos_real(n: i32, x: f64) -> f64 {
     let l = x.ln();
     let mut sum = zeta::zeta(n);
     let mut p = 1.0; // collects l^j/j!
@@ -364,7 +364,7 @@ fn li_unity_pos(n: i32, x: f64) -> f64 {
 ///
 /// Li(n,x) = gamma(1-n) (-ln(x))^(n-1)
 ///           + sum(k=0:Inf, zeta(n-k) ln(x)^k/k!)
-fn li_unity_neg(n: i32, z: Complex<f64>) -> Complex<f64> {
+fn li_unity_neg_complex(n: i32, z: Complex<f64>) -> Complex<f64> {
     let lnz = z.cln();
     let lnz2 = lnz*lnz;
     let mut sum = fac::fac(-n)*(-lnz).powi(n - 1);
