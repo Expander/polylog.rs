@@ -48,6 +48,9 @@ fn main() {
 Notes
 -----
 
+The implementation of the real dilogarithm is an adaption of
+[[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
+
 The implementation of the complex dilogarithm has been inspired by the
 implementation in [SPheno](https://spheno.hepforge.org) and has been
 translated to Rust.
