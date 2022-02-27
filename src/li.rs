@@ -75,6 +75,8 @@ impl Li<Complex<f64>> for Complex<f64> {
             self.li5()
         } else if n == 6 {
             self.li6()
+        } else if self.norm_sqr() <= 0.75*0.75 {
+            li_series(n, *self)
         } else {
             Complex::new(0.0, 0.0) // @todo
         }
