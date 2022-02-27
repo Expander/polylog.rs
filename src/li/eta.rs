@@ -1,5 +1,5 @@
-// Table[PolyLog[-2n+1,-1], {n,1,109}]
-const LI_MINUS_1_COEFF_NEG: [f64; 109] = [
+// Table[PolyLog[-2n+1,-1], {n,1,109}] = -eta(n) for n < 0
+const MINUS_ETA_NEG: [f64; 109] = [
    -0.25, 0.125           , -0.25                  ,  1.0625                ,
    -7.75                  ,  86.375                , -1365.25               ,
     29049.03125           , -800572.75             ,  2.7741322625e7        ,
@@ -38,8 +38,8 @@ const LI_MINUS_1_COEFF_NEG: [f64; 109] = [
    -8.2136799002055846e298,  3.8290431596908477e302, -1.8184610414701105e306
 ];
 
-// Table[PolyLog[n,-1], {n,1,54}]
-const LI_MINUS_1_COEFF: [f64; 54] = [
+// Table[PolyLog[n,-1], {n,1,54}] = -eta(n) for n > 0
+const MINUS_ETA_POS: [f64; 54] = [
     -0.69314718055994531, -0.82246703342411322, -0.90154267736969571,
     -0.94703282949724592, -0.97211977044690931, -0.98555109129743510,
     -0.99259381992283028, -0.99623300185264790, -0.99809429754160533,
@@ -66,8 +66,8 @@ pub fn neg_eta(n: i32) -> f64 {
         let is_even = |x| x & 1 == 0;
         if is_even(n) {
             0.0
-        } else if ((-(1 + n)/2) as usize) < LI_MINUS_1_COEFF_NEG.len() {
-            LI_MINUS_1_COEFF_NEG[(-(1 + n)/2) as usize]
+        } else if ((-(1 + n)/2) as usize) < MINUS_ETA_NEG.len() {
+            MINUS_ETA_NEG[(-(1 + n)/2) as usize]
         } else if is_even((1 - n)/2) {
             std::f64::INFINITY
         } else {
@@ -75,8 +75,8 @@ pub fn neg_eta(n: i32) -> f64 {
         }
     } else if n == 0 {
         -0.5
-    } else if n as usize <= LI_MINUS_1_COEFF.len() {
-        LI_MINUS_1_COEFF[(n - 1) as usize]
+    } else if n as usize <= MINUS_ETA_POS.len() {
+        MINUS_ETA_POS[(n - 1) as usize]
     } else {
         -1.0
     }
