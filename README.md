@@ -40,6 +40,7 @@ fn main() {
     println!("Li4({}) = {}", z, z.li4());      // Li_4(z)
     println!("Li5({}) = {}", z, z.li5());      // Li_5(z)
     println!("Li6({}) = {}", z, z.li6());      // Li_6(z)
+    println!("Li_{}({}) = {}", n, z, z.li(n)); // Li_n(z)
 }
 ```
 
@@ -47,9 +48,15 @@ fn main() {
 Notes
 -----
 
+The implementation of the real dilogarithm is an adaption of
+[[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
+
 The implementation of the complex dilogarithm has been inspired by the
 implementation in [SPheno](https://spheno.hepforge.org) and has been
 translated to Rust.
+
+The implementation of the general n-th order complex polylogarithm is
+an adaption of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
 Citation

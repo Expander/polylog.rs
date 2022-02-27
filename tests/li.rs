@@ -1,5 +1,6 @@
 extern crate polylog;
 extern crate num;
+use num::complex::Complex;
 use polylog::Li;
 mod common;
 
@@ -10,13 +11,13 @@ fn test_values() {
     let ni = vec![
         Ni { n: -10, eps: 1e-09},
         Ni { n:  -9, eps: 1e-10},
-        Ni { n:  -8, eps: 1e-11},
+        Ni { n:  -8, eps: 1e-10},
         Ni { n:  -7, eps: 1e-12},
-        Ni { n:  -6, eps: 1e-13},
-        Ni { n:  -5, eps: 1e-13},
-        Ni { n:  -4, eps: 1e-14},
-        Ni { n:  -3, eps: 1e-14},
-        Ni { n:  -2, eps: 1e-14},
+        Ni { n:  -6, eps: 1e-12},
+        Ni { n:  -5, eps: 1e-10},
+        Ni { n:  -4, eps: 1e-13},
+        Ni { n:  -3, eps: 1e-13},
+        Ni { n:  -2, eps: 1e-13},
         Ni { n:  -1, eps: 1e-14},
         Ni { n:   0, eps: 1e-14},
         Ni { n:   1, eps: 1e-14},
@@ -36,6 +37,7 @@ fn test_values() {
             if v.im == 0.0 {
                 assert_eq_float!(v.re.li(n.n), res.re, n.eps);
             }
+            assert_eq_complex!(v.li(n.n), res, n.eps);
         }
 
         assert!(std::f64::NAN.li(n.n).is_nan());
@@ -43,4 +45,6 @@ fn test_values() {
 
     // value close to boundary between series 1 and 2 in arXiv:2010.09860
     assert_eq_float!((-0.50001_f64).li(-2), -0.074072592582716422_f64, 1e-14);
+    assert_eq_complex!(Complex::<f64>::new(-0.50001, 0.0).li(-2),
+                       Complex::<f64>::new(-0.074072592582716422, 0.0), 1e-14);
 }
