@@ -81,7 +81,7 @@ impl Li<Complex<f64>> for Complex<f64> {
             let sgn = if is_even(n) { -1.0 } else { 1.0 };
             sgn*li_series(n, 1.0/self) + li_rest(n, *self)
         } else {
-            Complex::new(0.0, 0.0) // @todo
+            li_unity_pos_complex(n, *self)
         }
     }
 }
@@ -278,8 +278,49 @@ fn li_pos_rest(n: i32, x: f64) -> f64 {
     }
 }
 
+/// returns Li(n,z) using the series expansion of Li(n,z) for n > 0
+/// and complex z ~ 1:
+///
+/// Li(n,z) = sum(j=0:Inf, zeta(n-j) ln(z)^j/j!)
+///
+/// where
+///
+/// zeta(1) = -ln(-ln(z)) + harmonic(n - 1)
+///
+/// harmonic(n) = sum(k=1:n, 1/k)
+fn li_unity_pos_complex(n: i32, z: Complex<f64>) -> Complex<f64> {
+    let l = z.cln();
+    let mut sum = Complex::new(zeta::zeta(n), 0.0);
+    let mut p = Complex::new(1.0, 0.0); // collects l^j/j!
+
+    for j in 1..(n - 1) {
+        p *= l/(j as f64);
+        sum += zeta::zeta(n - j)*p;
+    }
+
+    p *= l/((n - 1) as f64);
+    sum += (harmonic::harmonic(n - 1) - (-l).ln())*p;
+
+    p *= l/(n as f64);
+    sum += zeta::zeta(0)*p;
+
+    p *= l/((n + 1) as f64);
+    sum += zeta::zeta(-1)*p;
+
+    let l2 = l*l;
+
+    for j in ((n + 3)..i32::MAX).step_by(2) {
+        p *= l2/(((j - 1)*j) as f64);
+        let old_sum = sum;
+        sum += zeta::zeta(n - j)*p;
+        if sum == old_sum { break; }
+    }
+
+    sum
+}
+
 /// returns Li(n,x) using the series expansion of Li(n,x) for n > 0
-/// and x ~ 1 where 0 < x < 1:
+/// and real x ~ 1 where 0 < x < 1:
 ///
 /// Li(n,x) = sum(j=0:Inf, zeta(n-j) ln(x)^j/j!)
 ///

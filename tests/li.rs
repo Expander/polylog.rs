@@ -36,10 +36,7 @@ fn test_values() {
             if v.im == 0.0 {
                 assert_eq_float!(v.re.li(n.n), res.re, n.eps);
             }
-            if n.n <= 6 || v.norm_sqr() <= 0.75*0.75 || v.norm_sqr() >= 1.4*1.4 {
-                // println!("n = {}, z = {}", n.n, v);
-                assert_eq_complex!(v.li(n.n), res, n.eps);
-            }
+            assert_eq_complex!(v.li(n.n), res, n.eps);
         }
 
         assert!(std::f64::NAN.li(n.n).is_nan());
