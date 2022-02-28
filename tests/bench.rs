@@ -75,7 +75,7 @@ fn bench_complex_li6() {
 #[test]
 #[ignore]
 fn bench_real_li() {
-    println!("Benchmark of Li(n,x):");
+    println!("Benchmark of real Li(n,x):");
 
     let mut ni: Vec<_> = (-10..10).step_by(2).collect();
     let n2 = vec![-10000, -1000, -100, 100, 1000, 1000_000];
@@ -84,6 +84,22 @@ fn bench_real_li() {
     for n in ni.into_iter() {
         let sample = gen_real_numbers(-1.0, 1.0, 1000_000);
         bench_fn(|z: &f64| z.li(n), format!("real Li_{}", n), sample);
+    }
+}
+
+
+#[test]
+#[ignore]
+fn bench_complex_li() {
+    println!("Benchmark of complex Li(n,z):");
+
+    let mut ni: Vec<_> = (-10..10).step_by(2).collect();
+    let n2 = vec![-10000, -1000, -100, 100, 1000, 1000_000];
+    ni.extend(n2);
+
+    for n in ni.into_iter() {
+        let sample = gen_complex_numbers(-1.0, 1.0, 1000_000);
+        bench_fn(|z: &Complex<f64>| z.li(n), format!("complex Li_{}", n), sample);
     }
 }
 
