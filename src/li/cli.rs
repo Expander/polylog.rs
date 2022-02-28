@@ -103,7 +103,9 @@ fn li_unity_pos(n: i32, z: Complex<f64>) -> Complex<f64> {
 
     for j in 1..(n - 1) {
         p *= l/(j as f64);
+        let old_sum = sum;
         sum += zeta(n - j)*p;
+        if sum == old_sum { break; }
     }
 
     p *= l/((n - 1) as f64);
