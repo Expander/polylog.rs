@@ -20,7 +20,6 @@ pub fn rli(n: i32, x: f64) -> f64 {
         std::f64::NAN
     } else if n < -1 {
         // arXiv:2010.09860
-        let x = x;
         let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
         let l2 = ln_sqr(x);
         if c*x*x < l2 {
