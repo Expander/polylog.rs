@@ -109,7 +109,7 @@ fn li_unity_pos(n: i32, z: Complex<f64>) -> Complex<f64> {
     }
 
     p *= l/((n - 1) as f64);
-    sum += (harmonic(n - 1) - (-l).ln())*p;
+    sum += (harmonic(n - 1) - (-l).cln())*p;
 
     p *= l/(n as f64);
     sum += zeta(0)*p;

@@ -47,4 +47,9 @@ fn test_values() {
     assert_eq_float!((-0.50001_f64).li(-2), -0.074072592582716422_f64, 1e-14);
     assert_eq_complex!(Complex::<f64>::new(-0.50001, 0.0).li(-2),
                        Complex::<f64>::new(-0.074072592582716422, 0.0), 1e-14);
+
+    // value sensitive to proper treatment of 0.0 vs -0.0 in imag(z)
+    let z = Complex::new(1.5, 0.0);
+    assert_eq_complex!(z.li(10), Complex::<f64>::new(1.5022603281703005298, -2.56429642116111388671e-9), 1e-14);
+    assert_eq_complex!((-z).li(10), Complex::<f64>::new(-1.4978556954869267594, 0.0), 1e-14);
 }
