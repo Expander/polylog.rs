@@ -79,8 +79,10 @@ fn li_rest(n: i32, z: Complex<f64>) -> Complex<f64> {
     for k in (1..=kmax).rev() {
         let ifac = inv_fac(n - 2*k);
         if ifac == 0.0 { return 2.0*sum; }
+        let old_sum = sum;
         sum += neg_eta(2*k)*ifac*p;
         p *= lnz2;
+        if sum == old_sum { break; }
     }
 
     2.0*sum - p*inv_fac(n)

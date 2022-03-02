@@ -93,8 +93,8 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         for u in 0..n/2 {
             let old_sum = sum;
             sum += p*inv_fac(2*u)*neg_eta(n - 2*u);
-            if sum == old_sum { break; }
             p *= l2;
+            if sum == old_sum { break; }
         }
         2.0*sum - p*inv_fac(n)
     } else {
@@ -103,8 +103,8 @@ fn li_neg_rest(n: i32, x: f64) -> f64 {
         for u in 0..(n - 1)/2 {
             let old_sum = sum;
             sum += p*inv_fac(2*u + 1)*neg_eta(n - 1 - 2*u);
-            if sum == old_sum { break; }
             p *= l2;
+            if sum == old_sum { break; }
         }
         2.0*sum - p*inv_fac(n)
     }
