@@ -67,7 +67,7 @@ Citation
     author       = {{Alexander Voigt}},
     title        = {{polylog.rs}},
     year         = {2022},
-    version      = {2.1.0},
+    version      = {2.2.0},
     url          = {https://github.com/Expander/polylog},
     note         = {[License: LGPL-3.0-only]}
 }
