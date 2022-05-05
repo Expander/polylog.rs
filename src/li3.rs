@@ -131,17 +131,11 @@ impl Li3<Complex<f64>> for Complex<f64> {
         ];
 
         if self.im == 0.0 {
-            if self.re == 0.0 {
-                return Complex::new(0., 0.);
-            }
-            if self.re == 1.0 {
-                return Complex::new(z3, 0.);
-            }
-            if self.re == -1.0 {
-                return Complex::new(-0.75*z3, 0.);
-            }
-            if self.re == 0.5 {
-                return Complex::new(0.53721319360804020, 0.);
+            if self.re <= 1.0 {
+                return Complex::new(self.re.li3(), 0.0)
+            } else { // rz > 1.0
+                let l = self.re.ln();
+                return Complex::new(self.re.li3(), -0.5*pi*l*l)
             }
         }
 

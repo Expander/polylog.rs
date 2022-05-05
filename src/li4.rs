@@ -174,14 +174,11 @@ impl Li4<Complex<f64>> for Complex<f64> {
         ];
 
         if self.im == 0.0 {
-            if self.re == 0.0 {
-                return Complex::new(0., 0.);
-            }
-            if self.re == 1.0 {
-                return Complex::new(z4, 0.);
-            }
-            if self.re == -1.0 {
-                return Complex::new(-7./8.*z4, 0.);
+            if self.re <= 1.0 {
+                return Complex::new(self.re.li4(), 0.0)
+            } else { // rz > 1.0
+                let l = self.re.ln();
+                return Complex::new(self.re.li4(), -pi/6.0*l*l*l)
             }
         }
 

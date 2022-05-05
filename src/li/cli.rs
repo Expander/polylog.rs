@@ -1,6 +1,6 @@
 use num::complex::Complex;
 use crate::cln::CLn;
-use crate::{Li0, Li1, Li2, Li3, Li4, Li5, Li6};
+use crate::{Li, Li0, Li1, Li2, Li3, Li4, Li5, Li6};
 use super::eta::neg_eta;
 use super::fac::{fac, inv_fac};
 use super::harmonic::harmonic;
@@ -12,16 +12,13 @@ pub fn cli(n: i32, z: Complex<f64>) -> Complex<f64> {
         Complex::new(f64::NAN, f64::NAN)
     } else if z.is_infinite() {
         Complex::new(f64::NEG_INFINITY, 0.0)
-    } else if z == Complex::new(0.0, 0.0) {
-        Complex::new(0.0, 0.0)
-    } else if z == Complex::new(1.0, 0.0) {
-        if n <= 0 {
-            Complex::new(f64::INFINITY, f64::INFINITY)
-        } else {
-            Complex::new(zeta(n), 0.0)
+    } else if z.im == 0.0 {
+        if z.re <= 1.0 || n <= 0 {
+            Complex::new(z.re.li(n), 0.0)
+        } else { // rz > 1.0 && n > 0
+            let l = z.re.ln();
+            Complex::new(z.re.li(n), -std::f64::consts::PI*inv_fac(n - 1)*l.powi(n - 1))
         }
-    } else if z == Complex::new(-1.0, 0.0) {
-        Complex::new(neg_eta(n), 0.0)
     } else if n < -1 {
         // arXiv:2010.09860
         let c = 4.0*std::f64::consts::PI*std::f64::consts::PI;
