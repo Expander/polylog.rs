@@ -64,12 +64,12 @@ Citation
 
 ~~~.bibtex
 @software{polylog.rs,
-    author       = {{Alexander Voigt}},
-    title        = {{polylog.rs}},
-    year         = {2022},
-    version      = {2.2.0},
-    url          = {https://github.com/Expander/polylog},
-    note         = {[License: LGPL-3.0-only]}
+    author  = {{Alexander Voigt}},
+    title   = {{polylog.rs}},
+    year    = {2022},
+    version = {2.2.0},
+    url     = {https://github.com/Expander/polylog},
+    note    = {[License: LGPL-3.0-only]}
 }
 ~~~
 
