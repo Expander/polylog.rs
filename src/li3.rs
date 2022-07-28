@@ -23,33 +23,31 @@ impl Li3<f64> for f64 {
         let x = *self;
 
         // transformation to [-1,0] and [0,1/2]
-        let (neg, pos, sgn, rest) = if x < -1.0 {
+        if x < -1.0 {
             let l = (-x).ln();
-            (li3_neg(1.0/x), 0.0, 1.0, -l*(z2 + 1.0/6.0*l*l))
+            li3_neg(1.0/x) - l*(z2 + 1.0/6.0*l*l)
         } else if x == -1.0 {
-            return -0.75*z3
+            -0.75*z3
         } else if x < 0.0 {
-            (li3_neg(x), 0.0, 1.0, 0.0)
+            li3_neg(x)
         } else if x == 0.0 {
-            return 0.0
+            0.0
         } else if x < 0.5 {
-            (0.0, li3_pos(x), 1.0, 0.0)
+            li3_pos(x)
         } else if x == 0.5 {
-            return 0.53721319360804020
+            0.53721319360804020
         } else if x < 1.0 {
             let l = x.ln();
-            (li3_neg((x - 1.0)/x), li3_pos(1.0 - x), -1.0, z3 + l*(z2 + l*(-0.5*(1.0 - x).ln() + 1.0/6.0*l)))
+            -li3_neg(1.0 - x.recip()) - li3_pos(1.0 - x) + z3 + l*(z2 + l*(-0.5*(1.0 - x).ln() + 1.0/6.0*l))
         } else if x == 1.0 {
-            return z3
+            z3
         } else if x < 2.0 {
             let l = x.ln();
-            (li3_neg(1.0 - x), li3_pos((x - 1.0)/x), -1.0, z3 + l*(z2 + l*(-0.5*(x - 1.0).ln() + 1.0/6.0*l)))
+            -li3_neg(1.0 - x) - li3_pos(1.0 - x.recip()) + z3 + l*(z2 + l*(-0.5*(x - 1.0).ln() + 1.0/6.0*l))
         } else { // x >= 2.0
             let l = x.ln();
-            (0.0, li3_pos(1.0/x), 1.0, l*(2.0*z2 - 1.0/6.0*l*l))
-        };
-
-        rest + sgn*(neg + pos)
+            li3_pos(x.recip()) + l*(2.0*z2 - 1.0/6.0*l*l)
+        }
     }
 }
 
