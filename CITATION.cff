@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Voigt"
+  given-names: "Alexander"
+  orcid: "https://orcid.org/0000-0001-8963-6512"
+title: "polylog.rs"
+version: 2.4.0
+date-released: 2022-07-29
+url: "https://github.com/Expander/polylog"
+license: LGPL-3.0-only
