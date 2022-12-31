@@ -7,6 +7,36 @@ pub trait Li2<T> {
     fn li2(&self) -> T;
 }
 
+/// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+fn li2_approx(x: f64) -> f64 {
+    let cp = [
+         0.9999999999999999502e+0,
+        -2.6883926818565423430e+0,
+         2.6477222699473109692e+0,
+        -1.1538559607887416355e+0,
+         2.0886077795020607837e-1,
+        -1.0859777134152463084e-2
+    ];
+    let cq = [
+         1.0000000000000000000e+0,
+        -2.9383926818565635485e+0,
+         3.2712093293018635389e+0,
+        -1.7076702173954289421e+0,
+         4.1596017228400603836e-1,
+        -3.9801343754084482956e-2,
+         8.2743668974466659035e-4
+    ];
+
+    let x2 = x*x;
+    let x4 = x2*x2;
+    let p = cp[0] + x*cp[1] + x2*(cp[2] + x*cp[3]) +
+        x4*(cp[4] + x*cp[5]);
+    let q = cq[0] + x*cq[1] + x2*(cq[2] + x*cq[3]) +
+        x4*(cq[4] + x*cq[5] + x2*cq[6]);
+
+    x*p/q
+}
+
 impl Li2<f64> for f64 {
     /// Returns the real dilogarithm of a real number of type `f64`.
     ///
@@ -24,59 +54,32 @@ impl Li2<f64> for f64 {
     /// ```
     fn li2(&self) -> f64 {
         let pi = std::f64::consts::PI;
-        let cp = [
-            0.9999999999999999502e+0,
-           -2.6883926818565423430e+0,
-            2.6477222699473109692e+0,
-           -1.1538559607887416355e+0,
-            2.0886077795020607837e-1,
-           -1.0859777134152463084e-2
-        ];
-        let cq = [
-            1.0000000000000000000e+0,
-           -2.9383926818565635485e+0,
-            3.2712093293018635389e+0,
-           -1.7076702173954289421e+0,
-            4.1596017228400603836e-1,
-           -3.9801343754084482956e-2,
-            8.2743668974466659035e-4
-        ];
-
         let x = *self;
 
         // transform to [0, 1/2]
-        let (y, rest, sgn) = if x < -1. {
+        if x < -1. {
             let l = (1. - x).ln();
-            (1./(1. - x), -pi*pi/6. + l*(0.5*l - (-x).ln()), 1.)
+            li2_approx(1./(1. - x)) - pi*pi/6. + l*(0.5*l - (-x).ln())
         } else if x == -1. {
-            return -pi*pi/12.;
+            -pi*pi/12.
         } else if x < 0. {
             let l = (-x).ln_1p();
-            (x/(x - 1.), -0.5*l*l, -1.)
+            -li2_approx(x/(x - 1.)) - 0.5*l*l
         } else if x == 0. {
-            return 0.;
+            0.
         } else if x < 0.5 {
-            (x, 0., 1.)
+            li2_approx(x)
         } else if x < 1. {
-            (1. - x, pi*pi/6. - x.ln()*(1. - x).ln(), -1.)
+            -li2_approx(1. - x) + pi*pi/6. - x.ln()*(1. - x).ln()
         } else if x == 1. {
-            return pi*pi/6.;
+            pi*pi/6.
         } else if x < 2. {
             let l = x.ln();
-            (1. - 1./x, pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l), 1.)
+            li2_approx(1. - 1./x) + pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l)
         } else {
             let l = x.ln();
-            (1./x, pi*pi/3. - 0.5*l*l, -1.)
-        };
-
-        let y2 = y*y;
-        let y4 = y2*y2;
-        let p = cp[0] + y * cp[1] + y2 * (cp[2] + y * cp[3]) +
-                y4 * (cp[4] + y * cp[5]);
-        let q = cq[0] + y * cq[1] + y2 * (cq[2] + y * cq[3]) +
-                y4 * (cq[4] + y * cq[5] + y2 * cq[6]);
-
-        rest + sgn*y*p/q
+            -li2_approx(1./x) + pi*pi/3. - 0.5*l*l
+        }
     }
 }
 
