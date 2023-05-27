@@ -38,7 +38,7 @@ impl Li3<f64> for f64 {
             0.53721319360804020
         } else if x < 1.0 {
             let l = x.ln();
-            -li3_neg(1.0 - x.recip()) - li3_pos(1.0 - x) + z3 + l*(z2 + l*(-0.5*(1.0 - x).ln() + 1.0/6.0*l))
+            -li3_neg(1.0 - x.recip()) - li3_pos(1.0 - x) + z3 + l*(z2 + l*(-0.5*(-x).ln_1p() + 1.0/6.0*l))
         } else if x == 1.0 {
             z3
         } else if x < 2.0 {

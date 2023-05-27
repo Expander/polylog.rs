@@ -70,7 +70,7 @@ impl Li2<f64> for f64 {
         } else if x < 0.5 {
             li2_approx(x)
         } else if x < 1. {
-            -li2_approx(1. - x) + pi*pi/6. - x.ln()*(1. - x).ln()
+            -li2_approx(1. - x) + pi*pi/6. - x.ln()*(-x).ln_1p()
         } else if x == 1. {
             pi*pi/6.
         } else if x < 2. {
