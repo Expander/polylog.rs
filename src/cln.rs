@@ -14,6 +14,6 @@ impl CLn<Complex<f64>> for Complex<f64> {
             // convert -0.0 to 0.0
             if self.im == 0. { 0. } else { self.im },
         );
-        Complex::new(0.5*z.norm_sqr().ln(), z.arg())
+        Complex::new(z.norm().ln(), z.arg())
     }
 }

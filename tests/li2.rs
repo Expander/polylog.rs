@@ -87,6 +87,9 @@ fn special_values() {
         assert_eq!(li2.re, li2_expected.re);
         assert_eq!(li2.im, li2_expected.im);
     }
+
+    // test value that causes overflow if squared
+    assert_eq_float!(Complex::new(1e300, 1.0).li2().re, -238582.12510339421, eps);
 }
 
 
