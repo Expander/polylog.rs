@@ -55,6 +55,9 @@ The implementation of the complex dilogarithm has been inspired by the
 implementation in [SPheno](https://spheno.hepforge.org) and has been
 translated to Rust.
 
+The implementation of the real trilogarithm is an adaptation of
+[[arXiv:2308.11619](https://arxiv.org/abs/2308.11619)].
+
 The implementation of the general n-th order polylogarithm is an
 adaption of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
