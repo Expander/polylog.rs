@@ -182,9 +182,9 @@ impl Li4<Complex<f64>> for Complex<f64> {
             }
         }
 
-        let nz  = self.norm_sqr();
+        let nz  = self.norm();
         let pz  = self.arg();
-        let lnz = 0.5*nz.ln();
+        let lnz = nz.ln();
 
         if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
             let u  = Complex::new(lnz, pz);

@@ -1,6 +1,7 @@
 extern crate polylog;
 extern crate num;
 use num::complex::Complex;
+use num::Float;
 use polylog::Li4;
 mod common;
 
@@ -19,6 +20,12 @@ fn special_values() {
                        Complex::<f64>::new(-7./8.*z4, 0.), eps);
     assert_eq_complex!(Complex::<f64>::new(0.5, 0.).li4(),
                        Complex::<f64>::new(0.5174790616738994, 0.), eps);
+
+    // test value that causes overflow if squared
+    assert!(!Complex::new(1e300, 1.0).li4().is_infinite());
+    assert!(!Complex::new(1.0, 1e300).li4().is_infinite());
+    assert_eq_float!(Complex::new(1e300, 1.0).li4().re, Complex::new(-9.4863817894708364e9, -1.725875455850714e8).re, eps);
+    assert_eq_float!(Complex::new(1.0, 1e300).li4().re, Complex::new(-9.4872648206269765e9, 8.62951114411071e7).re, eps);
 }
 
 

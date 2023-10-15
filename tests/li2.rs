@@ -89,7 +89,10 @@ fn special_values() {
     }
 
     // test value that causes overflow if squared
-    assert_eq_float!(Complex::new(1e300, 1.0).li2().re, -238582.12510339421, eps);
+    assert!(!Complex::new(1e300, 1.0).li2().is_infinite());
+    assert!(!Complex::new(1.0, 1e300).li2().is_infinite());
+    assert_eq_float!(Complex::new(1e300, 1.0).li2().re, Complex::new(-238582.12510339421, -2170.13532372464).re, eps);
+    assert_eq_float!(Complex::new(1.0, 1e300).li2().re, Complex::new(-238585.82620504462, 1085.06766186232).re, eps);
 }
 
 

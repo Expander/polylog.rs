@@ -55,6 +55,12 @@ fn special_values() {
                        Complex::new(ln2.powi(3)/6. - pi2/12.*ln2 + 7./8.*z3, 0.), eps);
     assert_eq_complex!(Complex::new(1./(phi*phi), 0.).li3(),
                        Complex::new(4./5.*z3 + 2./3.*phi.ln().powi(3) - 2./15.*pi2*phi.ln(), 0.), eps);
+
+    // test value that causes overflow if squared
+    assert!(!Complex::new(1e300, 1.0).li3().is_infinite());
+    assert!(!Complex::new(1.0, 1e300).li3().is_infinite());
+    assert_eq_float!(Complex::new(1e300, 1.0).li3().re, Complex::new(-5.4934049431527088e7, -749538.186928224).re, eps);
+    assert_eq_float!(Complex::new(1.0, 1e300).li3().re, Complex::new(-5.4936606061973454e7, 374771.031356405).re, eps);
 }
 
 
