@@ -5,7 +5,7 @@ authors:
   given-names: "Alexander"
   orcid: "https://orcid.org/0000-0001-8963-6512"
 title: "polylog.rs"
-version: 2.5.1
-date-released: 2023-05-28
+version: 2.5.2
+date-released: 2023-10-20
 url: "https://github.com/Expander/polylog"
 license: LGPL-3.0-only
