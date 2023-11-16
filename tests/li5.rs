@@ -1,5 +1,3 @@
-extern crate polylog;
-extern crate num;
 use num::complex::Complex;
 use num::Float;
 use polylog::Li5;

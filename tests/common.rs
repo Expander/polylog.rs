@@ -1,4 +1,3 @@
-extern crate num;
 use num::complex::Complex;
 use std::fs::File;
 use std::io::{BufReader, BufRead, Error, ErrorKind};
