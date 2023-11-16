@@ -1,7 +1,3 @@
-extern crate num;
-extern crate polylog;
-extern crate rand;
-
 use num::complex::Complex;
 use polylog::{Li2, Li3, Li4, Li5, Li6, Li};
 use rand::Rng;
