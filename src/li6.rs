@@ -13,7 +13,6 @@ impl Li6<Complex<f64>> for Complex<f64> {
     ///
     /// # Example:
     /// ```
-    /// extern crate num;
     /// use num::complex::Complex;
     /// use polylog::Li6;
     ///

@@ -7,8 +7,6 @@
 //!
 //! # Example:
 //! ```
-//! extern crate num;
-//! extern crate polylog;
 //! use num::complex::Complex;
 //! use polylog::{Li, Li0, Li1, Li2, Li3, Li4, Li5, Li6};
 //!
@@ -37,8 +35,6 @@
 //! }
 //! ```
 
-
-extern crate num;
 
 mod cln;
 mod li0;

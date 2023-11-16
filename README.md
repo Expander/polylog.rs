@@ -14,8 +14,6 @@ Example
 -------
 
 ```rust
-extern crate num;
-extern crate polylog;
 use num::complex::Complex;
 use polylog::{Li, Li0, Li1, Li2, Li3, Li4, Li5, Li6};
 
