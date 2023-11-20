@@ -31,10 +31,8 @@ impl Li0<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li0;
     ///
-    /// fn main() {
-    ///     let z = Complex::new(1.0, 1.0);
-    ///     println!("Li0({}) = {}", z, z.li0());
-    /// }
+    /// let z = Complex::new(1.0, 1.0);
+    /// println!("Li0({}) = {}", z, z.li0());
     /// ```
     fn li0(&self) -> Complex<f64> {
         self/(1.0 - self)

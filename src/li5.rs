@@ -16,10 +16,8 @@ impl Li5<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li5;
     ///
-    /// fn main() {
-    ///     let z = Complex::new(1.0, 1.0);
-    ///     println!("Li5({}) = {}", z, z.li5());
-    /// }
+    /// let z = Complex::new(1.0, 1.0);
+    /// println!("Li5({}) = {}", z, z.li5());
     /// ```
     fn li5(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;

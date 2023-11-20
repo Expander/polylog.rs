@@ -151,10 +151,8 @@ impl Li4<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li4;
     ///
-    /// fn main() {
-    ///     let z = Complex::new(1.0, 1.0);
-    ///     println!("Li4({}) = {}", z, z.li4());
-    /// }
+    /// let z = Complex::new(1.0, 1.0);
+    /// println!("Li4({}) = {}", z, z.li4());
     /// ```
     fn li4(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;

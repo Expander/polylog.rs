@@ -95,10 +95,8 @@ impl Li2<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li2;
     ///
-    /// fn main() {
-    ///     let z = Complex::new(1.0, 1.0);
-    ///     println!("Li2({}) = {}", z, z.li2());
-    /// }
+    /// let z = Complex::new(1.0, 1.0);
+    /// println!("Li2({}) = {}", z, z.li2());
     /// ```
     fn li2(&self) -> Complex<f64> {
         let pi = std::f64::consts::PI;

@@ -16,10 +16,8 @@ impl Li6<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li6;
     ///
-    /// fn main() {
-    ///     let z = Complex::new(1.0, 1.0);
-    ///     println!("Li6({}) = {}", z, z.li6());
-    /// }
+    /// let z = Complex::new(1.0, 1.0);
+    /// println!("Li6({}) = {}", z, z.li6());
     /// ```
     fn li6(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;
