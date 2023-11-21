@@ -10,6 +10,8 @@ pub trait Li3<T> {
 impl Li3<f64> for f64 {
     /// Returns the real trilogarithm of a real number of type `f64`.
     ///
+    /// [arXiv:2308.11619]: https://arxiv.org/abs/2308.11619
+    ///
     /// # Example:
     /// ```
     /// use polylog::Li3;
