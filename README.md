@@ -44,7 +44,7 @@ println!("Li_{}({}) = {}", n, z, z.li(n)); // Li_n(z)
 Notes
 -----
 
-The implementation of the real dilogarithm is an adaption of
+The implementation of the real dilogarithm is an adaptation of
 [[arXiv:2201.01678](https://arxiv.org/abs/2201.01678)].
 
 The implementation of the complex dilogarithm has been inspired by the
@@ -55,7 +55,7 @@ The implementation of the real trilogarithm is an adaptation of
 [[arXiv:2308.11619](https://arxiv.org/abs/2308.11619)].
 
 The implementation of the general n-th order polylogarithm is an
-adaption of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
+adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 
 
 Copying
