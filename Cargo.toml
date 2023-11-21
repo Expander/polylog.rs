@@ -13,4 +13,8 @@ edition = '2018'
 num = "0.4"
 
 [dev-dependencies]
-rand = "0.8"
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "li"
+harness = false
