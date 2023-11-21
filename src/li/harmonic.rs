@@ -27,6 +27,12 @@ fn test_harmonic() {
     assert!(abs(harmonic(21) - 3.6453587047627295) < 1e-14);
 }
 
+#[test]
+#[should_panic]
+fn test_harmonic_panic() {
+    harmonic(0);
+}
+
 /// digamma for integer n > 0, following
 /// [K.S. Kölbig: Programs for computing the logarithm of the gamma
 /// function, and the digamma function, for complex argument, Computer
@@ -70,4 +76,10 @@ fn test_digamma() {
     assert!(abs(digamma( 2) -  0.42278433509846714) < 1e-14);
     assert!(abs(digamma( 3) -  0.92278433509846714) < 1e-14);
     assert!(abs(digamma(10) -  2.2517525890667211 ) < 1e-15);
+}
+
+#[test]
+#[should_panic]
+fn test_digamma_panic() {
+    digamma(0);
 }

@@ -79,6 +79,13 @@ fn ln_sqr(x: f64) -> f64 {
     }
 }
 
+#[test]
+fn test_ln_sqr() {
+    assert!(ln_sqr(2.0) == 2.0_f64.ln()*2.0_f64.ln());
+    assert!(ln_sqr(0.0).is_nan());
+    assert!(ln_sqr(-2.0) == Complex::new(-2.0, 0.0).ln().norm_sqr());
+}
+
 /// returns r.h.s. of inversion formula for x < -1:
 ///
 /// Li(n,-x) + (-1)^n Li(n,-1/x)

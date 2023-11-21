@@ -58,4 +58,8 @@ fn test_values() {
     assert!(!Complex::new(1.0, 1e300).li(7).is_infinite());
     assert_eq_complex!(Complex::new(1e300, 1.0).li(7), Complex::new(-1.4886831990993457e16, 4.74066248802866e14), 1e-15);
     assert_eq_complex!(Complex::new(1.0, 1e300).li(7), Complex::new(-1.489168315226607e16, 2.3705150998401e14), 1e-5);
+
+    // test non-finite input
+    assert!(Complex::new(f64::NAN, f64::NAN).li(7).is_nan());
+    assert!(Complex::new(f64::INFINITY, f64::INFINITY).li(7).is_infinite());
 }

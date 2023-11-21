@@ -78,6 +78,12 @@ fn test_fac() {
     assert!(fac(171).is_infinite());
 }
 
+#[test]
+#[should_panic]
+fn test_fac_panic() {
+    fac(-1);
+}
+
 /// 1/n! for integer n = 0, 1, 2, ...
 const INVERSE_FACTORIALS: [f64; 178] = [
     1.0,    1.0,     0.5   , 1.6666666666666667e-001, 4.1666666666666667e-002,
@@ -159,4 +165,10 @@ fn test_inv_fac() {
     assert!(inv_fac(  2) == 0.5);
     assert!(inv_fac(177) == 2.8547896502574379e-323);
     assert!(inv_fac(178) == 0.0);
+}
+
+#[test]
+#[should_panic]
+fn test_inv_fac_panic() {
+    inv_fac(-1);
 }
