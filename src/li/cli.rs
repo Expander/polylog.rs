@@ -119,7 +119,7 @@ fn li_unity_pos(n: i32, z: Complex<f64>) -> Complex<f64> {
     let l2 = l*l;
 
     for j in ((n + 3)..i32::MAX).step_by(2) {
-        p *= l2/(((j - 1)*j) as f64);
+        p *= l2/(j - 1).checked_mul(j).map_or(std::f64::INFINITY, |i| i as f64);
         let old_sum = sum;
         sum += zeta(n - j)*p;
         if sum == old_sum { break; }
