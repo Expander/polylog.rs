@@ -1,14 +1,14 @@
-Polylog
+polylog
 =======
 
 [![Build Status](https://github.com/Expander/polylog/workflows/test/badge.svg)](https://github.com/Expander/polylog/actions)
 [![Documentation](https://docs.rs/polylog/badge.svg)](https://docs.rs/polylog/)
 [![Coverage Status](https://coveralls.io/repos/github/Expander/polylog.rs/badge.svg)](https://coveralls.io/github/Expander/polylog.rs)
 
-The Polylog package provides Rust implementations of real and complex
+The polylog package provides Rust implementations of real and complex
 polylogarithms, including the dilogarithm and trilogarithm.
 
-The Polylog package depends on the `num` crate.
+The polylog package depends on the `num` crate.
 
 
 Example
@@ -62,5 +62,5 @@ adaptation of [[arXiv:2010.09860](https://arxiv.org/abs/2010.09860)].
 Copying
 -------
 
-Polylog is licenced under the GNU Lesser General Public License (GNU
+polylog is licenced under the GNU Lesser General Public License (GNU
 LGPL) version 3.
