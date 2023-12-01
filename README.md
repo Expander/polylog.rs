@@ -3,6 +3,7 @@ Polylog
 
 [![Build Status](https://github.com/Expander/polylog/workflows/test/badge.svg)](https://github.com/Expander/polylog/actions)
 [![Documentation](https://docs.rs/polylog/badge.svg)](https://docs.rs/polylog/)
+[![Coverage Status](https://coveralls.io/repos/github/Expander/polylog.rs/badge.svg)](https://coveralls.io/github/Expander/polylog.rs)
 
 The Polylog package provides Rust implementations of real and complex
 polylogarithms, including the dilogarithm and trilogarithm.
