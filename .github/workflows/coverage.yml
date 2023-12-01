@@ -12,7 +12,5 @@ jobs:
       with:
         toolchain: stable
     - run: cargo install cargo-tarpaulin
-    - name: Generate code coverage
-      run: |
-        cargo tarpaulin --out Lcov
+    - run: cargo tarpaulin --out Lcov
     - uses: coverallsapp/github-action@v2
