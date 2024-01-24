@@ -51,7 +51,7 @@ fn data_path(filename: &str) -> PathBuf {
 }
 
 
-pub fn read_data_file(filename: &str) -> Result<Vec<(Complex<f64>, Complex<f64>)>, std::io::Error> {
+pub fn read_data_file<T: Copy + std::str::FromStr>(filename: &str) -> Result<Vec<(Complex<T>, Complex<T>)>, std::io::Error> where <T as std::str::FromStr>::Err: std::fmt::Debug {
     let file = File::open(data_path(filename))?;
     let br = BufReader::new(file);
     let mut vec = Vec::new();
@@ -59,8 +59,8 @@ pub fn read_data_file(filename: &str) -> Result<Vec<(Complex<f64>, Complex<f64>)
     for line in br.lines() {
         let vals = line?
             .split_whitespace()
-            .map(|s| s.parse::<f64>().unwrap())
-            .collect::<Vec<f64>>();
+            .map(|s| s.parse::<T>().unwrap())
+            .collect::<Vec<T>>();
 
         if vals.len() != 4 {
             return Err(Error::new(ErrorKind::UnexpectedEof, "line does not contain 4 real numbers"));
