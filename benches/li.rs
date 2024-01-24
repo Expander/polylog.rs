@@ -5,7 +5,8 @@ use criterion::*;
 
 fn bench_real_li2(c: &mut Criterion) {
     let mut group = c.benchmark_group("li2(x)");
-    group.bench_function("x=0.25", |b| b.iter(|| black_box(0.25_f64).li2()));
+    group.bench_function("x=0.25_f32", |b| b.iter(|| black_box(0.25_f32).li2()));
+    group.bench_function("x=0.25_f64", |b| b.iter(|| black_box(0.25_f64).li2()));
     group.finish();
 }
 

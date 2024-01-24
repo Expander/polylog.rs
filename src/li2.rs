@@ -8,7 +8,18 @@ pub trait Li2<T> {
 }
 
 /// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
-fn li2_approx(x: f64) -> f64 {
+fn li2_approx_f32(x: f32) -> f32 {
+    let cp = [ 1.00000020_f32, -0.780790946_f32, 0.0648256871_f32 ];
+    let cq = [ 1.00000000_f32, -1.03077545_f32, 0.211216710_f32 ];
+
+    let p = cp[0] + x*(cp[1] + x*cp[2]);
+    let q = cq[0] + x*(cq[1] + x*cq[2]);
+
+    x*p/q
+}
+
+/// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+fn li2_approx_f64(x: f64) -> f64 {
     let cp = [
          0.9999999999999999502e+0,
         -2.6883926818565423430e+0,
@@ -37,6 +48,52 @@ fn li2_approx(x: f64) -> f64 {
     x*p/q
 }
 
+impl Li2<f32> for f32 {
+    /// Returns the real dilogarithm of a real number of type `f32`.
+    ///
+    /// Implemented as rational function approximation with a maximum
+    /// error of 5e-17 [[arXiv:2201.01678]].
+    ///
+    /// [arXiv:2201.01678]: https://arxiv.org/abs/2201.01678
+    ///
+    /// # Example:
+    /// ```
+    /// use polylog::Li2;
+    ///
+    /// let z = 1.0_f32;
+    /// println!("Li2({}) = {}", z, z.li2());
+    /// ```
+    fn li2(&self) -> f32 {
+        let pi = std::f32::consts::PI;
+        let x = *self;
+
+        // transform to [0, 1/2]
+        if x < -1.0_f32 {
+            let l = (1.0_f32 - x).ln();
+            li2_approx_f32(1.0_f32/(1.0_f32 - x)) - pi*pi/6.0_f32 + l*(0.5_f32*l - (-x).ln())
+        } else if x == -1.0_f32 {
+            -pi*pi/12.0_f32
+        } else if x < 0.0_f32 {
+            let l = (-x).ln_1p();
+            -li2_approx_f32(x/(x - 1.0_f32)) - 0.5_f32*l*l
+        } else if x == 0.0_f32 {
+            0.0_f32
+        } else if x < 0.5_f32 {
+            li2_approx_f32(x)
+        } else if x < 1.0_f32 {
+            -li2_approx_f32(1.0_f32 - x) + pi*pi/6.0_f32 - x.ln()*(-x).ln_1p()
+        } else if x == 1.0_f32 {
+            pi*pi/6.0_f32
+        } else if x < 2.0_f32 {
+            let l = x.ln();
+            li2_approx_f32(1.0_f32 - 1.0_f32/x) + pi*pi/6.0_f32 - l*((1.0_f32 - 1.0_f32/x).ln() + 0.5_f32*l)
+        } else {
+            let l = x.ln();
+            -li2_approx_f32(1.0_f32/x) + pi*pi/3.0_f32 - 0.5_f32*l*l
+        }
+    }
+}
+
 impl Li2<f64> for f64 {
     /// Returns the real dilogarithm of a real number of type `f64`.
     ///
@@ -49,7 +106,7 @@ impl Li2<f64> for f64 {
     /// ```
     /// use polylog::Li2;
     ///
-    /// let z = 1.0;
+    /// let z = 1.0_64;
     /// println!("Li2({}) = {}", z, z.li2());
     /// ```
     fn li2(&self) -> f64 {
@@ -59,26 +116,26 @@ impl Li2<f64> for f64 {
         // transform to [0, 1/2]
         if x < -1. {
             let l = (1. - x).ln();
-            li2_approx(1./(1. - x)) - pi*pi/6. + l*(0.5*l - (-x).ln())
+            li2_approx_f64(1./(1. - x)) - pi*pi/6. + l*(0.5*l - (-x).ln())
         } else if x == -1. {
             -pi*pi/12.
         } else if x < 0. {
             let l = (-x).ln_1p();
-            -li2_approx(x/(x - 1.)) - 0.5*l*l
+            -li2_approx_f64(x/(x - 1.)) - 0.5*l*l
         } else if x == 0. {
             0.
         } else if x < 0.5 {
-            li2_approx(x)
+            li2_approx_f64(x)
         } else if x < 1. {
-            -li2_approx(1. - x) + pi*pi/6. - x.ln()*(-x).ln_1p()
+            -li2_approx_f64(1. - x) + pi*pi/6. - x.ln()*(-x).ln_1p()
         } else if x == 1. {
             pi*pi/6.
         } else if x < 2. {
             let l = x.ln();
-            li2_approx(1. - 1./x) + pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l)
+            li2_approx_f64(1. - 1./x) + pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l)
         } else {
             let l = x.ln();
-            -li2_approx(1./x) + pi*pi/3. - 0.5*l*l
+            -li2_approx_f64(1./x) + pi*pi/3. - 0.5*l*l
         }
     }
 }
