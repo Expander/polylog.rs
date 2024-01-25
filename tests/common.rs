@@ -1,7 +1,9 @@
 use num::complex::Complex;
+use std::fmt::Debug;
 use std::fs::File;
 use std::io::{BufReader, BufRead, Error, ErrorKind};
 use std::path::PathBuf;
+use std::str::FromStr;
 
 
 #[macro_export]
@@ -51,7 +53,7 @@ fn data_path(filename: &str) -> PathBuf {
 }
 
 
-pub fn read_data_file<T: Copy + std::str::FromStr>(filename: &str) -> Result<Vec<(Complex<T>, Complex<T>)>, std::io::Error> where <T as std::str::FromStr>::Err: std::fmt::Debug {
+pub fn read_data_file<T: Copy + FromStr>(filename: &str) -> Result<Vec<(Complex<T>, Complex<T>)>, Error> where <T as FromStr>::Err: Debug {
     let file = File::open(data_path(filename))?;
     let br = BufReader::new(file);
     let mut vec = Vec::new();
