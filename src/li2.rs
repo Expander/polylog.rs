@@ -60,8 +60,7 @@ impl Li2<f32> for f32 {
     /// ```
     /// use polylog::Li2;
     ///
-    /// let z = 1.0_f32;
-    /// println!("Li2({}) = {}", z, z.li2());
+    /// assert!((1.0_f32.li2() - 1.64493407_f32).abs() < 2.0_f32*std::f32::EPSILON);
     /// ```
     fn li2(&self) -> f32 {
         let pi = std::f32::consts::PI;
@@ -106,36 +105,35 @@ impl Li2<f64> for f64 {
     /// ```
     /// use polylog::Li2;
     ///
-    /// let z = 1.0_64;
-    /// println!("Li2({}) = {}", z, z.li2());
+    /// assert!((1.0_f64.li2() - 1.6449340668482264_f64).abs() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li2(&self) -> f64 {
         let pi = std::f64::consts::PI;
         let x = *self;
 
         // transform to [0, 1/2]
-        if x < -1. {
-            let l = (1. - x).ln();
-            li2_approx_f64(1./(1. - x)) - pi*pi/6. + l*(0.5*l - (-x).ln())
-        } else if x == -1. {
-            -pi*pi/12.
-        } else if x < 0. {
+        if x < -1.0_f64 {
+            let l = (1.0_f64 - x).ln();
+            li2_approx_f64(1.0_f64/(1.0_f64 - x)) - pi*pi/6.0_f64 + l*(0.5_f64*l - (-x).ln())
+        } else if x == -1.0_f64 {
+            -pi*pi/12.0_f64
+        } else if x < 0.0_f64 {
             let l = (-x).ln_1p();
-            -li2_approx_f64(x/(x - 1.)) - 0.5*l*l
-        } else if x == 0. {
-            0.
-        } else if x < 0.5 {
+            -li2_approx_f64(x/(x - 1.0_f64)) - 0.5_f64*l*l
+        } else if x == 0.0_f64 {
+            0.0_f64
+        } else if x < 0.5_f64 {
             li2_approx_f64(x)
-        } else if x < 1. {
-            -li2_approx_f64(1. - x) + pi*pi/6. - x.ln()*(-x).ln_1p()
-        } else if x == 1. {
-            pi*pi/6.
-        } else if x < 2. {
+        } else if x < 1.0_f64 {
+            -li2_approx_f64(1.0_f64 - x) + pi*pi/6.0_f64 - x.ln()*(-x).ln_1p()
+        } else if x == 1.0_f64 {
+            pi*pi/6.0_f64
+        } else if x < 2.0_f64 {
             let l = x.ln();
-            li2_approx_f64(1. - 1./x) + pi*pi/6. - l*((1. - 1./x).ln() + 0.5*l)
+            li2_approx_f64(1.0_f64 - 1.0_f64/x) + pi*pi/6.0_f64 - l*((1.0_f64 - 1.0_f64/x).ln() + 0.5_f64*l)
         } else {
             let l = x.ln();
-            -li2_approx_f64(1./x) + pi*pi/3. - 0.5*l*l
+            -li2_approx_f64(1.0_f64/x) + pi*pi/3.0_f64 - 0.5_f64*l*l
         }
     }
 }
