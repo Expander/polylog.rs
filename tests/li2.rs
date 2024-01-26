@@ -159,10 +159,12 @@ fn identities() {
 
 #[test]
 fn test_values_f32() {
-    let eps = 5.0*std::f32::EPSILON;
+    let eps = 10.0_f32*std::f32::EPSILON;
     let values = common::read_data_file::<f32>("Li2.txt").unwrap();
 
     for &(v, li2) in values.iter() {
+        assert_eq_complex!(v.li2(), li2, eps);
+
         if v.im == 0.0_f32 {
             assert_eq_float!(v.re.li2(), li2.re, eps);
         }
@@ -172,8 +174,8 @@ fn test_values_f32() {
 
 #[test]
 fn test_values_f64() {
-    let eps = 10.0*std::f64::EPSILON;
-    let values = common::read_data_file("Li2.txt").unwrap();
+    let eps = 10.0_f64*std::f64::EPSILON;
+    let values = common::read_data_file::<f64>("Li2.txt").unwrap();
 
     for &(v, li2) in values.iter() {
         assert_eq_complex!(v.li2(), li2, eps);

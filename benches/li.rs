@@ -13,8 +13,10 @@ fn bench_real_li2(c: &mut Criterion) {
 
 fn bench_complex_li2(c: &mut Criterion) {
     let mut group = c.benchmark_group("li2(z)");
-    group.bench_function("z=0.25+0.25i", |b| b.iter(|| black_box(Complex::new(0.25_f64, 0.25_f64)).li2()));
-    group.bench_function("z=-0.7+0.7i" , |b| b.iter(|| black_box(Complex::new(-0.7_f64,  0.7_f64)).li2()));
+    group.bench_function("z=0.25_f32+0.25_f32i", |b| b.iter(|| black_box(Complex::new(0.25_f32, 0.25_f32)).li2()));
+    group.bench_function("z=-0.7_f32+0.7_f32i" , |b| b.iter(|| black_box(Complex::new(-0.7_f32,  0.7_f32)).li2()));
+    group.bench_function("z=0.25_f64+0.25_f64i", |b| b.iter(|| black_box(Complex::new(0.25_f64, 0.25_f64)).li2()));
+    group.bench_function("z=-0.7_f64+0.7_f64i" , |b| b.iter(|| black_box(Complex::new(-0.7_f64,  0.7_f64)).li2()));
     group.finish();
 }
 
