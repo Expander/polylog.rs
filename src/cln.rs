@@ -18,7 +18,7 @@ impl CLn<Complex<f32>> for Complex<f32> {
             // convert -0.0 to 0.0
             if self.im == 0.0_f32 { 0.0_f32 } else { self.im },
         );
-        z.ln()
+        Complex::new(z.norm().ln(), z.arg())
     }
 }
 
