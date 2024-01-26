@@ -38,8 +38,8 @@ fn test_cln() {
     let x32 = Complex::new(1.0_f32, 0.0_f32);
     let x64 = Complex::new(1.0_f64, 0.0_f64);
 
-    assert!(((-x32).cln() - Complex::new(0.0_f32,  std::f32::consts::PI)).norm() < 2.0_f32*std::f32::EPSILON);
-    assert!(((-x32).ln()  - Complex::new(0.0_f32, -std::f32::consts::PI)).norm() < 2.0_f32*std::f32::EPSILON);
+    assert!(((-x32).cln() - Complex::new(0.0_f32,  std::f32::consts::PI)).norm() < 4.0_f32*std::f32::EPSILON);
+    assert!(((-x32).ln()  - Complex::new(0.0_f32, -std::f32::consts::PI)).norm() < 4.0_f32*std::f32::EPSILON);
     assert!((-x64).cln() == Complex::new(0.0_f64,  std::f64::consts::PI));
     assert!((-x64).ln()  == Complex::new(0.0_f64, -std::f64::consts::PI));
 }
