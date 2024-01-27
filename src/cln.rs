@@ -1,4 +1,5 @@
 use num::complex::Complex;
+use num::Float;
 
 /// Provides an implementation of the complex logarithm `cln()` of a
 /// number of type `T`, where the imaginary part of the logarithm is
@@ -11,23 +12,12 @@ pub trait CLn<T> {
     fn cln(&self) -> T;
 }
 
-impl CLn<Complex<f32>> for Complex<f32> {
-    fn cln(&self) -> Complex<f32> {
+impl<T: Float> CLn<Complex<T>> for Complex<T> {
+    fn cln(&self) -> Complex<T> {
         let z = Complex::new(
             self.re,
             // convert -0.0 to 0.0
-            if self.im == 0.0_f32 { 0.0_f32 } else { self.im },
-        );
-        Complex::new(z.norm().ln(), z.arg())
-    }
-}
-
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
-        let z = Complex::new(
-            self.re,
-            // convert -0.0 to 0.0
-            if self.im == 0.0_f64 { 0.0_f64 } else { self.im },
+            if self.im == T::zero() { T::zero() } else { self.im },
         );
         Complex::new(z.norm().ln(), z.arg())
     }
