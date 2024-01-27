@@ -1,60 +1,67 @@
 use num::complex::Complex;
 use crate::cln::CLn;
 
+trait Li2Approx<T> {
+    /// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
+    fn approx(&self) -> T;
+}
+
+impl Li2Approx<f32> for f32 {
+    fn approx(&self) -> f32 {
+        let cp = [ 1.00000020_f32, -0.780790946_f32, 0.0648256871_f32 ];
+        let cq = [ 1.00000000_f32, -1.03077545_f32, 0.211216710_f32 ];
+
+        let x = *self;
+        let p = cp[0] + x*(cp[1] + x*cp[2]);
+        let q = cq[0] + x*(cq[1] + x*cq[2]);
+
+        x*p/q
+    }
+}
+
+impl Li2Approx<f64> for f64 {
+    fn approx(&self) -> f64 {
+        let cp = [
+            0.9999999999999999502e+0,
+           -2.6883926818565423430e+0,
+            2.6477222699473109692e+0,
+           -1.1538559607887416355e+0,
+            2.0886077795020607837e-1,
+           -1.0859777134152463084e-2
+        ];
+        let cq = [
+            1.0000000000000000000e+0,
+           -2.9383926818565635485e+0,
+            3.2712093293018635389e+0,
+           -1.7076702173954289421e+0,
+            4.1596017228400603836e-1,
+           -3.9801343754084482956e-2,
+            8.2743668974466659035e-4
+        ];
+
+        let x = *self;
+        let x2 = x*x;
+        let x4 = x2*x2;
+        let p = cp[0] + x*cp[1] + x2*(cp[2] + x*cp[3]) +
+            x4*(cp[4] + x*cp[5]);
+        let q = cq[0] + x*cq[1] + x2*(cq[2] + x*cq[3]) +
+            x4*(cq[4] + x*cq[5] + x2*cq[6]);
+
+        x*p/q
+    }
+}
+
 /// Provides the 2nd order polylogarithm (dilogarithm) function
 /// `li2()` of a number of type `T`.
 pub trait Li2<T> {
     fn li2(&self) -> T;
 }
 
-/// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
-fn li2_approx_f32(x: f32) -> f32 {
-    let cp = [ 1.00000020_f32, -0.780790946_f32, 0.0648256871_f32 ];
-    let cq = [ 1.00000000_f32, -1.03077545_f32, 0.211216710_f32 ];
-
-    let p = cp[0] + x*(cp[1] + x*cp[2]);
-    let q = cq[0] + x*(cq[1] + x*cq[2]);
-
-    x*p/q
-}
-
-/// rational function approximation of Re[Li2(x)] for x in [0, 1/2]
-fn li2_approx_f64(x: f64) -> f64 {
-    let cp = [
-         0.9999999999999999502e+0,
-        -2.6883926818565423430e+0,
-         2.6477222699473109692e+0,
-        -1.1538559607887416355e+0,
-         2.0886077795020607837e-1,
-        -1.0859777134152463084e-2
-    ];
-    let cq = [
-         1.0000000000000000000e+0,
-        -2.9383926818565635485e+0,
-         3.2712093293018635389e+0,
-        -1.7076702173954289421e+0,
-         4.1596017228400603836e-1,
-        -3.9801343754084482956e-2,
-         8.2743668974466659035e-4
-    ];
-
-    let x2 = x*x;
-    let x4 = x2*x2;
-    let p = cp[0] + x*cp[1] + x2*(cp[2] + x*cp[3]) +
-        x4*(cp[4] + x*cp[5]);
-    let q = cq[0] + x*cq[1] + x2*(cq[2] + x*cq[3]) +
-        x4*(cq[4] + x*cq[5] + x2*cq[6]);
-
-    x*p/q
-}
-
 impl Li2<f32> for f32 {
     /// Returns the real dilogarithm of a real number of type `f32`.
     ///
     /// Implemented as rational function approximation with a maximum
-    /// error of 5e-17 [[arXiv:2201.01678]].
-    ///
-    /// [arXiv:2201.01678]: https://arxiv.org/abs/2201.01678
+    /// error of 5e-17. @todo(alex): update number
     ///
     /// # Example:
     /// ```
@@ -69,26 +76,26 @@ impl Li2<f32> for f32 {
         // transform to [0, 1/2]
         if x < -1.0_f32 {
             let l = (1.0_f32 - x).ln();
-            li2_approx_f32(1.0_f32/(1.0_f32 - x)) - pi*pi/6.0_f32 + l*(0.5_f32*l - (-x).ln())
+            (1.0_f32/(1.0_f32 - x)).approx() - pi*pi/6.0_f32 + l*(0.5_f32*l - (-x).ln())
         } else if x == -1.0_f32 {
             -pi*pi/12.0_f32
         } else if x < 0.0_f32 {
             let l = (-x).ln_1p();
-            -li2_approx_f32(x/(x - 1.0_f32)) - 0.5_f32*l*l
+            -(x/(x - 1.0_f32)).approx() - 0.5_f32*l*l
         } else if x == 0.0_f32 {
             0.0_f32
         } else if x < 0.5_f32 {
-            li2_approx_f32(x)
+            x.approx()
         } else if x < 1.0_f32 {
-            -li2_approx_f32(1.0_f32 - x) + pi*pi/6.0_f32 - x.ln()*(-x).ln_1p()
+            -(1.0_f32 - x).approx() + pi*pi/6.0_f32 - x.ln()*(-x).ln_1p()
         } else if x == 1.0_f32 {
             pi*pi/6.0_f32
         } else if x < 2.0_f32 {
             let l = x.ln();
-            li2_approx_f32(1.0_f32 - 1.0_f32/x) + pi*pi/6.0_f32 - l*((1.0_f32 - 1.0_f32/x).ln() + 0.5_f32*l)
+            (1.0_f32 - 1.0_f32/x).approx() + pi*pi/6.0_f32 - l*((1.0_f32 - 1.0_f32/x).ln() + 0.5_f32*l)
         } else {
             let l = x.ln();
-            -li2_approx_f32(1.0_f32/x) + pi*pi/3.0_f32 - 0.5_f32*l*l
+            -(1.0_f32/x).approx() + pi*pi/3.0_f32 - 0.5_f32*l*l
         }
     }
 }
@@ -114,26 +121,26 @@ impl Li2<f64> for f64 {
         // transform to [0, 1/2]
         if x < -1.0_f64 {
             let l = (1.0_f64 - x).ln();
-            li2_approx_f64(1.0_f64/(1.0_f64 - x)) - pi*pi/6.0_f64 + l*(0.5_f64*l - (-x).ln())
+            (1.0_f64/(1.0_f64 - x)).approx() - pi*pi/6.0_f64 + l*(0.5_f64*l - (-x).ln())
         } else if x == -1.0_f64 {
             -pi*pi/12.0_f64
         } else if x < 0.0_f64 {
             let l = (-x).ln_1p();
-            -li2_approx_f64(x/(x - 1.0_f64)) - 0.5_f64*l*l
+            -(x/(x - 1.0_f64)).approx() - 0.5_f64*l*l
         } else if x == 0.0_f64 {
             0.0_f64
         } else if x < 0.5_f64 {
-            li2_approx_f64(x)
+            x.approx()
         } else if x < 1.0_f64 {
-            -li2_approx_f64(1.0_f64 - x) + pi*pi/6.0_f64 - x.ln()*(-x).ln_1p()
+            -(1.0_f64 - x).approx() + pi*pi/6.0_f64 - x.ln()*(-x).ln_1p()
         } else if x == 1.0_f64 {
             pi*pi/6.0_f64
         } else if x < 2.0_f64 {
             let l = x.ln();
-            li2_approx_f64(1.0_f64 - 1.0_f64/x) + pi*pi/6.0_f64 - l*((1.0_f64 - 1.0_f64/x).ln() + 0.5_f64*l)
+            (1.0_f64 - 1.0_f64/x).approx() + pi*pi/6.0_f64 - l*((1.0_f64 - 1.0_f64/x).ln() + 0.5_f64*l)
         } else {
             let l = x.ln();
-            -li2_approx_f64(1.0_f64/x) + pi*pi/3.0_f64 - 0.5_f64*l*l
+            -(1.0_f64/x).approx() + pi*pi/3.0_f64 - 0.5_f64*l*l
         }
     }
 }
