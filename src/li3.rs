@@ -19,8 +19,7 @@ impl Li3<f64> for f64 {
     /// ```
     /// use polylog::Li3;
     ///
-    /// let x = 1.0;
-    /// println!("Li3({}) = {}", x, x.li3());
+    /// assert!((1.0_f64.li3() - 1.2020569031595943_f64).abs() < std::f64::EPSILON);
     /// ```
     fn li3(&self) -> f64 {
         let z2 = 1.6449340668482264;
@@ -112,8 +111,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li3;
     ///
-    /// let z = Complex::new(1.0, 1.0);
-    /// println!("Li3({}) = {}", z, z.li3());
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li3() - Complex::new(0.8711588834109380_f64, 1.2670834418889240_f64)).norm() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li3(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;
