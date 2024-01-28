@@ -205,7 +205,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
     }
 }
 
-/// series approximation of Li3(z) for |z| <= 1
+/// series approximation of Li4(z) for |z| <= 1
 /// in terms of x = -ln(1 - z)
 fn cli4_unit_circle(x: Complex<f64>) -> Complex<f64> {
     let bf  = [
