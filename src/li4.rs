@@ -168,7 +168,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
         let pz  = self.arg();
         let lnz = nz.ln();
 
-        if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
+        if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
             let u  = Complex::new(lnz, pz);
             let u2 = u*u;
             let u4 = u2*u2;
