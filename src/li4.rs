@@ -14,8 +14,7 @@ impl Li4<f64> for f64 {
     /// ```
     /// use polylog::Li4;
     ///
-    /// let x = 1.0;
-    /// println!("Li4({}) = {}", x, x.li4());
+    /// assert!((1.0_f64.li4() - 1.0823232337111382_f64).abs() < std::f64::EPSILON);
     /// ```
     fn li4(&self) -> f64 {
         let z2 = 1.6449340668482264;
@@ -151,8 +150,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li4;
     ///
-    /// let z = Complex::new(1.0, 1.0);
-    /// println!("Li4({}) = {}", z, z.li4());
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li4() - Complex::new(0.9593189135784193_f64, 1.1380391966769828_f64)).norm() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li4(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;
