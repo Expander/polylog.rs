@@ -38,17 +38,15 @@ impl Li4<f64> for f64 {
             (1.0/x, 2.0*z4 + l2*(z2 - 1.0/24.0*l2), -1.0)
         };
 
-        let app = if y < 0.0 {
-            li4_neg(y)
+        if y < 0.0 {
+            sgn*li4_neg(y) + rest
         } else if y < 0.5 {
-            li4_half(y)
+            sgn*li4_half(y) + rest
         } else if y < 0.8 {
-            li4_mid(y)
+            sgn*li4_mid(y) + rest
         } else { // y <= 1.0
-            li4_one(y)
-        };
-
-        rest + sgn*app
+            sgn*li4_one(y) + rest
+        }
     }
 }
 
