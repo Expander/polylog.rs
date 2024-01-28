@@ -120,45 +120,43 @@ impl Li3<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re <= 1.0 {
-                return Complex::new(self.re.li3(), 0.0)
+                Complex::new(self.re.li3(), 0.0)
             } else { // rz > 1.0
                 let l = self.re.ln();
-                return Complex::new(self.re.li3(), -0.5*pi*l*l)
+                Complex::new(self.re.li3(), -0.5*pi*l*l)
             }
-        }
+        } else {
+            let nz  = self.norm();
+            let pz  = self.arg();
+            let lnz = nz.ln();
 
-        let nz  = self.norm();
-        let pz  = self.arg();
-        let lnz = nz.ln();
+            if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
+                let u  = Complex::new(lnz, pz);
+                let u2 = u*u;
+                let u4 = u2*u2;
+                let u8 = u4*u4;
+                let c0 = z3 + u*(z2 - u2/12.);
+                let c1 = 0.25 * (3.0 - 2.0*(-u).cln());
 
-        if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
-            let u  = Complex::new(lnz, pz);
-            let u2 = u*u;
-            let u4 = u2*u2;
-            let u8 = u4*u4;
-            let c0 = z3 + u*(z2 - u2/12.);
-            let c1 = 0.25 * (3.0 - 2.0*(-u).cln());
+                let cs = [
+                    -3.4722222222222222e-03, 1.1574074074074074e-05,
+                    -9.8418997228521038e-08, 1.1482216343327454e-09,
+                    -1.5815724990809166e-11, 2.4195009792525152e-13,
+                    -3.9828977769894877e-15
+                ];
 
-            let cs = [
-                -3.4722222222222222e-03, 1.1574074074074074e-05,
-                -9.8418997228521038e-08, 1.1482216343327454e-09,
-                -1.5815724990809166e-11, 2.4195009792525152e-13,
-                -3.9828977769894877e-15
-            ];
-
-            return c0 +
-               c1*u2 +
-               u4*(cs[0] + u2*cs[1]) +
-               u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
-               u8*u8*cs[6];
-        }
-
-        if nz <= 1.0 {
-            cli3_unit_circle(-(1.0 - self).cln())
-        } else { // nz > 1
-            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
-            let lmz = Complex::new(lnz, arg); // (-self).cln()
-            cli3_unit_circle(-(1.0 - 1.0/self).cln()) - lmz*(lmz*lmz/6. + z2)
+                c0 +
+                c1*u2 +
+                u4*(cs[0] + u2*cs[1]) +
+                u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
+                u8*u8*cs[6]
+            } else if nz <= 1.0 {
+                cli3_unit_circle(-(1.0 - self).cln())
+            } else { // nz > 1
+                let arg = if pz > 0.0 { pz - pi } else { pz + pi };
+                let lmz = Complex::new(lnz, arg); // (-self).cln()
+                cli3_unit_circle(-(1.0 - 1.0/self).cln()) - lmz*(lmz*lmz/6. + z2)
+            }
         }
     }
 }
