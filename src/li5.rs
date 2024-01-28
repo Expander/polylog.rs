@@ -58,16 +58,14 @@ impl Li5<Complex<f64>> for Complex<f64> {
                 u2 * (cs[3] +
                 u2 * (cs[4] +
                 u2 * (cs[5]))))))))
-            } else {
-                if nz <= 1.0 {
-                    cli5_unit_circle(-(1.0 - self).cln())
-                } else { // nz > 1.0
-                    let pi4  = pi2*pi2;
-                    let arg = if pz > 0.0 { pz - pi } else { pz + pi };
-                    let lmz = Complex::new(lnz, arg); // (-self).cln()
-                    let lmz2 = lmz*lmz;
-                    cli5_unit_circle(-(1.0 - 1.0/self).cln()) - 1.0/360.0*lmz*(7.0*pi4 + lmz2*(10.0*pi2 + 3.0*lmz2))
-                }
+            } else if nz <= 1.0 {
+                cli5_unit_circle(-(1.0 - self).cln())
+            } else { // nz > 1.0
+                let pi4  = pi2*pi2;
+                let arg = if pz > 0.0 { pz - pi } else { pz + pi };
+                let lmz = Complex::new(lnz, arg); // (-self).cln()
+                let lmz2 = lmz*lmz;
+                cli5_unit_circle(-(1.0 - 1.0/self).cln()) - 1.0/360.0*lmz*(7.0*pi4 + lmz2*(10.0*pi2 + 3.0*lmz2))
             }
         }
     }

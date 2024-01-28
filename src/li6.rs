@@ -59,17 +59,15 @@ impl Li6<Complex<f64>> for Complex<f64> {
                 u2 * (cs[2] +
                 u2 * (cs[3] +
                 u2 * (cs[4]))))))))
-            } else {
-                if nz <= 1.0 {
-                    cli6_unit_circle(-(1.0 - self).cln())
-                } else { // nz > 1.0
-                    let pi4 = pi2*pi2;
-                    let pi6 = pi2*pi4;
-                    let arg = if pz > 0.0 { pz - pi } else { pz + pi };
-                    let lmz = Complex::new(lnz, arg); // (-self).cln()
-                    let lmz2 = lmz*lmz;
-                    -cli6_unit_circle(-(1.0 - 1.0/self).cln()) - 31.0*pi6/15120.0 + lmz2*(-7.0/720.0*pi4 + lmz2*(-1.0/144.0*pi2 - 1.0/720.0*lmz2))
-                }
+            } else if nz <= 1.0 {
+                cli6_unit_circle(-(1.0 - self).cln())
+            } else { // nz > 1.0
+                let pi4 = pi2*pi2;
+                let pi6 = pi2*pi4;
+                let arg = if pz > 0.0 { pz - pi } else { pz + pi };
+                let lmz = Complex::new(lnz, arg); // (-self).cln()
+                let lmz2 = lmz*lmz;
+                -cli6_unit_circle(-(1.0 - 1.0/self).cln()) - 31.0*pi6/15120.0 + lmz2*(-7.0/720.0*pi4 + lmz2*(-1.0/144.0*pi2 - 1.0/720.0*lmz2))
             }
         }
     }
