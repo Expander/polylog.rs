@@ -15,8 +15,7 @@ impl Li1<f64> for f64 {
     /// ```
     /// use polylog::Li1;
     ///
-    /// let x = 2.0;
-    /// println!("Li1({}) = {}", x, x.li1());
+    /// assert!((2.0_f64.li1()).abs() < std::f64::EPSILON);
     /// ```
     fn li1(&self) -> f64 {
         let x = *self;
@@ -39,8 +38,7 @@ impl Li1<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li1;
     ///
-    /// let z = Complex::new(1.0, 1.0);
-    /// println!("Li1({}) = {}", z, z.li1());
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li1() - Complex::new(0.0_f64, 1.5707963267948966_f64)).norm() < std::f64::EPSILON);
     /// ```
     fn li1(&self) -> Complex<f64> {
         -(1.0 - self).cln()
