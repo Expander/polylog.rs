@@ -24,7 +24,7 @@ impl Li5<Complex<f64>> for Complex<f64> {
         let pi2 = pi*pi;
         let z5  = 1.0369277551433699; // zeta(5)
         let bf  = [
-            1.                    , -15./32.               ,
+            1.0                   , -15.0/32.0             ,
             1.3953189300411523e-01, -2.8633777006172840e-02,
             4.0317412551440329e-03, -3.3985018004115226e-04,
             4.5445184621617666e-06,  2.3916808048569012e-06,
@@ -38,13 +38,13 @@ impl Li5<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re == 0.0 {
-                return Complex::new(0., 0.);
+                return Complex::new(0.0, 0.0);
             }
             if self.re == 1.0 {
-                return Complex::new(z5, 0.);
+                return Complex::new(z5, 0.0);
             }
             if self.re == -1.0 {
-                return Complex::new(-15./16.*z5, 0.0);
+                return Complex::new(-15.0/16.0*z5, 0.0);
             }
         }
 
@@ -85,7 +85,7 @@ impl Li5<Complex<f64>> for Complex<f64> {
             let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
             let lmz2 = lmz*lmz;
-            (-(1. - 1./self).cln(), -1./360.*lmz*(7.*pi4 + lmz2*(10.*pi2 + 3.*lmz2)))
+            (-(1.0 - 1.0/self).cln(), -1.0/360.0*lmz*(7.0*pi4 + lmz2*(10.0*pi2 + 3.0*lmz2)))
         };
 
         let u2 = u*u;

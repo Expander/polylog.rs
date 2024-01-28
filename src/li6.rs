@@ -24,7 +24,7 @@ impl Li6<Complex<f64>> for Complex<f64> {
         let pi2 = pi*pi;
         let z6  = 1.0173430619844491; // zeta(6)
         let bf  = [
-            1.                    , -31./64.               ,
+            1.0                   , -31.0/64.0             ,
             1.5241340877914952e-01, -3.4365555877057613e-02,
             5.7174797239368999e-03, -6.8180453746570645e-04,
             4.9960361948734493e-05, -4.9166051196039048e-07,
@@ -37,13 +37,13 @@ impl Li6<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re == 0.0 {
-                return Complex::new(0., 0.);
+                return Complex::new(0.0, 0.0);
             }
             if self.re == 1.0 {
-                return Complex::new(z6, 0.);
+                return Complex::new(z6, 0.0);
             }
             if self.re == -1.0 {
-                return Complex::new(-31./32.*z6, 0.0);
+                return Complex::new(-31.0/32.0*z6, 0.0);
             }
         }
 
@@ -58,8 +58,8 @@ impl Li6<Complex<f64>> for Complex<f64> {
             let c2 = 0.54116161685556910;
             let c3 = 0.20034281719326571;
             let c4 = 0.068538919452009435;
-            let c5 = (137./60. - (-u).cln())/120.;
-            let c6 = -1./1440.;
+            let c5 = (137.0/60.0 - (-u).cln())/120.0;
+            let c6 = -1.0/1440.0;
 
             let cs = [
                 -1.6534391534391534e-05, 2.2964432686654909e-08,
@@ -79,14 +79,14 @@ impl Li6<Complex<f64>> for Complex<f64> {
         }
 
         let (u, rest, sgn) = if nz <= 1.0 {
-            (-(1.0 - self).cln(), Complex::new(0.0, 0.0), 1.)
+            (-(1.0 - self).cln(), Complex::new(0.0, 0.0), 1.0)
         } else { // nz > 1.0
             let pi4 = pi2*pi2;
             let pi6 = pi2*pi4;
             let arg = if pz > 0.0 { pz - pi } else { pz + pi };
             let lmz = Complex::new(lnz, arg); // (-self).cln()
             let lmz2 = lmz*lmz;
-            (-(1. - 1./self).cln(), -31.*pi6/15120. + lmz2*(-7./720.*pi4 + lmz2*(-1./144.*pi2 - 1./720.*lmz2)), -1.)
+            (-(1.0 - 1.0/self).cln(), -31.0*pi6/15120.0 + lmz2*(-7.0/720.0*pi4 + lmz2*(-1.0/144.0*pi2 - 1.0/720.0*lmz2)), -1.0)
         };
 
         let u2 = u*u;
