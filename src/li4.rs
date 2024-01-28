@@ -157,52 +157,50 @@ impl Li4<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re <= 1.0 {
-                return Complex::new(self.re.li4(), 0.0)
+                Complex::new(self.re.li4(), 0.0)
             } else { // rz > 1.0
                 let l = self.re.ln();
-                return Complex::new(self.re.li4(), -pi/6.0*l*l*l)
+                Complex::new(self.re.li4(), -pi/6.0*l*l*l)
             }
-        }
+        } else {
+            let nz  = self.norm();
+            let pz  = self.arg();
+            let lnz = nz.ln();
 
-        let nz  = self.norm();
-        let pz  = self.arg();
-        let lnz = nz.ln();
+            if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
+                let u  = Complex::new(lnz, pz);
+                let u2 = u*u;
+                let u4 = u2*u2;
+                let u8 = u4*u4;
+                let c1 = 1.2020569031595943; // zeta(3)
+                let c2 = 0.82246703342411322;
+                let c3 = (11.0/6.0 - (-u).cln())/6.0;
+                let c4 = -1.0/48.0;
 
-        if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
-            let u  = Complex::new(lnz, pz);
-            let u2 = u*u;
-            let u4 = u2*u2;
-            let u8 = u4*u4;
-            let c1 = 1.2020569031595943; // zeta(3)
-            let c2 = 0.82246703342411322;
-            let c3 = (11.0/6.0 - (-u).cln())/6.0;
-            let c4 = -1.0/48.0;
+                let cs = [
+                    -6.9444444444444444e-04, 1.6534391534391534e-06,
+                    -1.0935444136502338e-08, 1.0438378493934049e-10,
+                    -1.2165942300622435e-12, 1.6130006528350101e-14,
+                    -2.3428810452879340e-16
+                ];
 
-            let cs = [
-                -6.9444444444444444e-04, 1.6534391534391534e-06,
-                -1.0935444136502338e-08, 1.0438378493934049e-10,
-                -1.2165942300622435e-12, 1.6130006528350101e-14,
-                -2.3428810452879340e-16
-            ];
-
-            return z4 + u2 * (c2 + u2 * c4) +
-                u * (
-                    c1 +
-                    c3*u2 +
-                    u4*(cs[0] + u2*cs[1]) +
-                    u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
-                    u8*u8*cs[6]
-                );
-        }
-
-        if nz <= 1.0 {
-            cli4_unit_circle(-(1.0 - self).cln())
-        } else { // nz > 1.0
-            let pi4  = pi2*pi2;
-            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
-            let lmz = Complex::new(lnz, arg); // (-self).cln()
-            let lmz2 = lmz*lmz;
-            -cli4_unit_circle(-(1.0 - 1.0/self).cln()) + 1.0/360.0*(-7.0*pi4 + lmz2*(-30.0*pi2 - 15.0*lmz2))
+                z4 + u2*(c2 + u2*c4) +
+                    u*(
+                        c1 +
+                            c3*u2 +
+                            u4*(cs[0] + u2*cs[1]) +
+                            u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
+                            u8*u8*cs[6]
+                    )
+            } else if nz <= 1.0 {
+                cli4_unit_circle(-(1.0 - self).cln())
+            } else { // nz > 1.0
+                let pi4  = pi2*pi2;
+                let arg = if pz > 0.0 { pz - pi } else { pz + pi };
+                let lmz = Complex::new(lnz, arg); // (-self).cln()
+                let lmz2 = lmz*lmz;
+                -cli4_unit_circle(-(1.0 - 1.0/self).cln()) + 1.0/360.0*(-7.0*pi4 + lmz2*(-30.0*pi2 - 15.0*lmz2))
+            }
         }
     }
 }
