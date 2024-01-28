@@ -10,6 +10,9 @@ pub trait Li3<T> {
 impl Li3<f64> for f64 {
     /// Returns the real trilogarithm of a real number of type `f64`.
     ///
+    /// Implemented as rational function approximations with a maximum
+    /// error of less than 2.050e-17 [[arXiv:2308.11619]].
+    ///
     /// [arXiv:2308.11619]: https://arxiv.org/abs/2308.11619
     ///
     /// # Example:
