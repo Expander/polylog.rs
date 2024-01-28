@@ -1,4 +1,5 @@
 use num::complex::Complex;
+use num::Float;
 
 /// Provides an implementation of the complex logarithm `cln()` of a
 /// number of type `T`, where the imaginary part of the logarithm is
@@ -11,12 +12,12 @@ pub trait CLn<T> {
     fn cln(&self) -> T;
 }
 
-impl CLn<Complex<f64>> for Complex<f64> {
-    fn cln(&self) -> Complex<f64> {
+impl<T: Float> CLn<Complex<T>> for Complex<T> {
+    fn cln(&self) -> Complex<T> {
         let z = Complex::new(
             self.re,
             // convert -0.0 to 0.0
-            if self.im == 0.0 { 0.0 } else { self.im },
+            if self.im == T::zero() { T::zero() } else { self.im },
         );
         Complex::new(z.norm().ln(), z.arg())
     }
@@ -24,8 +25,11 @@ impl CLn<Complex<f64>> for Complex<f64> {
 
 #[test]
 fn test_cln() {
-    let x = Complex::new(1.0, 0.0);
+    let x32 = Complex::new(1.0_f32, 0.0_f32);
+    let x64 = Complex::new(1.0_f64, 0.0_f64);
 
-    assert!((-x).cln() == Complex::new(0.0, std::f64::consts::PI));
-    assert!((-x).ln() == Complex::new(0.0, -std::f64::consts::PI));
+    assert!(((-x32).cln() - Complex::new(0.0_f32,  std::f32::consts::PI)).norm() < 4.0_f32*std::f32::EPSILON);
+    assert!(((-x32).ln()  - Complex::new(0.0_f32, -std::f32::consts::PI)).norm() < 4.0_f32*std::f32::EPSILON);
+    assert!((-x64).cln() == Complex::new(0.0_f64,  std::f64::consts::PI));
+    assert!((-x64).ln()  == Complex::new(0.0_f64, -std::f64::consts::PI));
 }

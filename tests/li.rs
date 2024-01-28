@@ -33,10 +33,11 @@ fn test_values() {
         let values = common::read_data_file(&filename).unwrap();
 
         for &(v, res) in values.iter() {
+            assert_eq_complex!(v.li(n.n), res, n.eps);
+
             if v.im == 0.0_f64 {
                 assert_eq_float!(v.re.li(n.n), res.re, n.eps);
             }
-            assert_eq_complex!(v.li(n.n), res, n.eps);
         }
 
         assert!(std::f64::NAN.li(n.n).is_nan());
