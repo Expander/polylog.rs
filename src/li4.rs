@@ -185,13 +185,12 @@ impl Li4<Complex<f64>> for Complex<f64> {
                 ];
 
                 z4 + u2*(c2 + u2*c4) +
-                    u*(
-                        c1 +
-                            c3*u2 +
-                            u4*(cs[0] + u2*cs[1]) +
-                            u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
-                            u8*u8*cs[6]
-                    )
+                u*(c1 +
+                   c3*u2 +
+                   u4*(cs[0] + u2*cs[1]) +
+                   u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
+                   u8*u8*cs[6]
+                )
             } else if nz <= 1.0 {
                 cli4_unit_circle(-(1.0 - self).cln())
             } else { // nz > 1.0
