@@ -14,8 +14,7 @@ impl Li4<f64> for f64 {
     /// ```
     /// use polylog::Li4;
     ///
-    /// let x = 1.0;
-    /// println!("Li4({}) = {}", x, x.li4());
+    /// assert!((1.0_f64.li4() - 1.0823232337111382_f64).abs() < std::f64::EPSILON);
     /// ```
     fn li4(&self) -> f64 {
         let z2 = 1.6449340668482264;
@@ -39,17 +38,15 @@ impl Li4<f64> for f64 {
             (1.0/x, 2.0*z4 + l2*(z2 - 1.0/24.0*l2), -1.0)
         };
 
-        let app = if y < 0.0 {
-            li4_neg(y)
+        if y < 0.0 {
+            sgn*li4_neg(y) + rest
         } else if y < 0.5 {
-            li4_half(y)
+            sgn*li4_half(y) + rest
         } else if y < 0.8 {
-            li4_mid(y)
+            sgn*li4_mid(y) + rest
         } else { // y <= 1.0
-            li4_one(y)
-        };
-
-        rest + sgn*app
+            sgn*li4_one(y) + rest
+        }
     }
 }
 
@@ -151,86 +148,85 @@ impl Li4<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li4;
     ///
-    /// let z = Complex::new(1.0, 1.0);
-    /// println!("Li4({}) = {}", z, z.li4());
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li4() - Complex::new(0.9593189135784193_f64, 1.1380391966769828_f64)).norm() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li4(&self) -> Complex<f64> {
         let pi  = std::f64::consts::PI;
         let pi2 = pi*pi;
         let z4  = 1.0823232337111382;
-        let bf  = [
-            1.                    , -7./16.                ,
-            1.1651234567901235e-01, -1.9820601851851852e-02,
-            1.9279320987654321e-03, -3.1057098765432099e-05,
-           -1.5624009114857835e-05,  8.4851235467732066e-07,
-            2.2909616603189711e-07, -2.1832614218526917e-08,
-           -3.8828248791720156e-09,  5.4462921032203321e-10,
-            6.9608052106827254e-11, -1.3375737686445215e-11,
-           -1.2784852685266572e-12,  3.2605628580248922e-13,
-            2.3647571168618257e-14, -7.9231351220311617e-15,
-        ];
 
         if self.im == 0.0 {
             if self.re <= 1.0 {
-                return Complex::new(self.re.li4(), 0.0)
+                Complex::new(self.re.li4(), 0.0)
             } else { // rz > 1.0
                 let l = self.re.ln();
-                return Complex::new(self.re.li4(), -pi/6.0*l*l*l)
+                Complex::new(self.re.li4(), -pi/6.0*l*l*l)
+            }
+        } else {
+            let nz  = self.norm();
+            let pz  = self.arg();
+            let lnz = nz.ln();
+
+            if lnz*lnz + pz*pz < 1.0 { // |log(z)| < 1
+                let u  = Complex::new(lnz, pz);
+                let u2 = u*u;
+                let u4 = u2*u2;
+                let u8 = u4*u4;
+                let c1 = 1.2020569031595943; // zeta(3)
+                let c2 = 0.82246703342411322;
+                let c3 = (11.0/6.0 - (-u).cln())/6.0;
+                let c4 = -1.0/48.0;
+
+                let cs = [
+                    -6.9444444444444444e-04, 1.6534391534391534e-06,
+                    -1.0935444136502338e-08, 1.0438378493934049e-10,
+                    -1.2165942300622435e-12, 1.6130006528350101e-14,
+                    -2.3428810452879340e-16
+                ];
+
+                z4 + u2*(c2 + u2*c4) +
+                u*(c1 +
+                   c3*u2 +
+                   u4*(cs[0] + u2*cs[1]) +
+                   u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
+                   u8*u8*cs[6]
+                )
+            } else if nz <= 1.0 {
+                cli4_unit_circle(-(1.0 - self).cln())
+            } else { // nz > 1.0
+                let pi4  = pi2*pi2;
+                let arg = if pz > 0.0 { pz - pi } else { pz + pi };
+                let lmz = Complex::new(lnz, arg); // (-self).cln()
+                let lmz2 = lmz*lmz;
+                -cli4_unit_circle(-(1.0 - 1.0/self).cln()) + 1.0/360.0*(-7.0*pi4 + lmz2*(-30.0*pi2 - 15.0*lmz2))
             }
         }
-
-        let nz  = self.norm();
-        let pz  = self.arg();
-        let lnz = nz.ln();
-
-        if lnz*lnz + pz*pz < 1. { // |log(z)| < 1
-            let u  = Complex::new(lnz, pz);
-            let u2 = u*u;
-            let u4 = u2*u2;
-            let u8 = u4*u4;
-            let c1 = 1.2020569031595943; // zeta(3)
-            let c2 = 0.82246703342411322;
-            let c3 = (11.0/6.0 - (-u).cln())/6.0;
-            let c4 = -1.0/48.0;
-
-            let cs = [
-                -6.9444444444444444e-04, 1.6534391534391534e-06,
-                -1.0935444136502338e-08, 1.0438378493934049e-10,
-                -1.2165942300622435e-12, 1.6130006528350101e-14,
-                -2.3428810452879340e-16
-            ];
-
-            return z4 + u2 * (c2 + u2 * c4) +
-                u * (
-                    c1 +
-                    c3*u2 +
-                    u4*(cs[0] + u2*cs[1]) +
-                    u8*(cs[2] + u2*cs[3] + u4*(cs[4] + u2*cs[5])) +
-                    u8*u8*cs[6]
-                );
-        }
-
-        let (u, rest, sgn) = if nz <= 1.0 {
-            (-(1. - self).cln(), Complex::new(0.,0.), 1.)
-        } else { // nz > 1.0
-            let pi4  = pi2*pi2;
-            let arg = if pz > 0.0 { pz - pi } else { pz + pi };
-            let lmz = Complex::new(lnz, arg); // (-self).cln()
-            let lmz2 = lmz*lmz;
-            (-(1. - 1./self).cln(), 1./360.*(-7.*pi4 + lmz2*(-30.*pi2 - 15.*lmz2)), -1.)
-        };
-
-        let u2 = u*u;
-        let u4 = u2*u2;
-        let u8 = u4*u4;
-
-        rest + sgn * (
-           u*bf[0] +
-           u2*(bf[1] + u*bf[2]) +
-           u4*(bf[3] + u*bf[4] + u2*(bf[5] + u*bf[6])) +
-           u8*(bf[7] + u*bf[8] + u2*(bf[9] + u*bf[10]) +
-               u4*(bf[11] + u*bf[12] + u2*(bf[13] + u*bf[14]))) +
-           u8*u8*(bf[15] + u*bf[16] + u2*bf[17])
-        )
     }
+}
+
+/// series approximation of Li4(z) for |z| <= 1
+/// in terms of x = -ln(1 - z)
+fn cli4_unit_circle(x: Complex<f64>) -> Complex<f64> {
+    let bf  = [
+        1.0                   , -7.0/16.0              ,
+        1.1651234567901235e-01, -1.9820601851851852e-02,
+        1.9279320987654321e-03, -3.1057098765432099e-05,
+       -1.5624009114857835e-05,  8.4851235467732066e-07,
+        2.2909616603189711e-07, -2.1832614218526917e-08,
+       -3.8828248791720156e-09,  5.4462921032203321e-10,
+        6.9608052106827254e-11, -1.3375737686445215e-11,
+       -1.2784852685266572e-12,  3.2605628580248922e-13,
+        2.3647571168618257e-14, -7.9231351220311617e-15,
+    ];
+
+    let x2 = x*x;
+    let x4 = x2*x2;
+    let x8 = x4*x4;
+
+    x*bf[0] +
+    x2*(bf[1] + x*bf[2]) +
+    x4*(bf[3] + x*bf[4] + x2*(bf[5] + x*bf[6])) +
+    x8*(bf[7] + x*bf[8] + x2*(bf[9] + x*bf[10]) +
+        x4*(bf[11] + x*bf[12] + x2*(bf[13] + x*bf[14]))) +
+    x8*x8*(bf[15] + x*bf[16] + x2*bf[17])
 }

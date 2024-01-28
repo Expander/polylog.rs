@@ -25,9 +25,7 @@ impl Li<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li;
     ///
-    /// let z = Complex::new(1.0, 1.0);
-    /// let n = 10;
-    /// println!("Li({},{}) = {}", n, z, z.li(n));
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li(10) - Complex::new(0.9999619510320738_f64, 1.0019864330842581_f64)).norm() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li(&self, n: i32) -> Complex<f64> {
         cli::cli(n, *self)
@@ -47,9 +45,7 @@ impl Li<f64> for f64 {
     /// ```
     /// use polylog::Li;
     ///
-    /// let z = 1.0;
-    /// let n = 10;
-    /// println!("Li({},{}) = {}", n, z, z.li(n));
+    /// assert!((1.0_f64.li(10) - 1.0009945751278181_f64).abs() < std::f64::EPSILON);
     /// ```
     fn li(&self, n: i32) -> f64 {
         rli::rli(n, *self)

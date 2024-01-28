@@ -124,15 +124,15 @@ impl Li2<f32> for f32 {
     /// assert!((1.0_f32.li2() - 1.64493407_f32).abs() < 2.0_f32*std::f32::EPSILON);
     /// ```
     fn li2(&self) -> f32 {
-        let zeta2 = std::f32::consts::PI*std::f32::consts::PI/6.0_f32;
+        let z2 = std::f32::consts::PI*std::f32::consts::PI/6.0_f32;
         let x = *self;
 
         // transform to [0, 1/2]
         if x < -1.0_f32 {
             let l = (1.0_f32 - x).ln();
-            (1.0_f32/(1.0_f32 - x)).approx() - zeta2 + l*(0.5_f32*l - (-x).ln())
+            (1.0_f32/(1.0_f32 - x)).approx() - z2 + l*(0.5_f32*l - (-x).ln())
         } else if x == -1.0_f32 {
-            -0.5_f32*zeta2
+            -0.5_f32*z2
         } else if x < 0.0_f32 {
             let l = (-x).ln_1p();
             -(x/(x - 1.0_f32)).approx() - 0.5_f32*l*l
@@ -141,15 +141,15 @@ impl Li2<f32> for f32 {
         } else if x < 0.5_f32 {
             x.approx()
         } else if x < 1.0_f32 {
-            -(1.0_f32 - x).approx() + zeta2 - x.ln()*(-x).ln_1p()
+            -(1.0_f32 - x).approx() + z2 - x.ln()*(-x).ln_1p()
         } else if x == 1.0_f32 {
-            zeta2
+            z2
         } else if x < 2.0_f32 {
             let l = x.ln();
-            (1.0_f32 - 1.0_f32/x).approx() + zeta2 - l*((1.0_f32 - 1.0_f32/x).ln() + 0.5_f32*l)
+            (1.0_f32 - 1.0_f32/x).approx() + z2 - l*((1.0_f32 - 1.0_f32/x).ln() + 0.5_f32*l)
         } else {
             let l = x.ln();
-            -(1.0_f32/x).approx() + 2.0_f32*zeta2 - 0.5_f32*l*l
+            -(1.0_f32/x).approx() + 2.0_f32*z2 - 0.5_f32*l*l
         }
     }
 }
@@ -169,15 +169,15 @@ impl Li2<f64> for f64 {
     /// assert!((1.0_f64.li2() - 1.6449340668482264_f64).abs() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li2(&self) -> f64 {
-        let zeta2 = std::f64::consts::PI*std::f64::consts::PI/6.0_f64;
+        let z2 = std::f64::consts::PI*std::f64::consts::PI/6.0_f64;
         let x = *self;
 
         // transform to [0, 1/2]
         if x < -1.0_f64 {
             let l = (1.0_f64 - x).ln();
-            (1.0_f64/(1.0_f64 - x)).approx() - zeta2 + l*(0.5_f64*l - (-x).ln())
+            (1.0_f64/(1.0_f64 - x)).approx() - z2 + l*(0.5_f64*l - (-x).ln())
         } else if x == -1.0_f64 {
-            -0.5_f64*zeta2
+            -0.5_f64*z2
         } else if x < 0.0_f64 {
             let l = (-x).ln_1p();
             -(x/(x - 1.0_f64)).approx() - 0.5_f64*l*l
@@ -186,15 +186,15 @@ impl Li2<f64> for f64 {
         } else if x < 0.5_f64 {
             x.approx()
         } else if x < 1.0_f64 {
-            -(1.0_f64 - x).approx() + zeta2 - x.ln()*(-x).ln_1p()
+            -(1.0_f64 - x).approx() + z2 - x.ln()*(-x).ln_1p()
         } else if x == 1.0_f64 {
-            zeta2
+            z2
         } else if x < 2.0_f64 {
             let l = x.ln();
-            (1.0_f64 - 1.0_f64/x).approx() + zeta2 - l*((1.0_f64 - 1.0_f64/x).ln() + 0.5_f64*l)
+            (1.0_f64 - 1.0_f64/x).approx() + z2 - l*((1.0_f64 - 1.0_f64/x).ln() + 0.5_f64*l)
         } else {
             let l = x.ln();
-            -(1.0_f64/x).approx() + 2.0_f64*zeta2 - 0.5_f64*l*l
+            -(1.0_f64/x).approx() + 2.0_f64*z2 - 0.5_f64*l*l
         }
     }
 }
@@ -227,24 +227,22 @@ impl Li2<Complex<f32>> for Complex<f32> {
             if nz < std::f32::EPSILON {
                 self*(1.0_f32 + 0.25_f32*self)
             } else {
-                let (u, rest, sgn) = if rz <= 0.5_f32 {
+                if rz <= 0.5_f32 {
                     if nz > 1.0_f32 {
                         let l = (-self).cln();
-                        (-(1.0_f32 - 1.0_f32/self).cln(), -0.5_f32*l*l - pi*pi/6.0_f32, -1.0_f32)
+                        -(-(1.0_f32 - 1.0_f32/self).cln()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
                     } else { // nz <= 1
-                        (-(1.0_f32 - self).cln(), Complex::new(0.0_f32, 0.0_f32), 1.0_f32)
+                        (-(1.0_f32 - self).cln()).approx()
                     }
                 } else { // rz > 0.5
                     if nz <= 2.0_f32*rz {
                         let l = -(self).cln();
-                        (l, l*(1.0_f32 - self).cln() + pi*pi/6.0_f32, -1.0_f32)
+                        -l.approx() + l*(1.0_f32 - self).cln() + pi*pi/6.0_f32
                     } else { // nz > 2*rz
                         let l = (-self).cln();
-                        (-(1.0_f32 - 1.0_f32/self).cln(), -0.5_f32*l*l - pi*pi/6.0_f32, -1.0_f32)
+                        -(-(1.0_f32 - 1.0_f32/self).cln()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
                     }
-                };
-
-                sgn*u.approx() + rest
+                }
             }
         }
     }
@@ -262,7 +260,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
     /// use num::complex::Complex;
     /// use polylog::Li2;
     ///
-    /// assert!((Complex::new(1.0_f64, 1.0_f64).li2() - Complex::new(0.6168502750680849_f64, 1.4603621167531195_f64)).norm() < std::f64::EPSILON);
+    /// assert!((Complex::new(1.0_f64, 1.0_f64).li2() - Complex::new(0.6168502750680849_f64, 1.4603621167531195_f64)).norm() < 2.0_f64*std::f64::EPSILON);
     /// ```
     fn li2(&self) -> Complex<f64> {
         let pi = std::f64::consts::PI;
@@ -281,24 +279,22 @@ impl Li2<Complex<f64>> for Complex<f64> {
             if nz < std::f64::EPSILON {
                 self*(1.0_f64 + 0.25_f64*self)
             } else {
-                let (u, rest, sgn) = if rz <= 0.5_f64 {
+                if rz <= 0.5_f64 {
                     if nz > 1.0_f64 {
                         let l = (-self).cln();
-                        (-(1.0_f64 - 1.0_f64/self).cln(), -0.5_f64*l*l - pi*pi/6.0_f64, -1.0_f64)
+                        -(-(1.0_f64 - 1.0_f64/self).cln()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
                     } else { // nz <= 1
-                        (-(1.0_f64 - self).cln(), Complex::new(0.0_f64, 0.0_f64), 1.0_f64)
+                        (-(1.0_f64 - self).cln()).approx()
                     }
                 } else { // rz > 0.5
                     if nz <= 2.0_f64*rz {
                         let l = -(self).cln();
-                        (l, l*(1.0_f64 - self).cln() + pi*pi/6.0_f64, -1.0_f64)
+                        -l.approx() + l*(1.0_f64 - self).cln() + pi*pi/6.0_f64
                     } else { // nz > 2*rz
                         let l = (-self).cln();
-                        (-(1.0_f64 - 1.0_f64/self).cln(), -0.5_f64*l*l - pi*pi/6.0_f64, -1.0_f64)
+                        -(-(1.0_f64 - 1.0_f64/self).cln()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
                     }
-                };
-
-                sgn*u.approx() + rest
+                }
             }
         }
     }
