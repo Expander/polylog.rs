@@ -51,13 +51,11 @@ pub fn rli(n: i32, x: f64) -> f64 {
             (x.recip(), li_pos_rest(n, x), odd_sgn(n))
         };
 
-        let li = if n < 20 && y > 0.75 {
-            li_unity_pos(n, y)
+        if n < 20 && y > 0.75 {
+            sgn*li_unity_pos(n, y) + rest
         } else {
-            li_series(n, y)
-        };
-
-        rest + sgn*li
+            sgn*li_series(n, y) + rest
+        }
     }
 }
 
