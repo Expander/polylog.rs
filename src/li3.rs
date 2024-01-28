@@ -135,7 +135,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
                 let u2 = u*u;
                 let u4 = u2*u2;
                 let u8 = u4*u4;
-                let c0 = z3 + u*(z2 - u2/12.);
+                let c0 = z3 + u*(z2 - u2/12.0);
                 let c1 = 0.25 * (3.0 - 2.0*(-u).cln());
 
                 let cs = [
