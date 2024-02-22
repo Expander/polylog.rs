@@ -155,7 +155,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
             } else { // nz > 1
                 let arg = if pz > 0.0 { pz - pi } else { pz + pi };
                 let lmz = Complex::new(lnz, arg); // (-self).cln()
-                cli3_unit_circle(-(-1.0/self).cln_1p()) - lmz*(lmz*lmz/6.0 + z2)
+                cli3_unit_circle(-(-1.0/self).cln_1p()) - lmz*(1.0/6.0*lmz*lmz + z2)
             }
         }
     }
