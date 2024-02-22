@@ -192,13 +192,13 @@ impl Li4<Complex<f64>> for Complex<f64> {
                    u8*u8*cs[6]
                 )
             } else if nz <= 1.0 {
-                cli4_unit_circle(-(1.0 - self).cln())
+                cli4_unit_circle(-(-self).cln_1p())
             } else { // nz > 1.0
                 let pi4  = pi2*pi2;
                 let arg = if pz > 0.0 { pz - pi } else { pz + pi };
                 let lmz = Complex::new(lnz, arg); // (-self).cln()
                 let lmz2 = lmz*lmz;
-                -cli4_unit_circle(-(1.0 - 1.0/self).cln()) + 1.0/360.0*(-7.0*pi4 + lmz2*(-30.0*pi2 - 15.0*lmz2))
+                -cli4_unit_circle(-(-1.0/self).cln_1p()) + 1.0/360.0*(-7.0*pi4 + lmz2*(-30.0*pi2 - 15.0*lmz2))
             }
         }
     }

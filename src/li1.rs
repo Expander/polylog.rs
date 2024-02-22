@@ -41,6 +41,6 @@ impl Li1<Complex<f64>> for Complex<f64> {
     /// assert!((Complex::new(1.0_f64, 1.0_f64).li1() - Complex::new(0.0_f64, 1.5707963267948966_f64)).norm() < std::f64::EPSILON);
     /// ```
     fn li1(&self) -> Complex<f64> {
-        -(1.0 - self).cln()
+        -(-self).cln_1p()
     }
 }
