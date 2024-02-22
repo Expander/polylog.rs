@@ -85,6 +85,14 @@ fn special_values() {
         assert_eq!(li2.im, li2_expected.im);
     }
 
+    {
+        // test value close to zero
+        let z = Complex::new(4.831285545908206e-6_f64, 0.004396919500211628_f64);
+        let expected = Complex::new(-1.94166578202937687444628936853e-9_f64, 0.00439692067657240512726530759719387623_f64);
+        assert_close_rel!(z.li2().re, expected.re, 1e-12);
+        assert_close_rel!(z.li2().im, expected.im, 1e-15);
+    }
+
     // test value that causes overflow if squared
     assert!(!Complex::new(1e300_f64, 1.0_f64).li2().is_infinite());
     assert!(!Complex::new(1.0_f64, 1e300_f64).li2().is_infinite());
