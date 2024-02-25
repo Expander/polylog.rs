@@ -1,5 +1,5 @@
 use num::complex::Complex;
-use num::Float;
+use num::{Float, FromPrimitive};
 
 /// Provides an implementation of the complex logarithm `cln()` of a
 /// number of type `T`, where the imaginary part of the logarithm is
@@ -13,14 +13,15 @@ pub trait CLn<T> {
     fn cln_1p(&self) -> T;
 }
 
-impl<T: Float> CLn<Complex<T>> for Complex<T> {
+impl<T: Float + FromPrimitive> CLn<Complex<T>> for Complex<T> {
     fn cln(&self) -> Complex<T> {
-        let z = Complex::new(
-            self.re,
-            // convert -0.0 to 0.0
-            if self.im == T::zero() { T::zero() } else { self.im },
-        );
-        Complex::new(z.norm().ln(), z.arg())
+        if self.im == T::zero() && self.re > T::zero() {
+            Complex::new(self.re.ln(), T::zero())
+        } else if self.im == T::zero() {
+            Complex::new((-self.re).ln(), T::from_f64(3.1415926535897932_f64).unwrap())
+        } else {
+            self.ln()
+        }
     }
 
     fn cln_1p(&self) -> Complex<T> {
@@ -29,7 +30,14 @@ impl<T: Float> CLn<Complex<T>> for Complex<T> {
             // convert -0.0 to 0.0
             if self.im == T::zero() { T::zero() } else { self.im },
         );
-        (Complex::new(T::one(), T::zero()) + z).cln()
+        let u = Complex::new(T::one() + z.re, z.im);
+        if z.im == T::zero() && z.re > -T::one() {
+            Complex::new(z.re.ln_1p(), T::zero())
+        } else if u == Complex::new(T::one(), T::zero()) {
+            z
+        } else {
+            u.ln()
+        }
     }
 }
 
