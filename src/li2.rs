@@ -229,17 +229,17 @@ impl Li2<Complex<f32>> for Complex<f32> {
             } else if rz <= 0.5_f32 {
                 if nz > 1.0_f32 {
                     let l = (-self).cln();
-                    -(-(1.0_f32 - 1.0_f32/self).cln()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
+                    -(-(-1.0_f32/self).cln_1p()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
                 } else { // nz <= 1
-                    (-(1.0_f32 - self).cln()).approx()
+                    (-(-self).cln_1p()).approx()
                 }
             } else { // rz > 0.5
                 if nz <= 2.0_f32*rz {
                     let l = -(self).cln();
-                    -l.approx() + l*(1.0_f32 - self).cln() + pi*pi/6.0_f32
+                    -l.approx() + l*(-self).cln_1p() + pi*pi/6.0_f32
                 } else { // nz > 2*rz
                     let l = (-self).cln();
-                    -(-(1.0_f32 - 1.0_f32/self).cln()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
+                    -(-(-1.0_f32/self).cln_1p()).approx() - 0.5_f32*l*l - pi*pi/6.0_f32
                 }
             }
         }
@@ -279,17 +279,17 @@ impl Li2<Complex<f64>> for Complex<f64> {
             } else if rz <= 0.5_f64 {
                 if nz > 1.0_f64 {
                     let l = (-self).cln();
-                    -(-(1.0_f64 - 1.0_f64/self).cln()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
+                    -(-(-1.0_f64/self).cln_1p()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
                 } else { // nz <= 1
-                    (-(1.0_f64 - self).cln()).approx()
+                    (-(-self).cln_1p()).approx()
                 }
             } else { // rz > 0.5
                 if nz <= 2.0_f64*rz {
                     let l = -(self).cln();
-                    -l.approx() + l*(1.0_f64 - self).cln() + pi*pi/6.0_f64
+                    -l.approx() + l*(-self).cln_1p() + pi*pi/6.0_f64
                 } else { // nz > 2*rz
                     let l = (-self).cln();
-                    -(-(1.0_f64 - 1.0_f64/self).cln()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
+                    -(-(-1.0_f64/self).cln_1p()).approx() - 0.5_f64*l*l - pi*pi/6.0_f64
                 }
             }
         }

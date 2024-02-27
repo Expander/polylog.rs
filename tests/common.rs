@@ -7,6 +7,25 @@ use std::str::FromStr;
 
 
 #[macro_export]
+macro_rules! max_rel_diff {
+    ($a:expr, $b:expr) => {
+        ($a - $b).abs()/$a.abs().max($b.abs())
+    }
+}
+
+
+#[macro_export]
+macro_rules! assert_close_rel {
+    ($a:expr, $b:expr, $eps:expr) => {
+        if max_rel_diff!($a, $b) >= $eps {
+            println!("Numbers differ relatively by more than {:e}: {:e} != {:e}", $eps, $a, $b);
+            assert!(false);
+        }
+    }
+}
+
+
+#[macro_export]
 macro_rules! assert_eq_float {
     ($a:expr, $b:expr, $eps:expr) => {
         if ($a - $b).abs() >= $eps*(1.0 + $a.abs().max($b.abs())) {
