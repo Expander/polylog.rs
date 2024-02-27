@@ -35,8 +35,10 @@ impl<T: Float + FromPrimitive> CLn<Complex<T>> for Complex<T> {
             Complex::new(z.re.ln_1p(), T::zero())
         } else if u == Complex::new(T::one(), T::zero()) {
             z
-        } else {
+        } else if u.re <= T::zero() {
             u.ln()
+        } else {
+            u.ln()*(z/Complex::new(u.re - T::one(), u.im))
         }
     }
 }
