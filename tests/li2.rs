@@ -185,3 +185,36 @@ fn test_values_f64() {
         }
     }
 }
+
+
+#[test]
+fn test_signed_zero() {
+    let pz32 = 0.0_f32;
+    let nz32 = -0.0_f32;
+    let pz64 = 0.0_f64;
+    let nz64 = -0.0_f64;
+
+    assert!(pz32.li2().is_sign_positive());
+    assert!(nz32.li2().is_sign_negative());
+
+    assert!(pz64.li2().is_sign_positive());
+    assert!(nz64.li2().is_sign_negative());
+
+    assert!(Complex::new(pz32, pz32).li2().re.is_sign_positive());
+    assert!(Complex::new(pz32, pz32).li2().im.is_sign_positive());
+    assert!(Complex::new(pz32, nz32).li2().re.is_sign_positive());
+    assert!(Complex::new(pz32, nz32).li2().im.is_sign_negative());
+    assert!(Complex::new(nz32, pz32).li2().re.is_sign_negative());
+    assert!(Complex::new(nz32, pz32).li2().im.is_sign_positive());
+    assert!(Complex::new(nz32, nz32).li2().re.is_sign_negative());
+    assert!(Complex::new(nz32, nz32).li2().im.is_sign_negative());
+
+    assert!(Complex::new(pz64, pz64).li2().re.is_sign_positive());
+    assert!(Complex::new(pz64, pz64).li2().im.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li2().re.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li2().im.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li2().re.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li2().im.is_sign_positive());
+    assert!(Complex::new(nz64, nz64).li2().re.is_sign_negative());
+    assert!(Complex::new(nz64, nz64).li2().im.is_sign_negative());
+}
