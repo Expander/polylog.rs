@@ -24,11 +24,11 @@ impl Li5<Complex<f64>> for Complex<f64> {
         let z5  = 1.0369277551433699; // zeta(5)
 
         if self.im == 0.0 && self.re == 0.0 {
-            Complex::new(0.0, 0.0)
+            *self
         } else if self.im == 0.0 && self.re == 1.0 {
-            Complex::new(z5, 0.0)
+            Complex::new(z5, self.im)
         } else if self.im == 0.0 && self.re == -1.0 {
-            Complex::new(-15.0/16.0*z5, 0.0)
+            Complex::new(-15.0/16.0*z5, self.im)
         } else {
             let nz  = self.norm();
             let pz  = self.arg();
