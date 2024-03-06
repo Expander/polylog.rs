@@ -11,7 +11,7 @@ pub fn rli(n: i32, x: f64) -> f64 {
     let odd_sgn = |n| if is_even(n) { -1.0 } else { 1.0 };
 
     if x == 0.0 {
-        0.0
+        x
     } else if x == 1.0 {
         zeta(n)
     } else if x == -1.0 {
