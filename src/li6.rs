@@ -24,11 +24,11 @@ impl Li6<Complex<f64>> for Complex<f64> {
         let z6  = 1.0173430619844491; // zeta(6)
 
         if self.im == 0.0 && self.re == 0.0 {
-            Complex::new(0.0, 0.0)
+            *self
         } else if self.im == 0.0 && self.re == 1.0 {
-            Complex::new(z6, 0.0)
+            Complex::new(z6, self.im)
         } else if self.im == 0.0 && self.re == -1.0 {
-            Complex::new(-31.0/32.0*z6, 0.0)
+            Complex::new(-31.0/32.0*z6, self.im)
         } else {
             let nz  = self.norm();
             let pz  = self.arg();
@@ -43,7 +43,6 @@ impl Li6<Complex<f64>> for Complex<f64> {
                 let c4 = 0.068538919452009435;
                 let c5 = (137.0/60.0 - (-u).cln())/120.0;
                 let c6 = -1.0/1440.0;
-
                 let cs = [
                     -1.6534391534391534e-05, 2.2964432686654909e-08,
                     -9.9413128513657614e-11, 6.6912682653423394e-13,
