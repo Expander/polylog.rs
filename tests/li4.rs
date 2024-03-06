@@ -39,3 +39,22 @@ fn test_values() {
         }
     }
 }
+
+
+#[test]
+fn test_signed_zero() {
+    let pz64 = 0.0_f64;
+    let nz64 = -0.0_f64;
+
+    assert!(pz64.li4().is_sign_positive());
+    assert!(nz64.li4().is_sign_negative());
+
+    assert!(Complex::new(pz64, pz64).li4().re.is_sign_positive());
+    assert!(Complex::new(pz64, pz64).li4().im.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li4().re.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li4().im.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li4().re.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li4().im.is_sign_positive());
+    assert!(Complex::new(nz64, nz64).li4().re.is_sign_negative());
+    assert!(Complex::new(nz64, nz64).li4().im.is_sign_negative());
+}
