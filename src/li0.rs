@@ -17,7 +17,11 @@ impl Li0<f64> for f64 {
     /// assert!((2.0_f64.li0() + 2.0_f64).abs() < std::f64::EPSILON);
     /// ```
     fn li0(&self) -> f64 {
-        self/(1.0 - self)
+        if *self == 0.0 {
+            *self
+        } else {
+            self/(1.0 - self)
+        }
     }
 }
 
@@ -33,6 +37,10 @@ impl Li0<Complex<f64>> for Complex<f64> {
     /// assert!((Complex::new(1.0_f64, 1.0_f64).li0() - Complex::new(-1.0_f64, 1.0_f64)).norm() < std::f64::EPSILON);
     /// ```
     fn li0(&self) -> Complex<f64> {
-        self/(1.0 - self)
+        if *self == Complex::new(0.0, 0.0) {
+            *self
+        } else {
+            self/(1.0 - self)
+        }
     }
 }
