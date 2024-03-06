@@ -35,7 +35,7 @@ impl Li3<f64> for f64 {
         } else if x < 0.0 {
             li3_neg(x)
         } else if x == 0.0 {
-            0.0
+            x
         } else if x < 0.5 {
             li3_pos(x)
         } else if x == 0.5 {
@@ -120,7 +120,7 @@ impl Li3<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re <= 1.0 {
-                Complex::new(self.re.li3(), 0.0)
+                Complex::new(self.re.li3(), self.im)
             } else { // rz > 1.0
                 let l = self.re.ln();
                 Complex::new(self.re.li3(), -0.5*pi*l*l)
