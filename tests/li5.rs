@@ -35,3 +35,19 @@ fn test_values() {
         assert_eq_complex!(v.li5(), li5, eps);
     }
 }
+
+
+#[test]
+fn test_signed_zero() {
+    let pz64 = 0.0_f64;
+    let nz64 = -0.0_f64;
+
+    assert!(Complex::new(pz64, pz64).li5().re.is_sign_positive());
+    assert!(Complex::new(pz64, pz64).li5().im.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li5().re.is_sign_positive());
+    assert!(Complex::new(pz64, nz64).li5().im.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li5().re.is_sign_negative());
+    assert!(Complex::new(nz64, pz64).li5().im.is_sign_positive());
+    assert!(Complex::new(nz64, nz64).li5().re.is_sign_negative());
+    assert!(Complex::new(nz64, nz64).li5().im.is_sign_negative());
+}

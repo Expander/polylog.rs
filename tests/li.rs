@@ -63,3 +63,24 @@ fn test_values() {
     assert!(Complex::new(f64::NAN, f64::NAN).li(7).is_nan());
     assert!(Complex::new(f64::INFINITY, f64::INFINITY).li(7).is_infinite());
 }
+
+
+#[test]
+fn test_signed_zero() {
+    let pz64 = 0.0_f64;
+    let nz64 = -0.0_f64;
+
+    for n in (-100..100).into_iter() {
+        assert!(pz64.li(n).is_sign_positive());
+        assert!(nz64.li(n).is_sign_negative());
+
+        assert!(Complex::new(pz64, pz64).li(n).re.is_sign_positive());
+        assert!(Complex::new(pz64, pz64).li(n).im.is_sign_positive());
+        assert!(Complex::new(pz64, nz64).li(n).re.is_sign_positive());
+        assert!(Complex::new(pz64, nz64).li(n).im.is_sign_negative());
+        assert!(Complex::new(nz64, pz64).li(n).re.is_sign_negative());
+        assert!(Complex::new(nz64, pz64).li(n).im.is_sign_positive());
+        assert!(Complex::new(nz64, nz64).li(n).re.is_sign_negative());
+        assert!(Complex::new(nz64, nz64).li(n).im.is_sign_negative());
+    }
+}

@@ -14,7 +14,7 @@ pub fn cli(n: i32, z: Complex<f64>) -> Complex<f64> {
         Complex::new(f64::NEG_INFINITY, 0.0)
     } else if z.im == 0.0 {
         if z.re <= 1.0 || n <= 0 {
-            Complex::new(z.re.li(n), 0.0)
+            Complex::new(z.re.li(n), z.im)
         } else { // rz > 1.0 && n > 0
             let l = z.re.ln();
             Complex::new(z.re.li(n), -std::f64::consts::PI*inv_fac(n - 1)*l.powi(n - 1))

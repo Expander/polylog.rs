@@ -28,6 +28,8 @@ impl Li4<f64> for f64 {
             (1.0/x, -7.0/4.0*z4 + l2*(-0.5*z2 - 1.0/24.0*l2), -1.0)
         } else if x == -1.0 {
             return -7.0/8.0*z4
+        } else if x == 0.0 {
+            return x
         } else if x < 1.0 {
             (x, 0.0, 1.0)
         } else if x == 1.0 {
@@ -157,7 +159,7 @@ impl Li4<Complex<f64>> for Complex<f64> {
 
         if self.im == 0.0 {
             if self.re <= 1.0 {
-                Complex::new(self.re.li4(), 0.0)
+                Complex::new(self.re.li4(), self.im)
             } else { // rz > 1.0
                 let l = self.re.ln();
                 Complex::new(self.re.li4(), -pi/6.0*l*l*l)

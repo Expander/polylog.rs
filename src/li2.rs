@@ -137,7 +137,7 @@ impl Li2<f32> for f32 {
             let l = (-x).ln_1p();
             -(x/(x - 1.0_f32)).approx() - 0.5_f32*l*l
         } else if x == 0.0_f32 {
-            0.0_f32
+            x
         } else if x < 0.5_f32 {
             x.approx()
         } else if x < 1.0_f32 {
@@ -182,7 +182,7 @@ impl Li2<f64> for f64 {
             let l = (-x).ln_1p();
             -(x/(x - 1.0_f64)).approx() - 0.5_f64*l*l
         } else if x == 0.0_f64 {
-            0.0_f64
+            x
         } else if x < 0.5_f64 {
             x.approx()
         } else if x < 1.0_f64 {
@@ -217,7 +217,7 @@ impl Li2<Complex<f32>> for Complex<f32> {
 
         if iz == 0.0_f32 {
             if rz <= 1.0_f32 {
-                Complex::new(rz.li2(), 0.0_f32)
+                Complex::new(rz.li2(), iz)
             } else { // rz > 1
                 Complex::new(rz.li2(), -pi*rz.ln())
             }
@@ -267,7 +267,7 @@ impl Li2<Complex<f64>> for Complex<f64> {
 
         if iz == 0.0_f64 {
             if rz <= 1.0_f64 {
-                Complex::new(rz.li2(), 0.0_f64)
+                Complex::new(rz.li2(), iz)
             } else { // rz > 1
                 Complex::new(rz.li2(), -pi*rz.ln())
             }
