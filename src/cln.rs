@@ -1,5 +1,17 @@
 use num::complex::Complex;
-use num::{Float, FromPrimitive};
+use num::Float;
+
+trait Pi<T> {
+    fn pi() -> T;
+}
+
+impl Pi<f32> for f32 {
+    fn pi() -> f32 { std::f32::consts::PI }
+}
+
+impl Pi<f64> for f64 {
+    fn pi() -> f64 { std::f64::consts::PI }
+}
 
 /// Provides an implementation of the complex logarithm `cln()` of a
 /// number of type `T`, where the imaginary part of the logarithm is
@@ -12,12 +24,12 @@ pub trait CLn<T> {
     fn cln(&self) -> T;
 }
 
-impl<T: Float + FromPrimitive> CLn<Complex<T>> for Complex<T> {
+impl<T: Float + Pi<T>> CLn<Complex<T>> for Complex<T> {
     fn cln(&self) -> Complex<T> {
         if self.im == T::zero() && self.re > T::zero() {
             Complex::new(self.re.ln(), T::zero())
         } else if self.im == T::zero() {
-            Complex::new((-self.re).ln(), T::from_f64(std::f64::consts::PI).unwrap())
+            Complex::new((-self.re).ln(), T::pi())
         } else {
             self.ln()
         }
