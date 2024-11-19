@@ -17,7 +17,7 @@ impl<T: Float + FromPrimitive> CLn<Complex<T>> for Complex<T> {
         if self.im == T::zero() && self.re > T::zero() {
             Complex::new(self.re.ln(), T::zero())
         } else if self.im == T::zero() {
-            Complex::new((-self.re).ln(), T::from_f64(3.1415926535897932_f64).unwrap())
+            Complex::new((-self.re).ln(), T::from_f64(std::f64::consts::PI).unwrap())
         } else {
             self.ln()
         }
