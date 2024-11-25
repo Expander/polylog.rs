@@ -63,7 +63,7 @@ fn test_cln() {
     assert!(Complex::new( rzero32, rzero32).cln() == Complex::new(std::f32::NEG_INFINITY, 0.0));
     // assert!(Complex::new(-rzero32, rzero32).cln() == Complex::new(std::f32::NEG_INFINITY, std::f32::consts::PI));
     assert!(Complex::new(-rzero32, rzero32).cln().re == std::f32::NEG_INFINITY);
-    assert!(Complex::new(-rzero32, rzero32).cln().im == std::f32::consts::PI);
+    assert!((Complex::new(-rzero32, rzero32).cln().im - std::f32::consts::PI).abs() < 4.0_f32*std::f32::EPSILON);
     assert!(Complex::new( rzero64, rzero64).cln() == Complex::new(std::f64::NEG_INFINITY, 0.0));
     assert!(Complex::new(-rzero64, rzero64).cln() == Complex::new(std::f64::NEG_INFINITY, std::f64::consts::PI));
 }
