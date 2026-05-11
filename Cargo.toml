@@ -7,7 +7,7 @@ readme = "README.md"
 description = "Rust implementation of polylogarithms."
 homepage = "https://github.com/Expander/polylog"
 repository = "https://github.com/Expander/polylog"
-edition = '2018'
+edition = '2021'
 
 [dependencies]
 num = "0.4"
