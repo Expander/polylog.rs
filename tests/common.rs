@@ -26,6 +26,7 @@ macro_rules! assert_eq_complex {
 }
 
 
+#[allow(unused)]
 pub trait CLn<T> {
     fn cln(&self) -> T;
 }
